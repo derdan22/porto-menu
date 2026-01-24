@@ -24,6 +24,21 @@ body::before {
   z-index: -1;
 }
 
+.top-logo {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9;
+  display: flex;
+  justify-content: center;
+}
+
+.top-logo img {
+  height: 258px;
+  width: auto;
+}
+
 .fade-in {
   animation: fadeIn .6s ease both;
 }
@@ -34,33 +49,33 @@ body::before {
 
 @keyframes fadeIn {
   from { opacity: 0 }
-  to { opacity: 1 }
+  to   { opacity: 1 }
 }
 
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(14px) }
-  to { opacity: 1; transform: translateY(0) }
+  to   { opacity: 1; transform: translateY(0) }
 }
 
 .back-floating {
   position: fixed;
-  top: 18px;
-  left: 18px;
-  width: 42px;
-  height: 42px;
+  top: 24px;
+  left: 24px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: var(--glass-bg);
   box-shadow: inset 0 0 0 1px var(--glass-border);
   color: white;
   font-size: 20px;
   cursor: pointer;
-  transition: background .25s ease, transform .25s ease;
   z-index: 10;
+  transition: transform .25s ease, background .25s ease;
 }
 
 .back-floating:hover {
-  background: rgba(255,255,255,0.16);
   transform: translateX(-3px);
+  background: rgba(255,255,255,0.16);
 }
 
 .bottom-bar {
@@ -79,7 +94,7 @@ body::before {
 .bottom-bar a {
   color: white;
   opacity: .7;
-  transition: opacity .25s ease, transform .25s ease;
+  transition: .25s;
 }
 
 .bottom-bar a:hover {
@@ -88,11 +103,10 @@ body::before {
 }
 
 .home {
-  min-height: calc(100vh - 56px);
-  padding-bottom: 56px;
+  min-height: 100vh;
+  padding: 200px 16px 110px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
 }
 
@@ -104,12 +118,12 @@ body::before {
 }
 
 .language-buttons {
+  width: 100%;
+  max-width: 280px;
+  padding: 14px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 14px;
-  width: 100%;
-  max-width: 280px;
   background: var(--glass-bg);
   backdrop-filter: blur(8px);
   border-radius: 18px;
@@ -119,45 +133,40 @@ body::before {
 .language-buttons a {
   height: 48px;
   border-radius: 14px;
-  background: rgba(255,255,255,0.06);
-  color: white;
-  text-decoration: none;
   display: flex;
   align-items: center;
   justify-content: center;
+  text-decoration: none;
+  color: white;
   font-size: 15px;
   font-weight: 500;
-  transition: background .25s ease, transform .2s ease;
+  transition: background .25s;
 }
 
 .language-buttons a:hover {
   background: rgba(255,255,255,0.16);
-  transform: translateY(-1px);
 }
 
 .menu {
-  min-height: calc(100vh - 56px);
-  padding: 88px 16px 110px;
+  padding: 220px 16px 110px; 
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .menu-title {
   font-family: 'Playfair Display', serif;
   font-size: 34px;
+  margin-top: 40px;          
   margin-bottom: 24px;
 }
 
 .menu-type-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 10px;
   width: 100%;
   max-width: 320px;
   margin: 0 auto 28px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
   background: var(--glass-bg);
   backdrop-filter: blur(8px);
   border-radius: 18px;
@@ -165,50 +174,31 @@ body::before {
 }
 
 .glow-btn {
-  position: relative;
-  height: 48px;
-  width: 100%;
+  height: 46px;
   border-radius: 14px;
   border: none;
-  background: rgba(255,255,255,0.06);
+  background: transparent;
   color: white;
   font-size: 15px;
   font-weight: 500;
-  line-height: 1.2;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
-  transition: background .25s ease, transform .2s ease, box-shadow .25s ease, color .25s ease;
+  transition: background .25s, color .25s;
 }
 
 .glow-btn:hover {
   background: rgba(255,255,255,0.16);
-  transform: translateY(-1px);
 }
 
 .glow-btn.active {
   background: white;
   color: var(--porto-blue);
-  box-shadow: 0 8px 22px rgba(0,0,0,0.25);
-}
-
-.glow-btn.active::after {
-  content: "";
-  position: absolute;
-  left: 10px;
-  right: 10px;
-  bottom: 6px;
-  height: 2px;
-  border-radius: 2px;
-  background: var(--porto-blue);
-  opacity: .35;
 }
 
 .menu-images {
-  flex-grow: 1;
-  width: 100%;
   display: grid;
   gap: 28px;
   max-width: 1200px;
@@ -222,7 +212,7 @@ body::before {
 .menu-images img {
   width: 100%;
   border-radius: 10px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.30);
+  box-shadow: 0 20px 40px rgba(0,0,0,.3);
 }
 
 @media (max-width: 720px) {
