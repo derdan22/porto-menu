@@ -2,7 +2,7 @@
   --porto-blue: #1f2a44;
 }
 
-/* RESET */
+/* ================= RESET ================= */
 * {
   margin: 0;
   padding: 0;
@@ -13,7 +13,6 @@
 body {
   font-family: 'Inter', sans-serif;
   color: white;
-
   background: url("../assets/bg/background.jpg") center / cover no-repeat fixed;
 }
 
@@ -56,7 +55,7 @@ body::before {
   border-radius: 50%;
 
   border: 1px solid rgba(255,255,255,0.6);
-  background: rgba(31,42,68,0.8);
+  background: rgba(31,42,68,0.85);
   color: white;
   font-size: 20px;
 
@@ -67,7 +66,7 @@ body::before {
 }
 
 .back-floating:hover {
-  background: rgba(31,42,68,0.95);
+  background: rgba(31,42,68,1);
   transform: translateX(-2px);
 }
 
@@ -93,7 +92,6 @@ body::before {
   color: white;
   font-size: 20px;
   opacity: 0.7;
-
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
@@ -128,14 +126,17 @@ body::before {
   margin-bottom: 28px;
 }
 
-/* ================= BUTTONS ================= */
+/* ================= BUTTONS (FIXED BORDER BUG) ================= */
 .language-buttons a,
 .glow-btn {
   width: 220px;
   height: 70px;
 
-  border: 1px solid rgba(255,255,255,0.7);
-  background: transparent;
+  border: 1px solid rgba(255,255,255,0.75);
+
+  /* 🔑 КЛЮЧЕВО: минимальный фон */
+  background: rgba(255,255,255,0.03);
+
   color: white;
   text-decoration: none;
 
@@ -147,13 +148,19 @@ body::before {
 
   cursor: pointer;
 
+  /* стабилизация рендера */
+  backface-visibility: hidden;
+  transform: translateZ(0);
+
   transition:
     background 0.25s ease,
     color 0.25s ease,
     transform 0.25s ease;
 }
 
+.language-buttons a:hover,
 .glow-btn:hover {
+  background: rgba(255,255,255,0.08);
   transform: translateY(-2px);
 }
 
@@ -230,7 +237,8 @@ body::before {
     flex-direction: column;
   }
 
-  .glow-btn {
+  .glow-btn,
+  .language-buttons a {
     width: 100%;
     max-width: 260px;
   }
