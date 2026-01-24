@@ -1,5 +1,5 @@
 :root {
-  --porto-blue: #1f2a44;
+  --porto-blue: #1f2a44; 
   --glass-bg: rgba(255,255,255,0.10);
   --glass-border: rgba(255,255,255,0.28);
 }
@@ -13,22 +13,16 @@
 body {
   font-family: 'Inter', sans-serif;
   color: white;
-  background: url("../assets/bg/background.jpg") center / cover no-repeat;
-  min-height: 100svh; 
+  background: var(--porto-blue); 
+  min-height: 100svh;
   overflow-x: hidden;
-}
-
-@media (min-width: 769px) {
-  body {
-    background-attachment: fixed;
-  }
 }
 
 body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background: rgba(31,42,68,0.88);
+  background: var(--porto-blue);
   z-index: -1;
 }
 
@@ -37,7 +31,6 @@ body::before {
   justify-content: center;
   margin-top: 32px;
   margin-bottom: 24px;
-  z-index: 2;
 }
 
 .top-logo img {
@@ -76,12 +69,6 @@ body::before {
   font-size: 20px;
   cursor: pointer;
   z-index: 20;
-  transition: transform .2s ease, background .2s ease;
-}
-
-.back-floating:hover {
-  transform: translateX(-2px);
-  background: rgba(255,255,255,0.16);
 }
 
 .bottom-bar {
@@ -89,7 +76,7 @@ body::before {
   bottom: 0;
   width: 100%;
   height: 56px;
-  background: var(--porto-blue);
+  background: #162033;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -100,7 +87,6 @@ body::before {
 .bottom-bar a {
   color: white;
   opacity: .7;
-  transition: .2s;
 }
 
 .bottom-bar a:hover {
@@ -129,10 +115,10 @@ body::before {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  background: var(--glass-bg);
-  backdrop-filter: blur(8px);
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(6px);
   border-radius: 18px;
-  box-shadow: inset 0 0 0 1px var(--glass-border);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.18);
 }
 
 .language-buttons a {
@@ -145,11 +131,10 @@ body::before {
   color: white;
   font-size: 15px;
   font-weight: 500;
-  transition: background .2s;
 }
 
 .language-buttons a:hover {
-  background: rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.14);
 }
 
 .menu {
@@ -175,10 +160,10 @@ body::before {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  background: var(--glass-bg);
-  backdrop-filter: blur(8px);
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(6px);
   border-radius: 18px;
-  box-shadow: inset 0 0 0 1px var(--glass-border);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.18);
 }
 
 .glow-btn {
@@ -190,15 +175,10 @@ body::before {
   font-size: 15px;
   font-weight: 500;
   cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  transition: background .2s, color .2s;
 }
 
 .glow-btn:hover {
-  background: rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.14);
 }
 
 .glow-btn.active {
@@ -220,11 +200,10 @@ body::before {
 .menu-images img {
   width: 100%;
   border-radius: 10px;
-  box-shadow: 0 16px 32px rgba(0,0,0,.3);
+  box-shadow: 0 16px 32px rgba(0,0,0,.35);
 }
 
 @media (max-width: 720px) {
-
   .menu-images.grid-2 {
     grid-template-columns: 1fr;
   }
@@ -241,4 +220,3 @@ body::before {
     font-size: 26px;
   }
 }
-
