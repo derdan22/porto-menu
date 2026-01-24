@@ -4,14 +4,12 @@
   --glass-border: rgba(255,255,255,0.28);
 }
 
-/* ===== RESET ===== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* ===== BODY ===== */
 body {
   font-family: 'Inter', sans-serif;
   color: white;
@@ -26,7 +24,6 @@ body::before {
   z-index: -1;
 }
 
-/* ===== ANIMATIONS ===== */
 .fade-in {
   animation: fadeIn .6s ease both;
 }
@@ -45,7 +42,6 @@ body::before {
   to { opacity: 1; transform: translateY(0) }
 }
 
-/* ===== BACK BUTTON ===== */
 .back-floating {
   position: fixed;
   top: 18px;
@@ -53,14 +49,11 @@ body::before {
   width: 42px;
   height: 42px;
   border-radius: 50%;
-
   background: var(--glass-bg);
   box-shadow: inset 0 0 0 1px var(--glass-border);
-
   color: white;
   font-size: 20px;
   cursor: pointer;
-
   transition: background .25s ease, transform .25s ease;
   z-index: 10;
 }
@@ -70,17 +63,170 @@ body::before {
   transform: translateX(-3px);
 }
 
-/* ===== FOOTER ===== */
 .bottom-bar {
   position: fixed;
   bottom: 0;
   width: 100%;
   height: 56px;
   background: var(--porto-blue);
-
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 26px;
+  z-index: 10;
+}
 
-  z-index: 
+.bottom-bar a {
+  color: white;
+  opacity: .7;
+  transition: opacity .25s ease, transform .25s ease;
+}
+
+.bottom-bar a:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.home {
+  min-height: calc(100vh - 56px);
+  padding-bottom: 56px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.language-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 38px;
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.language-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  width: 100%;
+  max-width: 280px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(8px);
+  border-radius: 18px;
+  box-shadow: inset 0 0 0 1px var(--glass-border);
+}
+
+.language-buttons a {
+  height: 48px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.06);
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 500;
+  transition: background .25s ease, transform .2s ease;
+}
+
+.language-buttons a:hover {
+  background: rgba(255,255,255,0.16);
+  transform: translateY(-1px);
+}
+
+.menu {
+  min-height: calc(100vh - 56px);
+  padding: 88px 16px 110px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.menu-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 34px;
+  margin-bottom: 24px;
+}
+
+.menu-type-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto 28px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(8px);
+  border-radius: 18px;
+  box-shadow: inset 0 0 0 1px var(--glass-border);
+}
+
+.glow-btn {
+  position: relative;
+  height: 48px;
+  width: 100%;
+  border-radius: 14px;
+  border: none;
+  background: rgba(255,255,255,0.06);
+  color: white;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background .25s ease, transform .2s ease, box-shadow .25s ease, color .25s ease;
+}
+
+.glow-btn:hover {
+  background: rgba(255,255,255,0.16);
+  transform: translateY(-1px);
+}
+
+.glow-btn.active {
+  background: white;
+  color: var(--porto-blue);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.25);
+}
+
+.glow-btn.active::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 6px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--porto-blue);
+  opacity: .35;
+}
+
+.menu-images {
+  flex-grow: 1;
+  width: 100%;
+  display: grid;
+  gap: 28px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.menu-images.grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.menu-images img {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.30);
+}
+
+@media (max-width: 720px) {
+  .menu-images.grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
