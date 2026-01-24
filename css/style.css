@@ -1,37 +1,35 @@
 :root {
   --porto-blue: #1f2a44;
+  --glass: rgba(255,255,255,0.08);
+  --border: rgba(255,255,255,0.25);
 }
 
-/* ================= RESET ================= */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* ================= BODY + STATIC BG ================= */
 body {
   font-family: 'Inter', sans-serif;
   color: white;
-  background: url("../assets/bg/background.jpg") center / cover no-repeat fixed;
+  background: url("../assets/bg/background.jpg") center/cover fixed no-repeat;
 }
 
-/* OVERLAY */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background: rgba(31, 42, 68, 0.88);
+  background: rgba(31,42,68,0.88);
   z-index: -1;
 }
 
-/* ================= ANIMATIONS ================= */
 .fade-in {
-  animation: fadeIn 0.6s ease both;
+  animation: fadeIn .6s ease both;
 }
 
 .fade-up {
-  animation: fadeUp 0.45s ease both;
+  animation: fadeUp .45s ease both;
 }
 
 @keyframes fadeIn {
@@ -44,55 +42,44 @@ body::before {
   to   { opacity: 1; transform: translateY(0) }
 }
 
-/* ================= BACK BUTTON ================= */
 .back-floating {
   position: fixed;
-  top: 20px;
-  left: 20px;
-
+  top: 18px;
+  left: 18px;
   width: 42px;
   height: 42px;
   border-radius: 50%;
-
-  border: 1px solid rgba(255,255,255,0.6);
-  background: rgba(31,42,68,0.85);
+  background: var(--glass);
+  border: 1px solid var(--border);
   color: white;
   font-size: 20px;
-
   cursor: pointer;
-  z-index: 20;
-
-  transition: background 0.25s ease, transform 0.25s ease;
+  transition: transform .25s ease, background .25s ease;
+  z-index: 10;
 }
 
 .back-floating:hover {
-  background: rgba(31,42,68,1);
-  transform: translateX(-2px);
+  transform: translateX(-3px);
+  background: rgba(255,255,255,0.15);
 }
 
-/* ================= BOTTOM BAR ================= */
 .bottom-bar {
   position: fixed;
   bottom: 0;
-  left: 0;
-
   width: 100%;
   height: 56px;
   background: var(--porto-blue);
-
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 26px;
-
   z-index: 10;
 }
 
 .bottom-bar a {
   color: white;
-  font-size: 20px;
   opacity: 0.7;
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  transition: opacity .25s ease, transform .25s ease;
 }
 
 .bottom-bar a:hover {
@@ -100,11 +87,9 @@ body::before {
   transform: translateY(-2px);
 }
 
-/* ================= HOME ================= */
 .home {
-  height: 100vh;
+  min-height: 100vh;
   padding-bottom: 56px;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -113,55 +98,92 @@ body::before {
 
 .language-title {
   font-family: 'Playfair Display', serif;
-  font-size: 42px;
-  letter-spacing: 2px;
-  margin-bottom: 42px;
+  font-size: 40px;
+  margin-bottom: 36px;
+  text-align: center;
 }
 
-/* ================= TITLES ================= */
+.language-buttons {
+  display: flex;
+  gap: 22px;
+  justify-content: center;
+  align-items: center;
+}
+
+.language-buttons a {
+  width: 220px;
+  height: 70px;
+  border-radius: 14px;
+  background: var(--glass);
+  border: 1px solid var(--border);
+  color: white;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  transition: all .25s ease;
+}
+
+.language-buttons a:hover {
+  transform: translateY(-3px);
+  background: rgba(255,255,255,0.15);
+}
+
+.menu {
+  padding: 90px 16px 110px;
+  text-align: center;
+}
+
 .menu-title {
   font-family: 'Playfair Display', serif;
-  font-size: 36px;
-  letter-spacing: 2px;
+  font-size: 34px;
   margin-bottom: 28px;
 }
 
-/* ================= BUTTONS (FIXED BORDER BUG) ================= */
-.language-buttons a,
+.menu-type-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+
+  padding: 6px;
+  margin: 0 auto 42px;
+
+  width: fit-content;
+  max-width: 100%;
+
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 999px;
+
+  backdrop-filter: blur(6px);
+}
+
 .glow-btn {
-  width: 220px;
-  height: 70px;
+  height: 44px;
+  padding: 0 22px;
 
-  border: 1px solid rgba(255,255,255,0.75);
-
-  /* 🔑 КЛЮЧЕВО: минимальный фон */
-  background: rgba(255,255,255,0.03);
-
+  border-radius: 999px;
+  border: none;
+  background: transparent;
   color: white;
-  text-decoration: none;
+
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 2px;
 
   cursor: pointer;
-
-  /* стабилизация рендера */
-  backface-visibility: hidden;
-  transform: translateZ(0);
-
-  transition:
-    background 0.25s ease,
-    color 0.25s ease,
-    transform 0.25s ease;
+  transition: background .25s ease, color .25s ease;
 }
 
-.language-buttons a:hover,
 .glow-btn:hover {
-  background: rgba(255,255,255,0.08);
-  transform: translateY(-2px);
+  background: rgba(255,255,255,0.15);
 }
 
 .glow-btn.active {
@@ -169,81 +191,47 @@ body::before {
   color: var(--porto-blue);
 }
 
-.btn-title {
-  font-size: 15px;
-  font-weight: 500;
-  line-height: 1.2;
-}
-
-.btn-note {
-  font-size: 11px;
-  opacity: 0.6;
-  line-height: 1.1;
-}
-
-/* ================= MENU ================= */
-.menu {
-  min-height: 100vh;
-  padding: 70px 0 90px;
-  text-align: center;
-}
-
-.menu-type-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 24px;
-  margin-bottom: 42px;
-}
-
-.menu-wrapper {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
 .menu-images {
   display: grid;
-  gap: 40px;
-  width: 100%;
+  gap: 32px;
   max-width: 1200px;
-}
-
-.menu-images.grid-1 img {
-  width: 100%;
-  max-width: 1000px;
+  margin: 0 auto;
 }
 
 .menu-images.grid-2 {
   grid-template-columns: repeat(2, 1fr);
 }
 
-.menu-images.grid-2 img {
-  max-width: 520px;
-}
-
 .menu-images img {
-  margin: 0 auto;
-  border-radius: 6px;
-  box-shadow: 0 18px 40px rgba(0,0,0,0.25);
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
 }
 
-/* ================= MOBILE ================= */
-@media (max-width: 700px) {
-  .menu-images.grid-2 {
-    grid-template-columns: 1fr;
+@media (max-width: 720px) {
+
+  .language-buttons {
+    flex-direction: column;
   }
 
   .menu-type-buttons {
     flex-direction: column;
+    align-items: stretch;
+    border-radius: 20px;
   }
 
-  .glow-btn,
+  .glow-btn {
+    width: 100%;
+    height: 52px;
+    font-size: 15px;
+  }
+
+  .menu-images.grid-2 {
+    grid-template-columns: 1fr;
+  }
+
   .language-buttons a {
     width: 100%;
-    max-width: 260px;
-  }
-
-  .bottom-bar {
-    height: 50px;
+    max-width: 280px;
   }
 }
