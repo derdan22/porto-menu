@@ -10,10 +10,23 @@
   box-sizing: border-box;
 }
 
+/* ================================================= */
+/* ===================== BODY ====================== */
+/* ================================================= */
+
 body {
   font-family: 'Inter', sans-serif;
   color: white;
-  background: url("../assets/bg/background.jpg") center / cover fixed no-repeat;
+  background: url("../assets/bg/background.jpg") center / cover no-repeat;
+  min-height: 100svh; /* mobile-safe viewport */
+  overflow-x: hidden;
+}
+
+/* fixed background ТОЛЬКО для ПК */
+@media (min-width: 769px) {
+  body {
+    background-attachment: fixed;
+  }
 }
 
 body::before {
@@ -24,20 +37,27 @@ body::before {
   z-index: -1;
 }
 
+/* ================================================= */
+/* ===================== LOGO ====================== */
+/* ================================================= */
+/* На мобиле ЛОГО — ЧАСТЬ ПОТОКА, без fixed/sticky */
+
 .top-logo {
-  position: fixed;
-  top: 16px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 9;
   display: flex;
   justify-content: center;
+  margin-top: 32px;
+  margin-bottom: 24px;
+  z-index: 2;
 }
 
 .top-logo img {
-  height: 258px;
+  height: 180px;
   width: auto;
 }
+
+/* ================================================= */
+/* =================== ANIMATIONS ================== */
+/* ================================================= */
 
 .fade-in {
   animation: fadeIn .6s ease both;
@@ -53,30 +73,38 @@ body::before {
 }
 
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(14px) }
+  from { opacity: 0; transform: translateY(12px) }
   to   { opacity: 1; transform: translateY(0) }
 }
 
+/* ================================================= */
+/* ================= BACK BUTTON =================== */
+/* ================================================= */
+
 .back-floating {
   position: fixed;
-  top: 24px;
-  left: 24px;
-  width: 44px;
-  height: 44px;
+  top: 20px;
+  left: 20px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   background: var(--glass-bg);
   box-shadow: inset 0 0 0 1px var(--glass-border);
   color: white;
   font-size: 20px;
   cursor: pointer;
-  z-index: 10;
-  transition: transform .25s ease, background .25s ease;
+  z-index: 20;
+  transition: transform .2s ease, background .2s ease;
 }
 
 .back-floating:hover {
-  transform: translateX(-3px);
+  transform: translateX(-2px);
   background: rgba(255,255,255,0.16);
 }
+
+/* ================================================= */
+/* ===================== FOOTER ==================== */
+/* ================================================= */
 
 .bottom-bar {
   position: fixed;
@@ -88,23 +116,26 @@ body::before {
   justify-content: center;
   align-items: center;
   gap: 26px;
-  z-index: 10;
+  z-index: 20;
 }
 
 .bottom-bar a {
   color: white;
   opacity: .7;
-  transition: .25s;
+  transition: .2s;
 }
 
 .bottom-bar a:hover {
   opacity: 1;
-  transform: translateY(-2px);
 }
 
+/* ================================================= */
+/* ====================== HOME ===================== */
+/* ================================================= */
+
 .home {
-  min-height: 100vh;
-  padding: 200px 16px 110px;
+  min-height: 100svh;
+  padding: 0 16px 120px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -112,10 +143,14 @@ body::before {
 
 .language-title {
   font-family: 'Playfair Display', serif;
-  font-size: 38px;
+  font-size: 36px;
   margin-bottom: 32px;
   text-align: center;
 }
+
+/* ================================================= */
+/* ================= LANGUAGE CARD ================= */
+/* ================================================= */
 
 .language-buttons {
   width: 100%;
@@ -140,29 +175,40 @@ body::before {
   color: white;
   font-size: 15px;
   font-weight: 500;
-  transition: background .25s;
+  transition: background .2s;
 }
 
 .language-buttons a:hover {
   background: rgba(255,255,255,0.16);
 }
 
+/* ================================================= */
+/* ====================== MENU ===================== */
+/* ================================================= */
+
 .menu {
-  padding: 220px 16px 110px; 
+  min-height: 100svh;
+  padding: 0 16px 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
 }
 
 .menu-title {
   font-family: 'Playfair Display', serif;
-  font-size: 34px;
-  margin-top: 40px;          
-  margin-bottom: 24px;
+  font-size: 32px;
+  margin: 16px 0 20px;
 }
+
+/* ================================================= */
+/* ================= MENU BUTTONS ================== */
+/* ================================================= */
 
 .menu-type-buttons {
   width: 100%;
   max-width: 320px;
-  margin: 0 auto 28px;
+  margin-bottom: 28px;
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -186,7 +232,7 @@ body::before {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  transition: background .25s, color .25s;
+  transition: background .2s, color .2s;
 }
 
 .glow-btn:hover {
@@ -198,9 +244,13 @@ body::before {
   color: var(--porto-blue);
 }
 
+/* ================================================= */
+/* ================= MENU IMAGES =================== */
+/* ================================================= */
+
 .menu-images {
   display: grid;
-  gap: 28px;
+  gap: 24px;
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -212,11 +262,28 @@ body::before {
 .menu-images img {
   width: 100%;
   border-radius: 10px;
-  box-shadow: 0 20px 40px rgba(0,0,0,.3);
+  box-shadow: 0 16px 32px rgba(0,0,0,.3);
 }
 
+/* ================================================= */
+/* ==================== MOBILE ===================== */
+/* ================================================= */
+
 @media (max-width: 720px) {
+
   .menu-images.grid-2 {
     grid-template-columns: 1fr;
+  }
+
+  .top-logo img {
+    height: 140px;
+  }
+
+  .language-title {
+    font-size: 32px;
+  }
+
+  .menu-title {
+    font-size: 26px;
   }
 }
