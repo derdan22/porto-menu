@@ -6,20 +6,50 @@ const buttonsContainer = document.getElementById("menu-buttons");
 
 const menus = {
   pl: {
-    labels: ["Menu Główne", "Menu Śniadaniowe", "Drinki"],
+    labels: [
+      { title: "Menu Główne", note: "czynne od 11:00" },
+      { title: "Menu Śniadaniowe", note: "dostępne do 12:00" },
+      { title: "Napoje", note: "" }
+    ],
     images: [
       ["main-pl.jpg"],
       ["breakfast-pl-1.jpg", "breakfast-pl-2.jpg"],
       ["drinks-pl.jpg"]
     ]
+  },
+  en: {
+    labels: [
+      { title: "Main Menu", note: "available from 11:00" },
+      { title: "Breakfast Menu", note: "available until 12:00" },
+      { title: "Drinks", note: "" }
+    ],
+    images: [
+      ["main-en.jpg"],
+      ["breakfast-en-1.jpg", "breakfast-en-2.jpg"],
+      ["drinks-en.jpg"]
+    ]
+  },
+  de: {
+    labels: [
+      { title: "Hauptmenü", note: "ab 11:00 verfügbar" },
+      { title: "Frühstücksmenü", note: "verfügbar bis 12:00" },
+      { title: "Getränke", note: "" }
+    ],
+    images: [
+      ["main-de.jpg"],
+      ["breakfast-de-1.jpg", "breakfast-de-2.jpg"],
+      ["drinks-de.jpg"]
+    ]
   }
 };
 
 function renderMenu(images) {
-  container.innerHTML = "";
+  container.classList.remove("fade-up");
+  void container.offsetWidth;
+  container.classList.add("fade-up");
 
-  container.classList.remove("grid-1", "grid-2");
-  container.classList.add(images.length === 2 ? "grid-2" : "grid-1");
+  container.innerHTML = "";
+  container.className = `menu-images ${images.length === 2 ? "grid-2" : "grid-1"}`;
 
   images.forEach(src => {
     const img = document.createElement("img");
@@ -29,10 +59,14 @@ function renderMenu(images) {
   });
 }
 
-menus[lang].labels.forEach((label, index) => {
+menus[lang].labels.forEach((item, index) => {
   const btn = document.createElement("button");
-  btn.textContent = label;
   btn.className = "glow-btn";
+
+  btn.innerHTML = `
+    <span class="btn-title">${item.title}</span>
+    ${item.note ? `<span class="btn-note">${item.note}</span>` : ""}
+  `;
 
   btn.onclick = () => {
     document.querySelectorAll(".glow-btn").forEach(b => b.classList.remove("active"));
