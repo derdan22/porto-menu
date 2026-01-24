@@ -8,7 +8,7 @@ const menus = {
   pl: {
     labels: [
       { title: "Menu Główne", note: "czynne od 11:00" },
-      { title: "Menu Śniadaniowe", note: "dostępne do 12:00" },
+      { title: "Menu Śniadaniowe", note: "do 12:00" },
       { title: "Napoje", note: "" }
     ],
     images: [
@@ -19,8 +19,8 @@ const menus = {
   },
   en: {
     labels: [
-      { title: "Main Menu", note: "available from 11:00" },
-      { title: "Breakfast Menu", note: "available until 12:00" },
+      { title: "Main Menu", note: "from 11:00" },
+      { title: "Breakfast Menu", note: "until 12:00" },
       { title: "Drinks", note: "" }
     ],
     images: [
@@ -31,8 +31,8 @@ const menus = {
   },
   de: {
     labels: [
-      { title: "Hauptmenü", note: "ab 11:00 verfügbar" },
-      { title: "Frühstücksmenü", note: "verfügbar bis 12:00" },
+      { title: "Hauptmenü", note: "ab 11:00" },
+      { title: "Frühstück", note: "bis 12:00" },
       { title: "Getränke", note: "" }
     ],
     images: [
@@ -49,12 +49,12 @@ function renderMenu(images) {
   container.classList.add("fade-up");
 
   container.innerHTML = "";
-  container.className = `menu-images ${images.length === 2 ? "grid-2" : "grid-1"}`;
+  container.className = `menu-images ${images.length > 1 ? "grid-2" : "grid-1"}`;
 
   images.forEach(src => {
     const img = document.createElement("img");
     img.src = `assets/menu/${src}`;
-    img.alt = "Menu PORTO";
+    img.loading = "lazy";
     container.appendChild(img);
   });
 }
@@ -62,7 +62,6 @@ function renderMenu(images) {
 menus[lang].labels.forEach((item, index) => {
   const btn = document.createElement("button");
   btn.className = "glow-btn";
-
   btn.innerHTML = `
     <span class="btn-title">${item.title}</span>
     ${item.note ? `<span class="btn-note">${item.note}</span>` : ""}
@@ -77,5 +76,5 @@ menus[lang].labels.forEach((item, index) => {
   buttonsContainer.appendChild(btn);
 });
 
-buttonsContainer.children[0].classList.add("active");
+buttonsContainer.firstChild.classList.add("active");
 renderMenu(menus[lang].images[0]);
