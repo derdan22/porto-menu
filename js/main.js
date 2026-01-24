@@ -7,8 +7,8 @@ const buttonsContainer = document.getElementById("menu-buttons");
 const menus = {
   pl: {
     labels: [
-      { title: "Menu Główne", note: "od 11:00 do zamknięcia" },
-      { title: "Menu Śniadaniowe", note: "10:00 - 12:00" },
+      { title: "Menu Główne", note: "czynne od 11:00" },
+      { title: "Menu Śniadaniowe", note: "do 12:00" },
       { title: "Napoje", note: "" }
     ],
     images: [
@@ -63,8 +63,8 @@ menus[lang].labels.forEach((item, index) => {
   const btn = document.createElement("button");
   btn.className = "glow-btn";
   btn.innerHTML = `
-    <span class="btn-title">${item.title}</span>
-    ${item.note ? `<span class="btn-note">${item.note}</span>` : ""}
+    <span>${item.title}</span>
+    ${item.note ? `<small>${item.note}</small>` : ""}
   `;
 
   btn.onclick = () => {
@@ -78,4 +78,3 @@ menus[lang].labels.forEach((item, index) => {
 
 buttonsContainer.firstChild.classList.add("active");
 renderMenu(menus[lang].images[0]);
-
