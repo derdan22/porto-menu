@@ -10,7 +10,6 @@
   box-sizing: border-box;
 }
 
-/* ===== BODY ===== */
 body {
   font-family: 'Inter', sans-serif;
   color: white;
@@ -25,7 +24,6 @@ body::before {
   z-index: -1;
 }
 
-/* ===== ANIMATIONS ===== */
 .fade-in {
   animation: fadeIn .6s ease both;
 }
@@ -44,7 +42,6 @@ body::before {
   to   { opacity: 1; transform: translateY(0) }
 }
 
-/* ===== BACK BUTTON ===== */
 .back-floating {
   position: fixed;
   top: 18px;
@@ -66,7 +63,6 @@ body::before {
   background: rgba(255,255,255,0.15);
 }
 
-/* ===== FOOTER ===== */
 .bottom-bar {
   position: fixed;
   bottom: 0;
@@ -91,7 +87,6 @@ body::before {
   transform: translateY(-2px);
 }
 
-/* ===== HOME ===== */
 .home {
   min-height: 100vh;
   padding-bottom: 56px;
@@ -108,7 +103,6 @@ body::before {
   text-align: center;
 }
 
-/* ===== LANGUAGE BUTTONS ===== */
 .language-buttons {
   display: flex;
   gap: 22px;
@@ -136,7 +130,6 @@ body::before {
   background: rgba(255,255,255,0.15);
 }
 
-/* ===== MENU ===== */
 .menu {
   padding: 90px 16px 110px;
   text-align: center;
@@ -148,7 +141,6 @@ body::before {
   margin-bottom: 28px;
 }
 
-/* ===== MENU SEGMENTED CONTROL ===== */
 .menu-type-buttons {
   display: flex;
   justify-content: center;
@@ -168,7 +160,6 @@ body::before {
   backdrop-filter: blur(6px);
 }
 
-/* ===== MENU BUTTON ===== */
 .glow-btn {
   height: 44px;
   padding: 0 22px;
@@ -200,7 +191,6 @@ body::before {
   color: var(--porto-blue);
 }
 
-/* ===== MENU IMAGES ===== */
 .menu-images {
   display: grid;
   gap: 32px;
@@ -218,7 +208,6 @@ body::before {
   box-shadow: 0 20px 40px rgba(0,0,0,0.3);
 }
 
-/* ===== MOBILE ===== */
 @media (max-width: 720px) {
 
   .language-buttons {
@@ -246,3 +235,4 @@ body::before {
     max-width: 280px;
   }
 }
+
