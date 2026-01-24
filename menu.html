@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <title>PORTO – Menu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<header class="top-bar menu-header">
+  <button class="back-btn clickable" onclick="location.href='index.html'">←</button>
+  <div class="logo-text clickable" onclick="location.href='index.html'">
+    RESTAURACJA&nbsp;PORTO&nbsp;HEL
+  </div>
+</header>
+
+<main class="menu fade-in">
+  <p class="menu-hint">Wybierz rodzaj menu</p>
+  <div id="menu-buttons" class="menu-type-buttons"></div>
+  <div id="menu-container" class="menu-images grid-1"></div>
+</main>
+
+<footer class="bottom-bar">
+  <a href="#"><i class="fa-brands fa-instagram"></i></a>
+  <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+  <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

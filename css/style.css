@@ -1,0 +1,300 @@
+:root {
+  --porto-blue: #1f2a44;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--porto-blue);
+  color: white;
+}
+
+/* ===== TOP BAR ===== */
+.top-bar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 140px;
+  background: var(--porto-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.logo-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 44px;
+  letter-spacing: 4px;
+  cursor: pointer;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  text-align: center;
+}
+
+.logo-text:hover {
+  opacity: 0.85;
+  transform: translateY(-2px);
+}
+
+/* ===== BACK BUTTON ===== */
+.back-btn {
+  position: absolute;
+  left: 30px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 26px;
+  cursor: pointer;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.back-btn:hover {
+  opacity: 0.7;
+  transform: translateX(-2px);
+}
+
+/* ===== BOTTOM BAR ===== */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 80px;
+  background: var(--porto-blue);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+}
+
+.bottom-bar a {
+  color: white;
+  font-size: 22px;
+  opacity: 0.75;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.bottom-bar a:hover {
+  opacity: 1;
+  transform: translateY(-3px);
+}
+
+/* ===== HOME ===== */
+.home {
+  height: 100vh;
+  padding-top: 140px;
+  padding-bottom: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.home h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 48px;
+}
+
+.home p {
+  opacity: 0.7;
+  margin-bottom: 40px;
+}
+
+/* ===== BUTTONS ===== */
+.language-buttons a,
+.glow-btn {
+  padding: 12px 26px;
+  border: 1px solid white;
+  background: transparent;
+  color: white;
+  text-decoration: none;
+  margin: 0 8px;
+  cursor: pointer;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.language-buttons a:hover,
+.glow-btn:hover {
+  background: white;
+  color: var(--porto-blue);
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+.glow-btn.active {
+  background: white;
+  color: var(--porto-blue);
+}
+
+/* ===== MENU ===== */
+.menu {
+  padding-top: 160px;
+  padding-bottom: 100px;
+  text-align: center;
+}
+
+.menu-hint {
+  opacity: 0.6;
+  margin-bottom: 12px;
+}
+
+/* ===== MENU BUTTONS ===== */
+.menu-type-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+/* ===== GRID SYSTEM ===== */
+.menu-images {
+  display: grid;
+  gap: 32px;
+  justify-content: center;
+  align-items: start;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ONE IMAGE */
+.menu-images.grid-1 {
+  grid-template-columns: 1fr;
+}
+
+.menu-images.grid-1 img {
+  width: 100%;
+  max-width: 980px;
+}
+
+/* TWO IMAGES */
+.menu-images.grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 1100px;
+  margin: 0 auto;
+  gap: 40px;
+}
+
+.menu-images.grid-2 img {
+  width: 100%;
+  max-width: 520px;
+}
+
+/* IMAGES */
+.menu-images img {
+  display: block;
+  margin: 0 auto;
+  border-radius: 4px;
+  user-select: none;
+  pointer-events: none;
+  transition: transform 0.35s ease;
+}
+
+/* ===== TABLET ===== */
+@media (max-width: 899px) {
+  .menu-images.grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .menu-images.grid-2 img {
+    max-width: 980px;
+  }
+}
+
+/* ===================== */
+/* ===== MOBILE ===== */
+/* ===================== */
+@media (max-width: 600px) {
+
+  .top-bar {
+    height: 96px;
+  }
+
+  .logo-text {
+    font-size: 24px;
+    letter-spacing: 2px;
+    padding: 0 16px;
+  }
+
+  .back-btn {
+    left: 16px;
+    font-size: 22px;
+  }
+
+  .bottom-bar {
+    height: 64px;
+    gap: 24px;
+  }
+
+  .bottom-bar a {
+    font-size: 18px;
+  }
+
+  .menu {
+    padding-top: 120px;
+    padding-bottom: 90px;
+  }
+
+  .menu-type-buttons {
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .glow-btn {
+    width: 100%;
+    max-width: 260px;
+    padding: 14px 0;
+    font-size: 15px;
+  }
+
+  .menu-images {
+    padding: 0 14px;
+    gap: 20px;
+  }
+
+  .menu-images img {
+    max-width: 100%;
+    transform: none;
+  }
+
+  .home h1 {
+    font-size: 32px;
+    text-align: center;
+  }
+
+  .home p {
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .language-buttons a {
+    display: block;
+    width: 200px;
+    margin: 10px auto;
+    text-align: center;
+  }
+}
+
+/* ===== FADE IN ===== */
+.fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
