@@ -8,6 +8,8 @@ const viewer = document.getElementById("imageViewer");
 const viewerImg = document.getElementById("viewerImage");
 const closeViewer = document.getElementById("closeViewer");
 
+let scale = 1;
+
 const menus = {
   pl: {
     labels: [
@@ -49,11 +51,25 @@ const menus = {
 
 function openViewer(src) {
   viewerImg.src = src;
+  scale = 1;
+  viewerImg.style.transform = "scale(1)";
   viewer.classList.add("active");
 }
 
-closeViewer.onclick = () => viewer.classList.remove("active");
-viewer.onclick = e => e.target === viewer && viewer.classList.remove("active");
+viewerImg.addEventListener("dblclick", () => {
+  scale = scale === 1 ? 2 : 1;
+  viewerImg.style.transform = `scale(${scale})`;
+});
+
+closeViewer.onclick = () => {
+  viewer.classList.remove("active");
+  scale = 1;
+  viewerImg.style.transform = "scale(1)";
+};
+
+viewer.onclick = e => {
+  if (e.target === viewer) closeViewer.onclick();
+};
 
 function renderMenu(images) {
   container.innerHTML = "";
