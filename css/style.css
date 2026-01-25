@@ -2,12 +2,11 @@
   --porto-blue: #1f2a44;
 }
 
-/* RESET + SMOOTH */
+/* ===== RESET ===== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  transition: background-color .3s, color .3s, transform .3s, opacity .3s;
 }
 
 html, body {
@@ -19,81 +18,96 @@ body {
   font-family: 'Montserrat Alternates', sans-serif;
   background: var(--porto-blue);
   color: white;
+
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
+
   letter-spacing: 0.02em;
-  touch-action: manipulation;
+  touch-action: pan-x pan-y;
 }
 
-/* PAGE FADE */
+/* ===== PAGE FADE ===== */
 .fade-in {
-  animation: fade .45s ease both;
+  animation: fadeIn 0.4s ease both;
 }
 
-@keyframes fade {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: none; }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
-/* LOGO */
+/* ===== LOGO ===== */
 .top-logo {
+  width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: 36px;
-  margin-bottom: 8px;
+  align-items: center;
+  text-align: center;
+
+  margin-top: 40px;
+  margin-bottom: 24px;
 }
 
 .top-logo img {
-  height: 420px;
+  display: block;
+  margin: 0 auto;
+
+  height: 360px;
+  width: auto;
   max-width: 95%;
-  animation: logo .6s ease-out both;
 }
 
-@keyframes logo {
-  from { opacity: 0; transform: scale(.96); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-/* MAIN */
+/* ===== MAIN ===== */
 .home,
 .menu {
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  /* ⬅️ ВАЖНО: место под футер */
+  /* место под футер */
   padding-bottom: 140px;
 }
 
 .language-title {
-  font-size: 32px;
-  margin: 6px 0 12px;
-  letter-spacing: .06em;
+  font-size: 34px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  margin: 20px 0 24px;
 }
 
-/* BUTTONS */
+/* ===== BUTTONS ===== */
 .simple-buttons {
   width: 100%;
   max-width: 320px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 18px;
 }
 
 .simple-buttons a,
 .simple-buttons button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+
   min-height: 60px;
+  padding: 10px 12px;
+
   border: 2px solid white;
   background: transparent;
   color: white;
   border-radius: 4px;
-  font-size: 18px;
-  cursor: pointer;
-}
 
-.simple-buttons a:active,
-.simple-buttons button:active {
-  transform: scale(.96);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .simple-buttons .active {
@@ -101,23 +115,40 @@ body {
   color: var(--porto-blue);
 }
 
-/* MENU IMAGES */
+.btn-title {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.btn-note {
+  font-size: 13px;
+  font-weight: 400;
+  opacity: 0.75;
+  line-height: 1.2;
+}
+
+/* ===== MENU ===== */
 .menu-wrapper {
   width: 100%;
-  margin-top: 28px;
+  margin-top: 32px;
 }
 
 .menu-images {
   display: grid;
-  gap: 22px;
+  gap: 24px;
+
   width: 100%;
   max-width: 1100px;
+
+  margin: 0 auto;
   padding: 0 16px;
+
   place-items: center;
 }
 
 .menu-images.grid-2 {
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .menu-images img {
@@ -126,15 +157,60 @@ body {
   border-radius: 6px;
 }
 
-/* FOOTER — ФИКС */
+/* ===== IMAGE VIEWER ===== */
+.image-viewer {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.9);
+
+  display: none;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 999;
+}
+
+.image-viewer.active {
+  display: flex;
+}
+
+.image-viewer img {
+  max-width: 95vw;
+  max-height: 95vh;
+  touch-action: pinch-zoom;
+}
+
+.image-viewer .close {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+/* ===== BACK BUTTON ===== */
+.back-simple {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+
+  width: 42px;
+  height: 42px;
+
+  border: 2px solid white;
+  background: transparent;
+  color: white;
+
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 20;
+}
+
+/* ===== FOOTER (КАК БЫЛО + ПОДПИСЬ) ===== */
 .bottom-bar {
   position: fixed;
   bottom: 0;
   width: 100%;
-
-  /* ⬅️ КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ */
-  min-height: 56px;
-  padding: 6px 0;
 
   background: #162033;
 
@@ -143,6 +219,7 @@ body {
   align-items: center;
   justify-content: center;
 
+  padding: 6px 0;
   z-index: 30;
 }
 
@@ -154,7 +231,7 @@ body {
 .bottom-bar a {
   color: white;
   font-size: 18px;
-  opacity: .8;
+  opacity: 0.8;
 }
 
 .bottom-bar a:hover {
@@ -164,17 +241,37 @@ body {
 .footer-copy {
   margin-top: 2px;
   font-size: 10px;
-  opacity: .55;
-  letter-spacing: .08em;
+  letter-spacing: 0.08em;
+  opacity: 0.55;
+  user-select: none;
 }
 
-/* RESPONSIVE */
+/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
-  .top-logo img { height: 360px; }
+  .top-logo img {
+    height: 300px;
+  }
 }
 
 @media (max-width: 480px) {
-  .top-logo img { height: 380px; }
-  .language-title { font-size: 30px; }
-  .menu-images.grid-2 { grid-template-columns: 1fr; }
+  .top-logo {
+    margin-top: 28px;
+    margin-bottom: 20px;
+  }
+
+  .top-logo img {
+    height: 260px;
+  }
+
+  .language-title {
+    font-size: 30px;
+  }
+
+  .menu-images.grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .menu-images img {
+    max-width: 100%;
+  }
 }
