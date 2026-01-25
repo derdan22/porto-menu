@@ -220,3 +220,33 @@ body::before {
     font-size: 26px;
   }
 }
+
+.image-viewer {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.92);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.image-viewer.active {
+  display: flex;
+}
+
+.image-viewer img {
+  max-width: 95vw;
+  max-height: 95vh;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.6);
+}
+
+.image-viewer .close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  font-size: 28px;
+  color: white;
+  cursor: pointer;
+}
