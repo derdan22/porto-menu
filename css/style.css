@@ -42,17 +42,18 @@ body {
   text-align: center;
 
   margin-top: 40px;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .top-logo img {
   display: block;
   margin: 0 auto;
 
-  height: clamp(300px, 42vw, 460px);
+  height: 360px;     /* ПК — аккуратно, не гигант */
   width: auto;
-  max-width: 95%;
+  max-width: 90%;
 }
+
 
 .home,
 .menu {
@@ -222,15 +223,24 @@ body {
   opacity: 1;
 }
 
+@media (max-width: 768px) {
+  .top-logo img {
+    height: 300px;
+    max-width: 95%;
+  }
+}
+
 @media (max-width: 480px) {
   .top-logo {
-    margin-top: 32px;
-    margin-bottom: 16px;
+    margin-top: 28px;
+    margin-bottom: 20px;
   }
 
   .top-logo img {
-    height: clamp(280px, 70vw, 360px);
+    height: 260px;   
+    max-width: 95%;
   }
+}
 
   .language-title {
     font-size: 30px;
@@ -244,3 +254,4 @@ body {
     max-width: 100%;
   }
 }
+
