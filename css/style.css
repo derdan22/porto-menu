@@ -49,19 +49,17 @@ body {
   display: block;
   margin: 0 auto;
 
-  height: 360px;     /* ПК — аккуратно, не гигант */
+  height: 360px;
   width: auto;
-  max-width: 90%;
+  max-width: 95%;
 }
-
 
 .home,
 .menu {
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  padding-bottom: 120px; 
+  padding-bottom: 120px;
 }
 
 .language-title {
@@ -73,7 +71,6 @@ body {
 .simple-buttons {
   width: 100%;
   max-width: 320px;
-
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -99,7 +96,6 @@ body {
   font-size: 18px;
   text-align: center;
   text-decoration: none;
-
   cursor: pointer;
 }
 
@@ -153,11 +149,9 @@ body {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.9);
-
   display: none;
   align-items: center;
   justify-content: center;
-
   z-index: 999;
 }
 
@@ -168,7 +162,6 @@ body {
 .image-viewer img {
   max-width: 95vw;
   max-height: 95vh;
-
   touch-action: pinch-zoom;
 }
 
@@ -184,14 +177,11 @@ body {
   position: fixed;
   top: 18px;
   left: 18px;
-
   width: 42px;
   height: 42px;
-
   border: 2px solid white;
   background: transparent;
   color: white;
-
   font-size: 20px;
   cursor: pointer;
   z-index: 20;
@@ -202,14 +192,11 @@ body {
   bottom: 0;
   width: 100%;
   height: 44px;
-
   background: #162033;
-
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 28px;
-
   z-index: 30;
 }
 
@@ -226,7 +213,6 @@ body {
 @media (max-width: 768px) {
   .top-logo img {
     height: 300px;
-    max-width: 95%;
   }
 }
 
@@ -237,10 +223,8 @@ body {
   }
 
   .top-logo img {
-    height: 260px;   
-    max-width: 95%;
+    height: 260px;
   }
-}
 
   .language-title {
     font-size: 30px;
@@ -254,4 +238,3 @@ body {
     max-width: 100%;
   }
 }
-
