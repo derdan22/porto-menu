@@ -15,17 +15,11 @@ body {
   min-height: 100svh;
 }
 
-.top-logo {
-  display: flex;
-  justify-content: center;
-  margin-top: 36px;
-  margin-bottom: 12px;
+.top-logo img {
+  height: clamp(260px, 40vw, 420px);
+  max-width: 95%;
 }
 
-.top-logo img {
-  height: 380px;
-  max-width: 90%;
-}
 
 .fade-in {
   animation: fadeIn .4s ease both;
@@ -216,4 +210,5 @@ body {
 .image-viewer img {
   touch-action: pinch-zoom;
 }
+
 
