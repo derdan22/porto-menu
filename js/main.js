@@ -12,7 +12,7 @@ const menus = {
   pl: {
     labels: [
       { title: "Menu Główne", note: "od 11:00 do zamknięcia" },
-      { title: "Menu Śniadaniowe", note: "10:00 - 12:00" },
+      { title: "Menu Śniadaniowe", note: "10:00 – 12:00" },
       { title: "Napoje", note: "" }
     ],
     images: [
@@ -24,7 +24,7 @@ const menus = {
   en: {
     labels: [
       { title: "Main Menu", note: "from 11:00 until closing" },
-      { title: "Breakfast Menu", note: "10:00 - 12:00" },
+      { title: "Breakfast Menu", note: "10:00 – 12:00" },
       { title: "Drinks", note: "" }
     ],
     images: [
@@ -36,7 +36,7 @@ const menus = {
   de: {
     labels: [
       { title: "Hauptmenü", note: "von 11:00 bis zur Schließung" },
-      { title: "Frühstück", note: "10:00 - 12:00" },
+      { title: "Frühstück", note: "10:00 – 12:00" },
       { title: "Getränke", note: "" }
     ],
     images: [
@@ -52,54 +52,31 @@ function openViewer(src) {
   viewer.classList.add("active");
 }
 
-closeViewer.onclick = () => {
-  viewer.classList.remove("active");
-};
-
-viewer.onclick = (e) => {
-  if (e.target === viewer) {
-    viewer.classList.remove("active");
-  }
-};
+closeViewer.onclick = () => viewer.classList.remove("active");
+viewer.onclick = e => e.target === viewer && viewer.classList.remove("active");
 
 function renderMenu(images) {
-  container.classList.remove("fade-up");
-  void container.offsetWidth;
-  container.classList.add("fade-up");
-
   container.innerHTML = "";
-  container.className = `menu-images ${
-    images.length > 1 ? "grid-2" : "grid-1"
-  }`;
+  container.className = `menu-images ${images.length > 1 ? "grid-2" : "grid-1"}`;
 
-  images.forEach((src) => {
+  images.forEach(src => {
     const img = document.createElement("img");
     img.src = `assets/menu/${src}`;
-    img.loading = "lazy";
     img.onclick = () => openViewer(img.src);
-
     container.appendChild(img);
   });
 }
 
 menus[lang].labels.forEach((item, index) => {
   const btn = document.createElement("button");
-  btn.className = "glow-btn";
-
   btn.innerHTML = `
     <span class="btn-title">${item.title}</span>
-    ${
-      item.note
-        ? `<span class="btn-note">${item.note}</span>`
-        : ""
-    }
+    ${item.note ? `<span class="btn-note">${item.note}</span>` : ""}
   `;
 
   btn.onclick = () => {
-    document
-      .querySelectorAll(".glow-btn")
-      .forEach((b) => b.classList.remove("active"));
-
+    document.querySelectorAll(".simple-buttons button")
+      .forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
     renderMenu(menus[lang].images[index]);
   };
@@ -109,4 +86,3 @@ menus[lang].labels.forEach((item, index) => {
 
 buttonsContainer.firstChild.classList.add("active");
 renderMenu(menus[lang].images[0]);
-
