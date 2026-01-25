@@ -12,7 +12,7 @@ const menus = {
   pl: {
     labels: [
       { title: "Menu Główne", note: "od 11:00 do zamknięcia" },
-      { title: "Menu Śniadaniowe", note: "10:00 - 12:00" },
+      { title: "Menu Śniadaniowe", note: "10:00 – 12:00" },
       { title: "Napoje", note: "" }
     ],
     images: [
@@ -24,7 +24,7 @@ const menus = {
   en: {
     labels: [
       { title: "Main Menu", note: "from 11:00 until closing" },
-      { title: "Breakfast Menu", note: "10:00 - 12:00" },
+      { title: "Breakfast Menu", note: "10:00 – 12:00" },
       { title: "Drinks", note: "" }
     ],
     images: [
@@ -36,7 +36,7 @@ const menus = {
   de: {
     labels: [
       { title: "Hauptmenü", note: "von 11:00 bis zur Schließung" },
-      { title: "Frühstück", note: "10:00 - 12:00" },
+      { title: "Frühstück", note: "10:00 – 12:00" },
       { title: "Getränke", note: "" }
     ],
     images: [
@@ -69,9 +69,7 @@ function renderMenu(images) {
     const img = document.createElement("img");
     img.src = `assets/menu/${src}`;
     img.loading = "lazy";
-
     img.onclick = () => openViewer(img.src);
-
     container.appendChild(img);
   });
 }
@@ -79,9 +77,10 @@ function renderMenu(images) {
 menus[lang].labels.forEach((item, index) => {
   const btn = document.createElement("button");
   btn.className = "glow-btn";
+
   btn.innerHTML = `
-    <span>${item.title}</span>
-    ${item.note ? `<small>${item.note}</small>` : ""}
+    <span class="btn-title">${item.title}</span>
+    ${item.note ? `<span class="btn-note">${item.note}</span>` : ""}
   `;
 
   btn.onclick = () => {
