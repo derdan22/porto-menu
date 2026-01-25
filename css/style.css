@@ -208,3 +208,11 @@ body {
     max-width: 100%;
   }
 }
+
+body {
+  touch-action: pan-x pan-y;
+}
+
+.image-viewer img {
+  touch-action: pinch-zoom;
+}
