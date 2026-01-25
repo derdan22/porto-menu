@@ -50,7 +50,7 @@ body {
   display: block;
   margin: 0 auto;
 
-  height: 360px;          
+  height: 360px;
   width: auto;
   max-width: 95%;
 }
@@ -60,7 +60,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 120px; 
+  padding-bottom: 120px;
 }
 
 .language-title {
@@ -164,6 +164,11 @@ body {
   z-index: 999;
 }
 
+.image-viewer,
+.image-viewer * {
+  touch-action: pinch-zoom;
+}
+
 .image-viewer.active {
   display: flex;
 }
@@ -171,7 +176,6 @@ body {
 .image-viewer img {
   max-width: 95vw;
   max-height: 95vh;
-  touch-action: pinch-zoom;
 }
 
 .image-viewer .close {
@@ -238,7 +242,7 @@ body {
   }
 
   .top-logo img {
-    height: 260px;
+    height: 320px;
   }
 
   .language-title {
@@ -253,4 +257,3 @@ body {
     max-width: 100%;
   }
 }
-
