@@ -8,26 +8,50 @@
   box-sizing: border-box;
 }
 
+html, body {
+  width: 100%;
+  min-height: 100%;
+}
+
 body {
   font-family: 'Inter', sans-serif;
   background: var(--porto-blue);
   color: white;
-  min-height: 100svh;
-}
 
-.top-logo img {
-  height: clamp(260px, 40vw, 420px);
-  max-width: 95%;
-}
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 
+  touch-action: pan-x pan-y;
+}
 
 .fade-in {
   animation: fadeIn .4s ease both;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0 }
-  to   { opacity: 1 }
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.top-logo {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+.top-logo img {
+  display: block;
+  margin: 0 auto;
+
+  height: clamp(300px, 42vw, 460px);
+  width: auto;
+  max-width: 95%;
 }
 
 .home,
@@ -35,7 +59,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 120px;
+
+  padding-bottom: 120px; 
 }
 
 .language-title {
@@ -47,6 +72,7 @@ body {
 .simple-buttons {
   width: 100%;
   max-width: 320px;
+
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -72,6 +98,7 @@ body {
   font-size: 18px;
   text-align: center;
   text-decoration: none;
+
   cursor: pointer;
 }
 
@@ -94,8 +121,8 @@ body {
 }
 
 .menu-wrapper {
-  margin-top: 32px;
   width: 100%;
+  margin-top: 32px;
 }
 
 .menu-images {
@@ -124,10 +151,12 @@ body {
 .image-viewer {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,.9);
+  background: rgba(0,0,0,0.9);
+
   display: none;
   align-items: center;
   justify-content: center;
+
   z-index: 999;
 }
 
@@ -138,6 +167,8 @@ body {
 .image-viewer img {
   max-width: 95vw;
   max-height: 95vh;
+
+  touch-action: pinch-zoom;
 }
 
 .image-viewer .close {
@@ -152,11 +183,14 @@ body {
   position: fixed;
   top: 18px;
   left: 18px;
+
   width: 42px;
   height: 42px;
+
   border: 2px solid white;
   background: transparent;
   color: white;
+
   font-size: 20px;
   cursor: pointer;
   z-index: 20;
@@ -167,18 +201,21 @@ body {
   bottom: 0;
   width: 100%;
   height: 44px;
+
   background: #162033;
+
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 28px;
+
   z-index: 30;
 }
 
 .bottom-bar a {
   color: white;
   font-size: 18px;
-  opacity: .8;
+  opacity: 0.8;
 }
 
 .bottom-bar a:hover {
@@ -186,8 +223,13 @@ body {
 }
 
 @media (max-width: 480px) {
+  .top-logo {
+    margin-top: 32px;
+    margin-bottom: 16px;
+  }
+
   .top-logo img {
-    height: 240px;
+    height: clamp(280px, 70vw, 360px);
   }
 
   .language-title {
@@ -202,13 +244,3 @@ body {
     max-width: 100%;
   }
 }
-
-body {
-  touch-action: pan-x pan-y;
-}
-
-.image-viewer img {
-  touch-action: pinch-zoom;
-}
-
-
