@@ -3,15 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <title>PORTO – Menu</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="css/style.css" />
 </head>
+
 <body class="fade-in">
 
-<button class="back-simple" onclick="location.href='index.html'">←</button>
+<button class="back-simple" onclick="history.back()">←</button>
 
 <header class="top-logo">
   <img src="assets/porto-logo.png" alt="PORTO Logo">
@@ -26,17 +29,17 @@
 </main>
 
 <footer class="bottom-bar">
-  <a href="https://www.facebook.com/portohel/?locale=pl_PL" target="_blank" aria-label="Facebook">
+  <a href="https://www.facebook.com/portohel/?locale=pl_PL" target="_blank">
     <i class="fa-brands fa-facebook-f"></i>
   </a>
-  <a href="https://www.instagram.com/porto_hel?igsh=NTl2M3JvZG1jeTlm" target="_blank" aria-label="Instagram">
+  <a href="https://www.instagram.com/porto_hel" target="_blank">
     <i class="fa-brands fa-instagram"></i>
   </a>
 </footer>
 
 <div class="image-viewer" id="imageViewer">
   <span class="close" id="closeViewer">&times;</span>
-  <img id="viewerImage" src="" alt="Menu image">
+  <img id="viewerImage" alt="Menu image">
 </div>
 
 <script src="js/main.js"></script>
