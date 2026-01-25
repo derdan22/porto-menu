@@ -2,6 +2,7 @@
   --porto-blue: #1f2a44;
 }
 
+/* RESET + SMOOTH */
 * {
   margin: 0;
   padding: 0;
@@ -24,6 +25,7 @@ body {
   touch-action: manipulation;
 }
 
+/* PAGE FADE */
 .fade-in {
   animation: fade .45s ease both;
 }
@@ -33,6 +35,7 @@ body {
   to { opacity: 1; transform: none; }
 }
 
+/* LOGO */
 .top-logo {
   display: flex;
   justify-content: center;
@@ -51,11 +54,15 @@ body {
   to { opacity: 1; transform: scale(1); }
 }
 
-.home, .menu {
+/* MAIN */
+.home,
+.menu {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 120px;
+
+  /* ⬅️ ВАЖНО: место под футер */
+  padding-bottom: 140px;
 }
 
 .language-title {
@@ -64,6 +71,7 @@ body {
   letter-spacing: .06em;
 }
 
+/* BUTTONS */
 .simple-buttons {
   width: 100%;
   max-width: 320px;
@@ -93,16 +101,48 @@ body {
   color: var(--porto-blue);
 }
 
+/* MENU IMAGES */
+.menu-wrapper {
+  width: 100%;
+  margin-top: 28px;
+}
+
+.menu-images {
+  display: grid;
+  gap: 22px;
+  width: 100%;
+  max-width: 1100px;
+  padding: 0 16px;
+  place-items: center;
+}
+
+.menu-images.grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.menu-images img {
+  width: 100%;
+  max-width: 520px;
+  border-radius: 6px;
+}
+
+/* FOOTER — ФИКС */
 .bottom-bar {
   position: fixed;
   bottom: 0;
   width: 100%;
-  height: 44px;
+
+  /* ⬅️ КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ */
+  min-height: 56px;
+  padding: 6px 0;
+
   background: #162033;
+
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+
   z-index: 30;
 }
 
@@ -122,12 +162,13 @@ body {
 }
 
 .footer-copy {
-  font-size: 10px;
   margin-top: 2px;
+  font-size: 10px;
   opacity: .55;
   letter-spacing: .08em;
 }
 
+/* RESPONSIVE */
 @media (max-width: 768px) {
   .top-logo img { height: 360px; }
 }
@@ -135,4 +176,5 @@ body {
 @media (max-width: 480px) {
   .top-logo img { height: 380px; }
   .language-title { font-size: 30px; }
+  .menu-images.grid-2 { grid-template-columns: 1fr; }
 }
