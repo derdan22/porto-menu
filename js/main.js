@@ -4,11 +4,15 @@ const lang = params.get("lang") || "pl";
 const container = document.getElementById("menu-container");
 const buttonsContainer = document.getElementById("menu-buttons");
 
+const viewer = document.getElementById("imageViewer");
+const viewerImg = document.getElementById("viewerImage");
+const closeViewer = document.getElementById("closeViewer");
+
 const menus = {
   pl: {
     labels: [
-      { title: "Menu Główne", note: "czynne od 11:00" },
-      { title: "Menu Śniadaniowe", note: "do 12:00" },
+      { title: "Menu Główne", note: "od 11:00 do zamknięcia" },
+      { title: "Menu Śniadaniowe", note: "10:00 - 12:00" },
       { title: "Napoje", note: "" }
     ],
     images: [
@@ -19,8 +23,8 @@ const menus = {
   },
   en: {
     labels: [
-      { title: "Main Menu", note: "from 11:00" },
-      { title: "Breakfast Menu", note: "until 12:00" },
+      { title: "Main Menu", note: "from 11:00 until closing" },
+      { title: "Breakfast Menu", note: "10:00 - 12:00" },
       { title: "Drinks", note: "" }
     ],
     images: [
@@ -31,8 +35,8 @@ const menus = {
   },
   de: {
     labels: [
-      { title: "Hauptmenü", note: "ab 11:00" },
-      { title: "Frühstück", note: "bis 12:00" },
+      { title: "Hauptmenü", note: "von 11:00 bis zur Schließung" },
+      { title: "Frühstück", note: "10:00 - 12:00" },
       { title: "Getränke", note: "" }
     ],
     images: [
@@ -41,6 +45,16 @@ const menus = {
       ["drinks-de.jpg"]
     ]
   }
+};
+
+function openViewer(src) {
+  viewerImg.src = src;
+  viewer.classList.add("active");
+}
+
+closeViewer.onclick = () => viewer.classList.remove("active");
+viewer.onclick = e => {
+  if (e.target === viewer) viewer.classList.remove("active");
 };
 
 function renderMenu(images) {
@@ -55,6 +69,9 @@ function renderMenu(images) {
     const img = document.createElement("img");
     img.src = `assets/menu/${src}`;
     img.loading = "lazy";
+
+    img.onclick = () => openViewer(img.src);
+
     container.appendChild(img);
   });
 }
