@@ -47,7 +47,6 @@ const menus = {
   }
 };
 
-/* ===== IMAGE VIEWER ===== */
 function openViewer(src) {
   viewerImg.src = src;
   viewer.classList.add("active");
@@ -63,7 +62,6 @@ viewer.onclick = (e) => {
   }
 };
 
-/* ===== MENU RENDER ===== */
 function renderMenu(images) {
   container.classList.remove("fade-up");
   void container.offsetWidth;
@@ -84,7 +82,6 @@ function renderMenu(images) {
   });
 }
 
-/* ===== MENU BUTTONS ===== */
 menus[lang].labels.forEach((item, index) => {
   const btn = document.createElement("button");
   btn.className = "glow-btn";
@@ -110,6 +107,6 @@ menus[lang].labels.forEach((item, index) => {
   buttonsContainer.appendChild(btn);
 });
 
-/* ===== INIT ===== */
 buttonsContainer.firstChild.classList.add("active");
 renderMenu(menus[lang].images[0]);
+
