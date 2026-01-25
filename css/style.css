@@ -2,10 +2,17 @@
   --porto-blue: #1f2a44;
 }
 
+/* ===== RESET ===== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease,
+    opacity 0.25s ease;
 }
 
 html, body {
@@ -26,6 +33,7 @@ body {
   touch-action: pan-x pan-y;
 }
 
+/* ===== PAGE FADE ===== */
 .fade-in {
   animation: fadeIn 0.4s ease both;
 }
@@ -35,26 +43,37 @@ body {
   to   { opacity: 1; }
 }
 
+/* ===== LOGO ===== */
 .top-logo {
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center;
 
   margin-top: 40px;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .top-logo img {
-  display: block;
-  margin: 0 auto;
-
-  height: 360px;
+  height: 420px;
   width: auto;
   max-width: 95%;
+
+  animation: logoAppear 0.6s ease-out both;
 }
 
+@keyframes logoAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ===== MAIN ===== */
 .home,
 .menu {
   display: flex;
@@ -64,15 +83,13 @@ body {
 }
 
 .language-title {
-  font-family: 'Montserrat Alternates', sans-serif;
   font-size: 34px;
   font-weight: 500;
   letter-spacing: 0.06em;
-
-  /* ЧУТЬ МЕНЬШЕ ОТСТУП ПОД "МЕНЮ" */
-  margin: 20px 0 16px;
+  margin: 12px 0 10px;
 }
 
+/* ===== BUTTONS ===== */
 .simple-buttons {
   width: 100%;
   max-width: 320px;
@@ -85,7 +102,6 @@ body {
 .simple-buttons button {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   gap: 6px;
 
@@ -97,7 +113,6 @@ body {
   color: white;
   border-radius: 4px;
 
-  font-family: 'Montserrat Alternates', sans-serif;
   font-size: 18px;
   font-weight: 500;
   letter-spacing: 0.03em;
@@ -107,25 +122,22 @@ body {
   cursor: pointer;
 }
 
+.simple-buttons a:active,
+.simple-buttons button:active {
+  transform: scale(0.97);
+}
+
 .simple-buttons .active {
   background: white;
   color: var(--porto-blue);
 }
 
-.btn-title {
-  font-size: 18px;
-  font-weight: 500;
-  line-height: 1.2;
-}
-
 .btn-note {
   font-size: 13px;
-  font-weight: 400;
   opacity: 0.75;
-  letter-spacing: 0.01em;
-  line-height: 1.2;
 }
 
+/* ===== MENU IMAGES ===== */
 .menu-wrapper {
   width: 100%;
   margin-top: 32px;
@@ -145,15 +157,34 @@ body {
 }
 
 .menu-images.grid-2 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(2, 1fr);
 }
 
 .menu-images img {
   width: 100%;
   max-width: 520px;
   border-radius: 6px;
+  cursor: zoom-in;
+
+  animation: imageAppear 0.4s ease both;
 }
 
+.menu-images img:hover {
+  transform: scale(1.02);
+}
+
+@keyframes imageAppear {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== IMAGE VIEWER ===== */
 .image-viewer {
   position: fixed;
   inset: 0;
@@ -164,10 +195,14 @@ body {
   justify-content: center;
 
   z-index: 999;
-
-  /* ПОЛНОСТЬЮ СНИМАЕМ ОГРАНИЧЕНИЯ */
   touch-action: auto;
-  overscroll-behavior: contain;
+
+  animation: viewerFade 0.25s ease both;
+}
+
+@keyframes viewerFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 .image-viewer.active {
@@ -175,23 +210,25 @@ body {
 }
 
 .image-viewer img {
-  max-width: 95vw;
-  max-height: 95vh;
+  max-width: 100%;
+  max-height: 100%;
 
-  /* PINCH-ZOOM РАБОТАЕТ */
-  touch-action: auto;
-  -webkit-user-select: none;
-  -webkit-touch-callout: none;
+  touch-action: pinch-zoom;
+  transform-origin: center;
+
+  transition: transform 0.3s ease;
 }
 
 .image-viewer .close {
   position: absolute;
   top: 20px;
   right: 24px;
+
   font-size: 30px;
   cursor: pointer;
 }
 
+/* ===== BACK BUTTON ===== */
 .back-simple {
   position: fixed;
   top: 18px;
@@ -209,9 +246,15 @@ body {
   z-index: 20;
 }
 
+.back-simple:active {
+  transform: scale(0.92);
+}
+
+/* ===== FOOTER ===== */
 .bottom-bar {
   position: fixed;
   bottom: 0;
+
   width: 100%;
   height: 44px;
 
@@ -235,21 +278,16 @@ body {
   opacity: 1;
 }
 
+/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   .top-logo img {
-    height: 320px;
+    height: 360px;
   }
 }
 
 @media (max-width: 480px) {
-  .top-logo {
-    margin-top: 28px;
-    margin-bottom: 20px;
-  }
-
-  /* ЛОГО ЕЩЁ ЧУТЬ БОЛЬШЕ */
   .top-logo img {
-    height: 350px;
+    height: 380px;
   }
 
   .language-title {
@@ -258,9 +296,5 @@ body {
 
   .menu-images.grid-2 {
     grid-template-columns: 1fr;
-  }
-
-  .menu-images img {
-    max-width: 100%;
   }
 }
