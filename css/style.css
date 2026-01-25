@@ -23,7 +23,7 @@ body {
 }
 
 .top-logo img {
-  height: 320px;
+  height: 380px;
   max-width: 90%;
 }
 
@@ -216,3 +216,4 @@ body {
 .image-viewer img {
   touch-action: pinch-zoom;
 }
+
