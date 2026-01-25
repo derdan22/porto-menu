@@ -2,17 +2,16 @@
   --porto-blue: #1f2a44;
 }
 
-/* ===== RESET ===== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 
   transition:
-    background-color 0.25s ease,
-    color 0.25s ease,
-    transform 0.25s ease,
-    opacity 0.25s ease;
+    background-color 0.3s ease,
+    color 0.3s ease,
+    transform 0.3s ease,
+    opacity 0.3s ease;
 }
 
 html, body {
@@ -30,28 +29,33 @@ body {
   flex-direction: column;
 
   letter-spacing: 0.02em;
-  touch-action: pan-x pan-y;
+
+  touch-action: manipulation;
 }
 
-/* ===== PAGE FADE ===== */
 .fade-in {
-  animation: fadeIn 0.4s ease both;
+  animation: screenFade 0.45s ease both;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+@keyframes screenFade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* ===== LOGO ===== */
 .top-logo {
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 
-  margin-top: 40px;
-  margin-bottom: 16px;
+  margin-top: 36px;
+  margin-bottom: 8px;
 }
 
 .top-logo img {
@@ -73,29 +77,30 @@ body {
   }
 }
 
-/* ===== MAIN ===== */
 .home,
 .menu {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 120px;
+
+  padding-bottom: 110px;
 }
 
 .language-title {
-  font-size: 34px;
+  font-size: 32px;
   font-weight: 500;
   letter-spacing: 0.06em;
-  margin: 12px 0 10px;
+
+  margin: 6px 0 12px;
 }
 
-/* ===== BUTTONS ===== */
 .simple-buttons {
   width: 100%;
   max-width: 320px;
+
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 16px;
 }
 
 .simple-buttons a,
@@ -124,7 +129,7 @@ body {
 
 .simple-buttons a:active,
 .simple-buttons button:active {
-  transform: scale(0.97);
+  transform: scale(0.96);
 }
 
 .simple-buttons .active {
@@ -137,15 +142,14 @@ body {
   opacity: 0.75;
 }
 
-/* ===== MENU IMAGES ===== */
 .menu-wrapper {
   width: 100%;
-  margin-top: 32px;
+  margin-top: 28px;
 }
 
 .menu-images {
   display: grid;
-  gap: 24px;
+  gap: 22px;
 
   width: 100%;
   max-width: 1100px;
@@ -166,17 +170,17 @@ body {
   border-radius: 6px;
   cursor: zoom-in;
 
-  animation: imageAppear 0.4s ease both;
+  animation: imageAppear 0.35s ease both;
 }
 
 .menu-images img:hover {
-  transform: scale(1.02);
+  transform: scale(1.015);
 }
 
 @keyframes imageAppear {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -184,7 +188,6 @@ body {
   }
 }
 
-/* ===== IMAGE VIEWER ===== */
 .image-viewer {
   position: fixed;
   inset: 0;
@@ -195,14 +198,8 @@ body {
   justify-content: center;
 
   z-index: 999;
-  touch-action: auto;
 
-  animation: viewerFade 0.25s ease both;
-}
-
-@keyframes viewerFade {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  overscroll-behavior: contain;
 }
 
 .image-viewer.active {
@@ -210,13 +207,19 @@ body {
 }
 
 .image-viewer img {
-  max-width: 100%;
-  max-height: 100%;
+  max-width: none;
+  max-height: none;
+
+  width: auto;
+  height: auto;
+
+  max-width: 95vw;
+  max-height: 95vh;
 
   touch-action: pinch-zoom;
   transform-origin: center;
 
-  transition: transform 0.3s ease;
+  transition: transform 0.35s ease;
 }
 
 .image-viewer .close {
@@ -228,7 +231,6 @@ body {
   cursor: pointer;
 }
 
-/* ===== BACK BUTTON ===== */
 .back-simple {
   position: fixed;
   top: 18px;
@@ -250,7 +252,6 @@ body {
   transform: scale(0.92);
 }
 
-/* ===== FOOTER ===== */
 .bottom-bar {
   position: fixed;
   bottom: 0;
@@ -278,7 +279,6 @@ body {
   opacity: 1;
 }
 
-/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   .top-logo img {
     height: 360px;
@@ -286,6 +286,10 @@ body {
 }
 
 @media (max-width: 480px) {
+  .top-logo {
+    margin-top: 30px;
+  }
+
   .top-logo img {
     height: 380px;
   }
