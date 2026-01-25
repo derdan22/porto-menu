@@ -2,14 +2,12 @@
   --porto-blue: #1f2a44;
 }
 
-/* ===== RESET ===== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* ===== BASE ===== */
 html, body {
   width: 100%;
   min-height: 100%;
@@ -28,7 +26,6 @@ body {
   touch-action: pan-x pan-y;
 }
 
-/* ===== ANIMATION ===== */
 .fade-in {
   animation: fadeIn 0.4s ease both;
 }
@@ -38,7 +35,6 @@ body {
   to   { opacity: 1; }
 }
 
-/* ===== LOGO ===== */
 .top-logo {
   width: 100%;
   display: flex;
@@ -54,21 +50,19 @@ body {
   display: block;
   margin: 0 auto;
 
-  height: 360px;          /* ПК */
+  height: 360px;          
   width: auto;
   max-width: 95%;
 }
 
-/* ===== HOME / MENU ===== */
 .home,
 .menu {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 120px; /* место под bottom-bar */
+  padding-bottom: 120px; 
 }
 
-/* ===== TITLES ===== */
 .language-title {
   font-family: 'Montserrat Alternates', sans-serif;
   font-size: 34px;
@@ -77,7 +71,6 @@ body {
   margin: 20px 0 24px;
 }
 
-/* ===== BUTTONS ===== */
 .simple-buttons {
   width: 100%;
   max-width: 320px;
@@ -117,7 +110,6 @@ body {
   color: var(--porto-blue);
 }
 
-/* ===== BUTTON TEXT ===== */
 .btn-title {
   font-size: 18px;
   font-weight: 500;
@@ -132,7 +124,6 @@ body {
   line-height: 1.2;
 }
 
-/* ===== MENU CONTENT ===== */
 .menu-wrapper {
   width: 100%;
   margin-top: 32px;
@@ -161,7 +152,6 @@ body {
   border-radius: 6px;
 }
 
-/* ===== IMAGE VIEWER ===== */
 .image-viewer {
   position: fixed;
   inset: 0;
@@ -192,7 +182,6 @@ body {
   cursor: pointer;
 }
 
-/* ===== BACK BUTTON ===== */
 .back-simple {
   position: fixed;
   top: 18px;
@@ -210,7 +199,6 @@ body {
   z-index: 20;
 }
 
-/* ===== BOTTOM BAR ===== */
 .bottom-bar {
   position: fixed;
   bottom: 0;
@@ -237,14 +225,12 @@ body {
   opacity: 1;
 }
 
-/* ===== TABLET ===== */
 @media (max-width: 768px) {
   .top-logo img {
     height: 300px;
   }
 }
 
-/* ===== MOBILE ===== */
 @media (max-width: 480px) {
   .top-logo {
     margin-top: 28px;
@@ -267,3 +253,4 @@ body {
     max-width: 100%;
   }
 }
+
