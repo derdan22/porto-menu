@@ -1,20 +1,20 @@
-const params = new URLSearchParams(window.location.search);
+const params = new URLSearchParams(location.search);
 const lang = params.get("lang") || "pl";
 
 const container = document.getElementById("menu-container");
-const buttonsContainer = document.getElementById("menu-buttons");
-
+const buttons = document.getElementById("menu-buttons");
 const viewer = document.getElementById("imageViewer");
-const viewerImg = document.getElementById("viewerImage");
-const closeViewer = document.getElementById("closeViewer");
+const backBtn = document.querySelector(".back-simple");
 
-let scale = 1;
+function goBack() {
+  history.length > 1 ? history.back() : location.href = "index.html";
+}
 
 const menus = {
   pl: {
     labels: [
-      { title: "Menu Główne", note: "od 11:00 do zamknięcia" },
-      { title: "Menu Śniadaniowe", note: "10:00 – 12:00" },
+      { title: "Menu Główne", note: "od 11 do zamknięcia" },
+      { title: "Śniadania", note: "10:00 – 12:00" },
       { title: "Napoje", note: "" }
     ],
     images: [
@@ -25,8 +25,8 @@ const menus = {
   },
   en: {
     labels: [
-      { title: "Main Menu", note: "from 11:00 until closing" },
-      { title: "Breakfast Menu", note: "10:00 – 12:00" },
+      { title: "Main Menu", note: "from 11 until close" },
+      { title: "Breakfast", note: "10:00 – 12:00" },
       { title: "Drinks", note: "" }
     ],
     images: [
@@ -37,7 +37,7 @@ const menus = {
   },
   de: {
     labels: [
-      { title: "Hauptmenü", note: "von 11:00 bis zur Schließung" },
+      { title: "Hauptmenü", note: "ab 11 Uhr" },
       { title: "Frühstück", note: "10:00 – 12:00" },
       { title: "Getränke", note: "" }
     ],
@@ -49,42 +49,46 @@ const menus = {
   }
 };
 
-function openViewer(src) {
-  viewerImg.src = src;
-  scale = 1;
-  viewerImg.style.transform = "scale(1)";
-  viewer.classList.add("active");
+function openViewer(src, mode) {
+  viewer.className = `image-viewer active ${mode}`;
+  viewer.innerHTML = `
+    <button class="viewer-close" onclick="closeViewer()">✕</button>
+    <img src="${src}" alt="">
+  `;
+
+  viewer.scrollTop = 0;
+  document.body.style.overflow = "hidden";
+
+  if (backBtn) backBtn.style.display = "none";
 }
 
-viewerImg.addEventListener("dblclick", () => {
-  scale = scale === 1 ? 2 : 1;
-  viewerImg.style.transform = `scale(${scale})`;
-});
+function closeViewer() {
+  viewer.className = "image-viewer";
+  viewer.innerHTML = "";
+  document.body.style.overflow = "";
 
-closeViewer.onclick = () => {
-  viewer.classList.remove("active");
-  scale = 1;
-  viewerImg.style.transform = "scale(1)";
-};
+  if (backBtn) backBtn.style.display = "flex";
+}
 
 viewer.onclick = e => {
-  if (e.target === viewer) closeViewer.onclick();
+  if (e.target === viewer) closeViewer();
 };
 
-function renderMenu(images) {
+function renderMenu(images, index) {
   container.innerHTML = "";
-  container.className = `menu-images ${images.length > 1 ? "grid-2" : "grid-1"}`;
+  container.className = `menu-images ${images.length > 1 ? "grid-2" : ""}`;
 
   images.forEach(src => {
     const img = document.createElement("img");
     img.src = `assets/menu/${src}`;
-    img.onclick = () => openViewer(img.src);
+    img.onclick = () => openViewer(img.src, index === 1 ? "long" : "wide");
     container.appendChild(img);
   });
 }
 
-menus[lang].labels.forEach((item, index) => {
+menus[lang].labels.forEach((item, i) => {
   const btn = document.createElement("button");
+
   btn.innerHTML = `
     <span class="btn-title">${item.title}</span>
     ${item.note ? `<span class="btn-note">${item.note}</span>` : ""}
@@ -93,12 +97,13 @@ menus[lang].labels.forEach((item, index) => {
   btn.onclick = () => {
     document.querySelectorAll(".simple-buttons button")
       .forEach(b => b.classList.remove("active"));
+
     btn.classList.add("active");
-    renderMenu(menus[lang].images[index]);
+    renderMenu(menus[lang].images[i], i);
   };
 
-  buttonsContainer.appendChild(btn);
+  buttons.appendChild(btn);
 });
 
-buttonsContainer.firstChild.classList.add("active");
-renderMenu(menus[lang].images[0]);
+buttons.firstChild.classList.add("active");
+renderMenu(menus[lang].images[0], 0);
