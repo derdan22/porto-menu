@@ -4,54 +4,49 @@
   <meta charset="UTF-8" />
   <title>PORTO – Menu</title>
 
-  <!-- ВАЖНО: pinch-zoom теперь работает -->
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500&display=swap"
-    rel="stylesheet"
-  >
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-  >
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="css/style.css" />
 </head>
 
 <body class="fade-in">
+  <div class="page">
 
-  <button class="back-simple" onclick="history.back()">←</button>
+    <button class="back-simple" onclick="goBack()">←</button>
 
-  <header class="top-logo">
-    <img src="assets/porto-logo.png" alt="PORTO Logo">
-  </header>
+    <header class="top-logo">
+      <img src="assets/porto-logo.png" alt="PORTO Logo">
+    </header>
 
-  <main class="menu">
-    <div id="menu-buttons" class="simple-buttons"></div>
+    <main class="menu fade-up">
+      <div id="menu-buttons" class="simple-buttons"></div>
 
-    <div class="menu-wrapper">
-      <div id="menu-container" class="menu-images"></div>
-    </div>
-  </main>
+      <div class="menu-wrapper">
+        <div id="menu-container" class="menu-images"></div>
+      </div>
+    </main>
 
-  <footer class="bottom-bar">
-    <a href="https://www.facebook.com/portohel/?locale=pl_PL" target="_blank" aria-label="Facebook">
+  </div>
+
+<footer class="bottom-bar">
+  <div class="bottom-socials">
+    <a class="facebook" href="https://www.facebook.com/portohel/" target="_blank">
       <i class="fa-brands fa-facebook-f"></i>
     </a>
-
-    <a href="https://www.instagram.com/porto_hel" target="_blank" aria-label="Instagram">
+    <a class="instagram" href="https://www.instagram.com/porto_hel" target="_blank">
       <i class="fa-brands fa-instagram"></i>
     </a>
-
-    <a href="https://www.tiktok.com/@restauracjaporto?_r=1" target="_blank" aria-label="TikTok">
+    <a class="tiktok" href="https://www.tiktok.com/@restauracjaporto" target="_blank">
       <i class="fa-brands fa-tiktok"></i>
     </a>
-  </footer>
+  </div>
+</footer>
+
 
   <div class="image-viewer" id="imageViewer">
-    <span class="close" id="closeViewer">&times;</span>
-    <img id="viewerImage" alt="Menu photo">
+    <button class="viewer-close" id="viewerClose" aria-label="Close menu">✕</button>
   </div>
 
   <script src="js/main.js"></script>
