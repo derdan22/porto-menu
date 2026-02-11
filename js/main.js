@@ -30,9 +30,9 @@ const menus = {
       { title: "Drinks", note: "" }
     ],
     images: [
-      ["main-en.jpg"],
-      ["breakfast-en-1.jpg", "breakfast-en-2.jpg"],
-      ["drinks-en.jpg"]
+      ["main-eng.jpg"],
+      ["breakfast-eng-1.jpg", "breakfast-eng-2.jpg"],
+      ["drinks-eng.jpg"]
     ]
   },
   de: {
