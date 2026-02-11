@@ -1,14 +1,5 @@
 const params = new URLSearchParams(location.search);
-const lang = params.get("lang") || "pl";
-
-const container = document.getElementById("menu-container");
-const buttons = document.getElementById("menu-buttons");
-const viewer = document.getElementById("imageViewer");
-const backBtn = document.querySelector(".back-simple");
-
-function goBack() {
-  history.length > 1 ? history.back() : location.href = "index.html";
-}
+const requestedLang = params.get("lang");
 
 const menus = {
   pl: {
@@ -23,6 +14,7 @@ const menus = {
       ["drinks-pl.jpg"]
     ]
   },
+
   en: {
     labels: [
       { title: "Main Menu", note: "from 11 until close" },
@@ -34,20 +26,19 @@ const menus = {
       ["breakfast-eng-1.jpg", "breakfast-eng-2.jpg"],
       ["drinks-eng.jpg"]
     ]
-  },
-  de: {
-    labels: [
-      { title: "Hauptmenü", note: "ab 11 Uhr" },
-      { title: "Frühstück", note: "10:00 – 12:00" },
-      { title: "Getränke", note: "" }
-    ],
-    images: [
-      ["main-de.jpg"],
-      ["breakfast-de-1.jpg", "breakfast-de-2.jpg"],
-      ["drinks-de.jpg"]
-    ]
   }
 };
+
+const lang = menus[requestedLang] ? requestedLang : "pl";
+
+const container = document.getElementById("menu-container");
+const buttons = document.getElementById("menu-buttons");
+const viewer = document.getElementById("imageViewer");
+const backBtn = document.querySelector(".back-simple");
+
+function goBack() {
+  history.length > 1 ? history.back() : location.href = "index.html";
+}
 
 function openViewer(src, mode) {
   viewer.className = `image-viewer active ${mode}`;
@@ -81,7 +72,10 @@ function renderMenu(images, index) {
   images.forEach(src => {
     const img = document.createElement("img");
     img.src = `assets/menu/${src}`;
-    img.onclick = () => openViewer(img.src, index === 1 ? "long" : "wide");
+
+    img.onclick = () =>
+      openViewer(img.src, index === 1 ? "long" : "wide");
+
     container.appendChild(img);
   });
 }
@@ -105,5 +99,7 @@ menus[lang].labels.forEach((item, i) => {
   buttons.appendChild(btn);
 });
 
-buttons.firstChild.classList.add("active");
-renderMenu(menus[lang].images[0], 0);
+if (buttons.firstChild) {
+  buttons.firstChild.classList.add("active");
+  renderMenu(menus[lang].images[0], 0);
+}
