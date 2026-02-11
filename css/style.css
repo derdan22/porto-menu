@@ -30,15 +30,15 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;   
+  justify-content: center; 
+  align-items: center;   
   background: var(--porto-blue);
 }
-
 
 .top-logo {
   display: flex;
   justify-content: center;
-  margin: 0 0 42px 0;
+  margin-bottom: 42px;
 }
 
 .top-logo img {
@@ -278,4 +278,3 @@ body {
     margin-top: 36px;
   }
 }
-
