@@ -36,7 +36,7 @@ body {
 .top-logo {
   display: flex;
   justify-content: center;
-  margin: 80px 0 42px;
+  margin: 110px 0 42px;
 }
 
 .top-logo img {
@@ -59,7 +59,7 @@ body {
 
 .simple-buttons {
   width: 100%;
-  max-width: 260px;
+  max-width: 230px;
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -152,7 +152,6 @@ body {
   transition: opacity 0.25s ease, visibility 0.25s ease;
 
   z-index: 999;
-
   will-change: opacity;
 }
 
@@ -259,7 +258,7 @@ body {
 @media (max-width: 480px) {
 
   .top-logo {
-    margin: 60px 0 32px;
+    margin: 85px 0 32px;
   }
 
   .top-logo img {
@@ -282,5 +281,4 @@ body {
     font-size: 16px;
     margin-top: 36px;
   }
-
 }
