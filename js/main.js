@@ -16,7 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
         ["drinks-pl.jpg"]
       ]
     },
-
     en: {
       labels: [
         { title: "Main Menu", note: "from 11 until close" },
@@ -47,7 +46,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function showUnavailableMessage() {
-    buttons.innerHTML = "";
+    if (!container) return;
+
+    if (buttons) buttons.innerHTML = "";
+
     container.className = "menu-images";
     container.innerHTML = `
       <div class="unavailable-message">
@@ -57,6 +59,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function initMenu() {
+    if (!buttons) return;
+
     buttons.innerHTML = "";
 
     menus[lang].labels.forEach((item, index) => {
@@ -86,6 +90,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function renderMenu(images, categoryIndex) {
+    if (!container) return;
+
     container.innerHTML = "";
     container.className = `menu-images ${images.length > 1 ? "grid-2" : ""}`;
 
@@ -113,6 +119,8 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   function openViewer(src, mode) {
+    if (!viewer || !viewerImage) return;
+
     viewer.className = `image-viewer active ${mode}`;
     viewerImage.src = src;
     document.body.style.overflow = "hidden";
@@ -121,6 +129,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function closeViewer() {
+    if (!viewer || !viewerImage) return;
+
     viewer.className = "image-viewer";
     viewerImage.src = "";
     document.body.style.overflow = "";
@@ -128,11 +138,15 @@ document.addEventListener("DOMContentLoaded", () => {
     if (backBtn) backBtn.style.display = "flex";
   }
 
-  viewer.addEventListener("click", e => {
-    if (e.target === viewer) closeViewer();
-  });
+  if (viewer) {
+    viewer.addEventListener("click", e => {
+      if (e.target === viewer) closeViewer();
+    });
+  }
 
-  viewerClose.addEventListener("click", closeViewer);
+  if (viewerClose) {
+    viewerClose.addEventListener("click", closeViewer);
+  }
 
   document.addEventListener("keydown", e => {
     if (e.key === "Escape") closeViewer();
