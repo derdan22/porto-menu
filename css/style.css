@@ -33,8 +33,6 @@ body {
   background: var(--porto-blue);
 }
 
-/* ===== LOGO ===== */
-
 .top-logo {
   display: flex;
   justify-content: center;
@@ -45,8 +43,6 @@ body {
   height: 180px;
   max-width: 90%;
 }
-
-/* ===== HOME LAYOUT ===== */
 
 .home-wrapper {
   flex: 1;
@@ -66,8 +62,6 @@ body {
   align-items: center;
   justify-content: center;
 }
-
-/* ===== BUTTONS ===== */
 
 .language-title {
   font-size: 24px;
@@ -122,8 +116,6 @@ body {
   text-align: center;
 }
 
-/* ===== MENU PAGE ===== */
-
 .home,
 .menu {
   display: flex;
@@ -160,8 +152,6 @@ body {
 .menu-images img:active {
   transform: scale(0.98);
 }
-
-/* ===== VIEWER ===== */
 
 .image-viewer {
   position: fixed;
@@ -208,8 +198,6 @@ body {
   margin-bottom: 56px;
 }
 
-/* ===== NAV BUTTONS ===== */
-
 .back-simple,
 .viewer-close {
   position: fixed;
@@ -242,8 +230,6 @@ body {
   top: 18px;
   right: 18px;
 }
-
-/* ===== FOOTER ===== */
 
 .bottom-bar {
   background: transparent;
@@ -279,8 +265,6 @@ body {
   line-height: 1.4;
 }
 
-/* ===== MOBILE ===== */
-
 @media (max-width: 480px) {
   .top-logo img {
     height: 140px;
@@ -292,5 +276,20 @@ body {
 
   .bottom-bar {
     padding: 24px 0 32px;
+  }
+}
+
+.home-screen .page {
+  justify-content: center;
+}
+
+.home-screen .top-logo {
+  margin-top: 0;
+  margin-bottom: 60px;
+}
+
+@media (max-width: 480px) {
+  .home-screen .top-logo {
+    margin-bottom: 48px;
   }
 }
