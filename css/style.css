@@ -253,9 +253,17 @@ body {
   justify-content: center;
 }
 
+.home-wrapper .top-logo {
+  margin: 0 0 60px;
+}
+
 @media (max-width: 480px) {
   .top-logo {
     margin: 60px 0 32px;
+  }
+
+  .home-wrapper .top-logo {
+    margin: 0 0 48px;
   }
 
   .top-logo img {
