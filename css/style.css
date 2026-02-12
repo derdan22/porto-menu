@@ -26,8 +26,6 @@ body {
   min-height: 100svh;
 }
 
-/* ================= BASE LAYOUT ================= */
-
 .page {
   flex: 1;
   display: flex;
@@ -106,8 +104,6 @@ body {
   text-align: center;
 }
 
-/* ================= MENU PAGE ================= */
-
 .menu-wrapper {
   width: 100%;
   margin-top: 26px;
@@ -138,8 +134,6 @@ body {
   transform: scale(0.98);
 }
 
-/* ================= IMAGE VIEWER ================= */
-
 .image-viewer {
   position: fixed;
   inset: 0;
@@ -154,6 +148,7 @@ body {
   transition: opacity 0.25s ease,
               visibility 0.25s ease;
   z-index: 999;
+  will-change: opacity;
 }
 
 .image-viewer.active {
@@ -167,6 +162,7 @@ body {
   max-height: 90vh;
   transform: scale(0.96);
   transition: transform 0.25s ease;
+  will-change: transform;
 }
 
 .image-viewer.active img {
@@ -185,8 +181,6 @@ body {
   margin-bottom: 56px;
 }
 
-/* ================= NAV BUTTONS ================= */
-
 .back-simple,
 .viewer-close {
   position: fixed;
@@ -201,7 +195,8 @@ body {
   font-size: 24px;
   cursor: pointer;
   z-index: 1000;
-  transition: transform 0.15s ease;
+  transition: transform 0.15s ease,
+              opacity 0.2s ease;
 }
 
 .back-simple:active,
@@ -218,8 +213,6 @@ body {
   top: 18px;
   right: 18px;
 }
-
-/* ================= FOOTER ================= */
 
 .bottom-bar {
   background: transparent;
@@ -246,41 +239,18 @@ body {
   transform: translateY(-2px);
 }
 
-/* ================= ГЛАВНАЯ СТРАНИЦА ================= */
-
-.home-screen .page {
-  display: flex;
-  flex-direction: column;
+.unavailable-message {
+  margin-top: 48px;
+  text-align: center;
+  font-size: 18px;
+  opacity: 0.85;
+  padding: 0 20px;
+  line-height: 1.4;
 }
-
-.home-screen .home {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  transform: translateY(-5%);
-}
-
-.home-screen .top-logo {
-  margin-top: 40px;
-  margin-bottom: 60px;
-}
-
-/* ================= MOBILE ================= */
 
 @media (max-width: 480px) {
   .top-logo {
     margin: 60px 0 32px;
-  }
-
-  .home-screen .top-logo {
-    margin-top: 30px;
-    margin-bottom: 50px;
-  }
-
-  .home-screen .home {
-    transform: translateY(-7%);
   }
 
   .top-logo img {
@@ -297,5 +267,10 @@ body {
 
   .bottom-bar {
     padding: 24px 0 32px;
+  }
+
+  .unavailable-message {
+    font-size: 16px;
+    margin-top: 36px;
   }
 }
