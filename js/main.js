@@ -53,6 +53,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function initMenu() {
+    if (!buttons) return;
+
     buttons.innerHTML = "";
 
     menus[lang].labels.forEach((item, index) => {
@@ -81,20 +83,24 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function renderMenu(images, categoryIndex) {
+    if (!container) return;
+
     container.innerHTML = "";
     container.className = `menu-images ${images.length > 1 ? "grid-2" : ""}`;
 
     images.forEach(src => {
       const img = new Image();
       img.src = `assets/menu/${src}`;
-      img.loading = "eager";
       img.alt = "PORTO menu";
+      img.loading = "eager";
 
       img.onload = () => img.classList.add("loaded");
 
       img.addEventListener("click", async () => {
         const mode = categoryIndex === 1 ? "long" : "wide";
-        await img.decode();
+        try {
+          await img.decode();
+        } catch {}
         openViewer(img.src, mode);
       });
 
@@ -104,21 +110,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function preloadAll() {
     const all = menus[lang].images.flat();
-    requestIdleCallback(() => {
-      all.forEach(src => {
-        const img = new Image();
-        img.src = `assets/menu/${src}`;
+
+    if ("requestIdleCallback" in window) {
+      requestIdleCallback(() => {
+        all.forEach(src => {
+          const img = new Image();
+          img.src = `assets/menu/${src}`;
+        });
       });
-    });
+    } else {
+      setTimeout(() => {
+        all.forEach(src => {
+          const img = new Image();
+          img.src = `assets/menu/${src}`;
+        });
+      }, 800);
+    }
   }
 
-  window.goBack = function () {
-    if (history.length > 1) {
-      history.back();
-    } else {
-      window.location.href = "index.html";
-    }
-  };
+  if (backBtn) {
+    backBtn.addEventListener("click", () => {
+      if (history.length > 1) {
+        history.back();
+      } else {
+        window.location.href = "index.html";
+      }
+    });
+  }
 
   let scrollPosition = 0;
 
@@ -136,27 +154,41 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function openViewer(src, mode) {
+    if (!viewer || !viewerImage) return;
+
     viewer.className = `image-viewer active ${mode}`;
     viewerImage.src = src;
     freezePage();
+
     if (backBtn) backBtn.style.display = "none";
   }
 
   function closeViewer() {
+    if (!viewer || !viewerImage) return;
+
     viewer.className = "image-viewer";
     viewerImage.src = "";
     unfreezePage();
+
     if (backBtn) backBtn.style.display = "flex";
   }
 
-  viewer.addEventListener("click", e => {
-    if (e.target === viewer) closeViewer();
-  });
+  if (viewerClose) {
+    viewerClose.addEventListener("click", closeViewer);
+  }
 
-  viewerClose.addEventListener("click", closeViewer);
+  if (viewer) {
+    viewer.addEventListener("click", (e) => {
+      if (e.target === viewer) {
+        closeViewer();
+      }
+    });
+  }
 
-  document.addEventListener("keydown", e => {
-    if (e.key === "Escape") closeViewer();
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closeViewer();
+    }
   });
 
 });
