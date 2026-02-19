@@ -15,7 +15,7 @@
 html {
   width: 100%;
   background: var(--porto-blue-dark);
-  touch-action: manipulation;
+  touch-action: manipulation; 
 }
 
 body {
@@ -26,7 +26,7 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100svh;
-  overscroll-behavior: none;
+  overscroll-behavior: none; 
 }
 
 button,
@@ -118,16 +118,14 @@ img {
 .menu-wrapper {
   width: 100%;
   margin-top: 26px;
-  display: flex;
-  justify-content: center;
 }
 
 .menu-images {
   display: grid;
-  width: 100%;
-  max-width: 520px;
   grid-template-columns: 1fr;
   gap: 24px;
+  max-width: 520px;
+  margin: 0 auto;
   padding: 0 16px;
 }
 
@@ -137,7 +135,6 @@ img {
 
 .menu-images img {
   width: 100%;
-  height: auto;
   border-radius: 8px;
   cursor: zoom-in;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
@@ -153,12 +150,14 @@ img {
   inset: 0;
   background: rgba(0, 0, 0, 0.92);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.25s ease;
+  transition: opacity 0.25s ease,
+              visibility 0.25s ease;
   z-index: 999;
 }
 
@@ -171,11 +170,16 @@ img {
 .image-viewer img {
   max-width: 90vw;
   max-height: 90vh;
+  transform: scale(0.96);
   transition: transform 0.25s ease;
 }
 
+.image-viewer.active img {
+  transform: scale(1);
+}
+
 .image-viewer.long {
-  align-items: flex-start;
+  justify-content: flex-start;
   padding-top: 32px;
 }
 
@@ -183,7 +187,7 @@ img {
   width: 72%;
   max-width: 340px;
   max-height: none;
-  margin: 0 auto 56px auto;
+  margin-bottom: 56px;
 }
 
 .back-simple,
@@ -262,9 +266,5 @@ img {
 
   .bottom-bar {
     padding: 24px 0 32px;
-  }
-
-  .menu-images.grid-2 {
-    grid-template-columns: 1fr;
   }
 }
