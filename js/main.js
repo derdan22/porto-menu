@@ -47,15 +47,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function showUnavailableMessage() {
     if (!container) return;
-
     if (buttons) buttons.innerHTML = "";
-
     container.className = "menu-images";
-    container.innerHTML = `
-      <div class="unavailable-message">
-        Ta wersja językowa nie jest jeszcze dostępna.
-      </div>
-    `;
+    container.innerHTML = `<div>Ta wersja językowa nie jest jeszcze dostępna.</div>`;
   }
 
   function initMenu() {
@@ -72,8 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
 
       btn.addEventListener("click", () => {
-        document
-          .querySelectorAll("#menu-buttons button")
+        document.querySelectorAll("#menu-buttons button")
           .forEach(b => b.classList.remove("active"));
 
         btn.classList.add("active");
@@ -93,16 +86,19 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!container) return;
 
     container.innerHTML = "";
-    container.className = `menu-images ${images.length > 1 ? "grid-2" : ""}`;
+    container.className = "menu-images";
+    if (images.length === 2) {
+      container.classList.add("grid-2");
+    }
 
     images.forEach(src => {
       const img = document.createElement("img");
       img.src = `assets/menu/${src}`;
-      img.loading = "lazy";
       img.alt = "PORTO menu";
+      img.loading = "lazy";
 
       img.addEventListener("click", () => {
-        const mode = categoryIndex === 1 ? "long" : "wide";
+        const mode = categoryIndex === 1 ? "long" : "";
         openViewer(img.src, mode);
       });
 
@@ -110,41 +106,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  window.goBack = function () {
-    if (history.length > 1) {
-      history.back();
-    } else {
-      window.location.href = "index.html";
-    }
-  };
-
-  let scrollPosition = 0;
-
-  function freezePage() {
-    scrollPosition = window.scrollY;
-    document.body.style.position = "fixed";
-    document.body.style.top = `-${scrollPosition}px`;
-    document.body.style.left = "0";
-    document.body.style.right = "0";
-    document.body.style.width = "100%";
-  }
-
-  function unfreezePage() {
-    document.body.style.position = "";
-    document.body.style.top = "";
-    document.body.style.left = "";
-    document.body.style.right = "";
-    document.body.style.width = "";
-    window.scrollTo(0, scrollPosition);
-  }
-
   function openViewer(src, mode) {
     if (!viewer || !viewerImage) return;
 
-    viewer.className = `image-viewer active ${mode}`;
-    viewerImage.src = src;
+    viewer.classList.add("active");
+    viewer.classList.remove("long");
+    if (mode) viewer.classList.add(mode);
 
-    freezePage();
+    viewerImage.src = src;
+    document.body.style.overflow = "hidden";
 
     if (backBtn) backBtn.style.display = "none";
   }
@@ -152,10 +122,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function closeViewer() {
     if (!viewer || !viewerImage) return;
 
-    viewer.className = "image-viewer";
+    viewer.classList.remove("active", "long");
     viewerImage.src = "";
-
-    unfreezePage(); 
+    document.body.style.overflow = "";
 
     if (backBtn) backBtn.style.display = "flex";
   }
@@ -167,7 +136,22 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (viewerClose) {
-    viewerClose.addEventListener("click", closeViewer);
+    viewerClose.addEventListener("click", e => {
+      e.stopPropagation();
+      closeViewer();
+    });
+  }
+
+  if (backBtn) {
+    backBtn.addEventListener("click", () => {
+      if (viewer.classList.contains("active")) {
+        closeViewer();
+      } else if (history.length > 1) {
+        history.back();
+      } else {
+        window.location.href = "index.html";
+      }
+    });
   }
 
   document.addEventListener("keydown", e => {
