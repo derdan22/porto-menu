@@ -5,10 +5,6 @@
   --white-soft: rgba(255, 255, 255, 0.92);
 }
 
-/* =========================
-   GLOBAL RESET + APP MODE
-========================= */
-
 * {
   margin: 0;
   padding: 0;
@@ -19,7 +15,7 @@
 html {
   width: 100%;
   background: var(--porto-blue-dark);
-  touch-action: manipulation; /* убирает double-tap zoom */
+  touch-action: manipulation;
 }
 
 body {
@@ -30,7 +26,7 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100svh;
-  overscroll-behavior: none; /* убирает bounce */
+  overscroll-behavior: none;
 }
 
 button,
@@ -41,20 +37,12 @@ img {
   -webkit-touch-callout: none;
 }
 
-/* =========================
-   LAYOUT
-========================= */
-
 .page {
   flex: 1;
   display: flex;
   flex-direction: column;
   background: var(--porto-blue);
 }
-
-/* =========================
-   LOGO
-========================= */
 
 .top-logo {
   display: flex;
@@ -67,10 +55,6 @@ img {
   max-width: 90%;
 }
 
-/* =========================
-   HOME & MENU
-========================= */
-
 .home,
 .menu {
   display: flex;
@@ -78,17 +62,11 @@ img {
   align-items: center;
 }
 
-/* симметричный ритм */
-
 .language-title {
   font-size: 24px;
   font-weight: 400;
   margin: 42px 0;
 }
-
-/* =========================
-   BUTTONS
-========================= */
 
 .simple-buttons {
   width: 100%;
@@ -137,21 +115,19 @@ img {
   text-align: center;
 }
 
-/* =========================
-   MENU IMAGES
-========================= */
-
 .menu-wrapper {
   width: 100%;
   margin-top: 26px;
+  display: flex;
+  justify-content: center;
 }
 
 .menu-images {
   display: grid;
+  width: 100%;
+  max-width: 520px;
   grid-template-columns: 1fr;
   gap: 24px;
-  max-width: 520px;
-  margin: 0 auto;
   padding: 0 16px;
 }
 
@@ -161,6 +137,7 @@ img {
 
 .menu-images img {
   width: 100%;
+  height: auto;
   border-radius: 8px;
   cursor: zoom-in;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
@@ -171,23 +148,17 @@ img {
   transform: scale(0.98);
 }
 
-/* =========================
-   IMAGE VIEWER
-========================= */
-
 .image-viewer {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.92);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.25s ease,
-              visibility 0.25s ease;
+  transition: opacity 0.25s ease;
   z-index: 999;
 }
 
@@ -200,16 +171,11 @@ img {
 .image-viewer img {
   max-width: 90vw;
   max-height: 90vh;
-  transform: scale(0.96);
   transition: transform 0.25s ease;
 }
 
-.image-viewer.active img {
-  transform: scale(1);
-}
-
 .image-viewer.long {
-  justify-content: flex-start;
+  align-items: flex-start;
   padding-top: 32px;
 }
 
@@ -217,12 +183,8 @@ img {
   width: 72%;
   max-width: 340px;
   max-height: none;
-  margin-bottom: 56px;
+  margin: 0 auto 56px auto;
 }
-
-/* =========================
-   NAV BUTTONS
-========================= */
 
 .back-simple,
 .viewer-close {
@@ -256,10 +218,6 @@ img {
   right: 18px;
 }
 
-/* =========================
-   FOOTER
-========================= */
-
 .bottom-bar {
   background: transparent;
   padding: 28px 0 40px;
@@ -285,10 +243,6 @@ img {
   transform: translateY(-2px);
 }
 
-/* =========================
-   MOBILE
-========================= */
-
 @media (max-width: 480px) {
   .top-logo {
     margin: 60px 0 32px;
@@ -308,5 +262,9 @@ img {
 
   .bottom-bar {
     padding: 24px 0 32px;
+  }
+
+  .menu-images.grid-2 {
+    grid-template-columns: 1fr;
   }
 }
