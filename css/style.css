@@ -9,16 +9,15 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
 }
 
-html {
+html,
+body {
   width: 100%;
   background: var(--porto-blue-dark);
 }
 
 body {
-  width: 100%;
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   color: var(--white-soft);
   overflow-x: hidden;
@@ -27,16 +26,12 @@ body {
   min-height: 100svh;
 }
 
-/* ================= PAGE ================= */
-
 .page {
   flex: 1;
   display: flex;
   flex-direction: column;
   background: var(--porto-blue);
 }
-
-/* ================= LOGO ================= */
 
 .top-logo {
   display: flex;
@@ -49,8 +44,6 @@ body {
   max-width: 90%;
 }
 
-/* ================= HOME + MENU ================= */
-
 .home,
 .menu {
   display: flex;
@@ -61,10 +54,8 @@ body {
 .language-title {
   font-size: 24px;
   font-weight: 400;
-  margin: 42px 0;
+  margin-bottom: 26px;
 }
-
-/* ================= BUTTONS ================= */
 
 .simple-buttons {
   width: 100%;
@@ -85,13 +76,16 @@ body {
   justify-content: center;
   gap: 2px;
   border: 2px solid var(--white);
+  background: transparent;
   color: var(--white);
   cursor: pointer;
-  transition: 0.2s ease;
+  transition: background 0.2s ease,
+              color 0.2s ease,
+              transform 0.15s ease;
 }
 
-.simple-buttons button:active,
-.simple-buttons a:active {
+.simple-buttons a:active,
+.simple-buttons button:active {
   transform: scale(0.97);
 }
 
@@ -110,40 +104,29 @@ body {
   text-align: center;
 }
 
-/* ================= MENU GRID ================= */
-
 .menu-wrapper {
   width: 100%;
   margin-top: 26px;
-  display: flex;
-  justify-content: center;
 }
 
 .menu-images {
   display: grid;
-  gap: 32px;
-  width: 100%;
-  max-width: 1100px;
-  padding: 0 20px;
-  justify-content: center;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 0 16px;
 }
 
-/* ДЛИННОЕ МЕНЮ (2 страницы) */
 .menu-images.grid-2 {
-  grid-template-columns: repeat(2, minmax(0, 480px));
-}
-
-/* ОБЫЧНОЕ МЕНЮ */
-.menu-images:not(.grid-2) {
-  grid-template-columns: minmax(0, 520px);
+  grid-template-columns: repeat(2, 1fr);
 }
 
 .menu-images img {
   width: 100%;
-  height: auto;
-  border-radius: 14px;
-  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
   cursor: zoom-in;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
   transition: transform 0.2s ease;
 }
 
@@ -151,21 +134,21 @@ body {
   transform: scale(0.98);
 }
 
-/* ================= VIEWER ================= */
-
 .image-viewer {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.96);
+  background: rgba(0, 0, 0, 0.92);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.25s ease;
-  z-index: 9999;
-  padding: 40px 20px;
+  transition: opacity 0.25s ease,
+              visibility 0.25s ease;
+  z-index: 999;
+  will-change: opacity;
 }
 
 .image-viewer.active {
@@ -175,13 +158,28 @@ body {
 }
 
 .image-viewer img {
-  width: 100%;
-  max-width: 560px;
-  height: auto;
-  border-radius: 14px;
+  max-width: 90vw;
+  max-height: 90vh;
+  transform: scale(0.96);
+  transition: transform 0.25s ease;
+  will-change: transform;
 }
 
-/* ================= NAV BUTTONS ================= */
+.image-viewer.active img {
+  transform: scale(1);
+}
+
+.image-viewer.long {
+  justify-content: flex-start;
+  padding-top: 32px;
+}
+
+.image-viewer.long img {
+  width: 72%;
+  max-width: 340px;
+  max-height: none;
+  margin-bottom: 56px;
+}
 
 .back-simple,
 .viewer-close {
@@ -192,12 +190,18 @@ body {
   align-items: center;
   justify-content: center;
   border: 2px solid var(--white);
-  background: rgba(0, 0, 0, 0.35);
+  background: transparent;
   color: var(--white);
-  font-size: 22px;
+  font-size: 24px;
   cursor: pointer;
-  z-index: 10000;
-  backdrop-filter: blur(6px);
+  z-index: 1000;
+  transition: transform 0.15s ease,
+              opacity 0.2s ease;
+}
+
+.back-simple:active,
+.viewer-close:active {
+  transform: scale(0.92);
 }
 
 .back-simple {
@@ -210,48 +214,41 @@ body {
   right: 18px;
 }
 
-/* ================= FOOTER ================= */
-
 .bottom-bar {
-  padding: 32px 0 48px;
+  background: transparent;
+  padding: 28px 0 40px;
   display: flex;
   justify-content: center;
-  background: var(--porto-blue-dark);
 }
 
 .bottom-socials {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 36px;
+  gap: 32px;
 }
 
 .bottom-socials a {
   color: var(--white);
-  font-size: 24px;
-  opacity: 0.7;
-  transition: 0.25s ease;
+  font-size: 22px;
+  opacity: 0.6;
+  transition: opacity 0.2s ease,
+              transform 0.2s ease;
 }
 
 .bottom-socials a:hover {
   opacity: 1;
-  transform: translateY(-3px);
+  transform: translateY(-2px);
 }
 
-/* ================= RESPONSIVE ================= */
-
-@media (max-width: 900px) {
-
-  .menu-images.grid-2,
-  .menu-images:not(.grid-2) {
-    grid-template-columns: 1fr;
-    max-width: 520px;
-  }
-
+.unavailable-message {
+  margin-top: 48px;
+  text-align: center;
+  font-size: 18px;
+  opacity: 0.85;
+  padding: 0 20px;
+  line-height: 1.4;
 }
 
 @media (max-width: 480px) {
-
   .top-logo {
     margin: 60px 0 32px;
   }
@@ -268,8 +265,12 @@ body {
     font-size: 11px;
   }
 
-  .image-viewer img {
-    max-width: 95%;
+  .bottom-bar {
+    padding: 24px 0 32px;
   }
 
+  .unavailable-message {
+    font-size: 16px;
+    margin-top: 36px;
+  }
 }
