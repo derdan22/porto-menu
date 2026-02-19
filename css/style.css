@@ -62,7 +62,6 @@ img {
 .top-logo img {
   height: 170px;
   max-width: 90%;
-  will-change: transform;
 }
 
 .home,
@@ -104,7 +103,6 @@ img {
               color 0.2s ease,
               transform 0.15s ease;
   border-radius: 8px;
-  will-change: transform;
 }
 
 .simple-buttons a:active,
@@ -151,7 +149,6 @@ img {
   cursor: zoom-in;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
   transition: transform 0.2s ease, opacity 0.25s ease;
-  will-change: transform;
   opacity: 0;
 }
 
@@ -163,19 +160,19 @@ img {
   transform: scale(0.98);
 }
 
+/* ===== VIEWER ===== */
+
 .image-viewer {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.94);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   opacity: 0;
   visibility: hidden;
-  pointer-events: none;
-  transition: opacity 0.25s ease, visibility 0.25s ease;
-  z-index: 999;
+  z-index: 5000;
+  transition: opacity 0.25s ease;
 }
 
 .image-viewer.active {
@@ -189,7 +186,6 @@ img {
   max-height: 92vh;
   transform: scale(0.96);
   transition: transform 0.25s ease;
-  will-change: transform;
 }
 
 .image-viewer.active img {
@@ -208,6 +204,8 @@ img {
   margin-bottom: 56px;
 }
 
+/* ===== BUTTONS ===== */
+
 .back-simple,
 .viewer-close {
   position: fixed;
@@ -222,9 +220,20 @@ img {
   color: var(--white);
   font-size: 22px;
   cursor: pointer;
-  z-index: 1000;
-  transition: transform 0.15s ease, background 0.2s ease;
   border-radius: 12px;
+  transition: transform 0.15s ease, background 0.2s ease;
+}
+
+.back-simple {
+  top: 18px;
+  left: 18px;
+  z-index: 2000;
+}
+
+.viewer-close {
+  top: 18px;
+  right: 18px;
+  z-index: 6000;
 }
 
 .back-simple:active,
@@ -232,15 +241,7 @@ img {
   transform: scale(0.9);
 }
 
-.back-simple {
-  top: 18px;
-  left: 18px;
-}
-
-.viewer-close {
-  top: 18px;
-  right: 18px;
-}
+/* ===== FOOTER ===== */
 
 .bottom-bar {
   background: transparent;
@@ -265,6 +266,8 @@ img {
   opacity: 1;
   transform: translateY(-2px);
 }
+
+/* ===== MOBILE ===== */
 
 @media (max-width: 480px) {
   .top-logo {
