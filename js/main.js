@@ -118,12 +118,32 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  function preventZoom(e) {
+    e.preventDefault();
+  }
+
+  function blockPageZoom() {
+    document.addEventListener("gesturestart", preventZoom);
+    document.addEventListener("gesturechange", preventZoom);
+    document.addEventListener("gestureend", preventZoom);
+  }
+
+  function allowPageZoom() {
+    document.removeEventListener("gesturestart", preventZoom);
+    document.removeEventListener("gesturechange", preventZoom);
+    document.removeEventListener("gestureend", preventZoom);
+  }
+
   function openViewer(src, mode) {
     if (!viewer || !viewerImage) return;
 
     viewer.className = `image-viewer active ${mode}`;
     viewerImage.src = src;
+
     document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+
+    blockPageZoom(); 
 
     if (backBtn) backBtn.style.display = "none";
   }
@@ -133,7 +153,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     viewer.className = "image-viewer";
     viewerImage.src = "";
+
     document.body.style.overflow = "";
+    document.documentElement.style.overflow = "";
+
+    allowPageZoom(); // 🔥 возвращаем жесты
 
     if (backBtn) backBtn.style.display = "flex";
   }
