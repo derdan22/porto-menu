@@ -43,14 +43,19 @@ document.addEventListener("DOMContentLoaded", () => {
     showUnavailableMessage();
   } else {
     initMenu();
-    preloadAll();
   }
 
   function showUnavailableMessage() {
     if (!container) return;
+
     if (buttons) buttons.innerHTML = "";
+
     container.className = "menu-images";
-    container.innerHTML = `<div class="unavailable-message">Ta wersja językowa nie jest jeszcze dostępna.</div>`;
+    container.innerHTML = `
+      <div class="unavailable-message">
+        Ta wersja językowa nie jest jeszcze dostępna.
+      </div>
+    `;
   }
 
   function initMenu() {
@@ -67,7 +72,8 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
 
       btn.addEventListener("click", () => {
-        document.querySelectorAll("#menu-buttons button")
+        document
+          .querySelectorAll("#menu-buttons button")
           .forEach(b => b.classList.remove("active"));
 
         btn.classList.add("active");
@@ -87,25 +93,16 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!container) return;
 
     container.innerHTML = "";
-    container.classList.remove("grid-2");
-
-    if (images.length === 2) {
-      container.classList.add("grid-2");
-    }
+    container.className = `menu-images ${images.length > 1 ? "grid-2" : ""}`;
 
     images.forEach(src => {
-      const img = new Image();
+      const img = document.createElement("img");
       img.src = `assets/menu/${src}`;
+      img.loading = "lazy";
       img.alt = "PORTO menu";
-      img.loading = "eager";
 
-      img.onload = () => img.classList.add("loaded");
-
-      img.addEventListener("click", async () => {
+      img.addEventListener("click", () => {
         const mode = categoryIndex === 1 ? "long" : "wide";
-        try {
-          await img.decode();
-        } catch {}
         openViewer(img.src, mode);
       });
 
@@ -113,40 +110,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function preloadAll() {
-    const all = menus[lang].images.flat();
-
-    if ("requestIdleCallback" in window) {
-      requestIdleCallback(() => {
-        all.forEach(src => {
-          const img = new Image();
-          img.src = `assets/menu/${src}`;
-        });
-      });
+  window.goBack = function () {
+    if (history.length > 1) {
+      history.back();
     } else {
-      setTimeout(() => {
-        all.forEach(src => {
-          const img = new Image();
-          img.src = `assets/menu/${src}`;
-        });
-      }, 800);
+      window.location.href = "index.html";
     }
-  }
-
-  if (backBtn) {
-    backBtn.addEventListener("click", () => {
-      if (viewer.classList.contains("active")) {
-        closeViewer();
-        return;
-      }
-
-      if (history.length > 1) {
-        history.back();
-      } else {
-        window.location.href = "index.html";
-      }
-    });
-  }
+  };
 
   let scrollPosition = 0;
 
@@ -154,23 +124,26 @@ document.addEventListener("DOMContentLoaded", () => {
     scrollPosition = window.scrollY;
     document.body.style.position = "fixed";
     document.body.style.top = `-${scrollPosition}px`;
+    document.body.style.left = "0";
+    document.body.style.right = "0";
     document.body.style.width = "100%";
   }
 
   function unfreezePage() {
     document.body.style.position = "";
     document.body.style.top = "";
+    document.body.style.left = "";
+    document.body.style.right = "";
+    document.body.style.width = "";
     window.scrollTo(0, scrollPosition);
   }
 
   function openViewer(src, mode) {
     if (!viewer || !viewerImage) return;
 
-    viewer.classList.add("active");
-    viewer.classList.remove("long", "wide");
-    viewer.classList.add(mode);
-
+    viewer.className = `image-viewer active ${mode}`;
     viewerImage.src = src;
+
     freezePage();
 
     if (backBtn) backBtn.style.display = "none";
@@ -179,32 +152,26 @@ document.addEventListener("DOMContentLoaded", () => {
   function closeViewer() {
     if (!viewer || !viewerImage) return;
 
-    viewer.classList.remove("active", "long", "wide");
+    viewer.className = "image-viewer";
     viewerImage.src = "";
-    unfreezePage();
+
+    unfreezePage(); 
 
     if (backBtn) backBtn.style.display = "flex";
   }
 
-  if (viewerClose) {
-    viewerClose.addEventListener("click", (e) => {
-      e.stopPropagation();
-      closeViewer();
-    });
-  }
-
   if (viewer) {
-    viewer.addEventListener("click", (e) => {
-      if (e.target === viewer) {
-        closeViewer();
-      }
+    viewer.addEventListener("click", e => {
+      if (e.target === viewer) closeViewer();
     });
   }
 
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      closeViewer();
-    }
+  if (viewerClose) {
+    viewerClose.addEventListener("click", closeViewer);
+  }
+
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") closeViewer();
   });
 
 });
