@@ -2,41 +2,52 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PORTO Hel – Menu</title>
 
-  <title>Menu – Porto Hel</title>
-  <meta name="description" content="Menu restauracji Porto Hel – śniadania, dania główne, napoje." />
-  <meta name="robots" content="index, follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
+  <meta name="description" content="PORTO Hel – aktualne menu restauracji.">
+  <link rel="canonical" href="https://portohel.pl/menu.html">
+
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+  <meta property="og:title" content="PORTO Hel – Menu" />
+  <meta property="og:description" content="Zobacz aktualne menu restauracji PORTO Hel." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://portohel.pl/assets/og-image.PNG" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" />
 </head>
 
 <body>
 
-<header class="header">
-  <img src="assets/porto-logo.png" alt="Porto Hel Logo" class="logo" />
-  <nav>
-    <a href="index.html">Home</a>
-  </nav>
-</header>
+  <div class="page">
 
-<section class="menu-section">
-  <h1>Menu</h1>
+    <button class="back-simple" onclick="goBack()">←</button>
 
-  <div class="menu-grid">
+    <header class="top-logo">
+      <img src="assets/porto-logo.png" alt="PORTO Hel logo">
+    </header>
 
-    <img src="assets/menu/breakfast-pl-1.jpg" alt="Śniadanie 1" />
-    <img src="assets/menu/breakfast-pl-2.jpg" alt="Śniadanie 2" />
-    <img src="assets/menu/main-pl.jpg" alt="Danie główne" />
-    <img src="assets/menu/drinks-pl.jpg" alt="Napoje" />
+    <main class="menu">
+      <div id="menu-buttons" class="simple-buttons"></div>
+
+      <div class="menu-wrapper">
+        <div id="menu-container" class="menu-images"></div>
+      </div>
+    </main>
 
   </div>
-</section>
 
-<footer class="footer">
-  <p>© 2026 Porto Hel</p>
-</footer>
+  <div class="image-viewer" id="imageViewer">
+    <button class="viewer-close" id="viewerClose">✕</button>
+    <img id="viewerImage" alt="">
+  </div>
 
-<script src="js/main.js"></script>
+  <script src="js/main.js"></script>
+
 </body>
 </html>
