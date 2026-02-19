@@ -9,21 +9,32 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
-html,
-body {
+html {
   width: 100%;
   background: var(--porto-blue-dark);
+  touch-action: manipulation; /* убирает double-tap zoom */
 }
 
 body {
+  width: 100%;
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   color: var(--white-soft);
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
   min-height: 100svh;
+  overscroll-behavior: none; /* убирает bounce */
+}
+
+button,
+a,
+img {
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .page {
@@ -51,12 +62,12 @@ body {
   align-items: center;
 }
 
-/* MENU title spacing – симметрия */
+/* симметричный ритм */
 
 .language-title {
   font-size: 24px;
   font-weight: 400;
-  margin: 42px 0; /* одинаковый отступ сверху и снизу */
+  margin: 42px 0;
 }
 
 .simple-buttons {
@@ -195,8 +206,7 @@ body {
   font-size: 24px;
   cursor: pointer;
   z-index: 1000;
-  transition: transform 0.15s ease,
-              opacity 0.2s ease;
+  transition: transform 0.15s ease;
 }
 
 .back-simple:active,
@@ -239,16 +249,6 @@ body {
   transform: translateY(-2px);
 }
 
-.unavailable-message {
-  margin-top: 48px;
-  text-align: center;
-  font-size: 18px;
-  opacity: 0.85;
-  padding: 0 20px;
-  line-height: 1.4;
-}
-
-
 @media (max-width: 480px) {
   .top-logo {
     margin: 60px 0 32px;
@@ -268,10 +268,5 @@ body {
 
   .bottom-bar {
     padding: 24px 0 32px;
-  }
-
-  .unavailable-message {
-    font-size: 16px;
-    margin-top: 36px;
   }
 }
