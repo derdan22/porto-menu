@@ -49,6 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function showUnavailableMessage() {
     if (!container) return;
     if (buttons) buttons.innerHTML = "";
+    container.className = "menu-images";
     container.innerHTML = `<div class="unavailable-message">Ta wersja językowa nie jest jeszcze dostępna.</div>`;
   }
 
@@ -86,7 +87,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!container) return;
 
     container.innerHTML = "";
-    container.className = `menu-images ${images.length > 1 ? "grid-2" : ""}`;
+    container.classList.remove("grid-2");
+
+    if (images.length === 2) {
+      container.classList.add("grid-2");
+    }
 
     images.forEach(src => {
       const img = new Image();
