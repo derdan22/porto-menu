@@ -118,20 +118,24 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  function preventZoom(e) {
-    e.preventDefault();
+  let scrollPosition = 0;
+
+  function freezePage() {
+    scrollPosition = window.scrollY;
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollPosition}px`;
+    document.body.style.left = "0";
+    document.body.style.right = "0";
+    document.body.style.width = "100%";
   }
 
-  function blockPageZoom() {
-    document.addEventListener("gesturestart", preventZoom);
-    document.addEventListener("gesturechange", preventZoom);
-    document.addEventListener("gestureend", preventZoom);
-  }
-
-  function allowPageZoom() {
-    document.removeEventListener("gesturestart", preventZoom);
-    document.removeEventListener("gesturechange", preventZoom);
-    document.removeEventListener("gestureend", preventZoom);
+  function unfreezePage() {
+    document.body.style.position = "";
+    document.body.style.top = "";
+    document.body.style.left = "";
+    document.body.style.right = "";
+    document.body.style.width = "";
+    window.scrollTo(0, scrollPosition);
   }
 
   function openViewer(src, mode) {
@@ -140,10 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
     viewer.className = `image-viewer active ${mode}`;
     viewerImage.src = src;
 
-    document.body.style.overflow = "hidden";
-    document.documentElement.style.overflow = "hidden";
-
-    blockPageZoom(); 
+    freezePage();
 
     if (backBtn) backBtn.style.display = "none";
   }
@@ -154,10 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
     viewer.className = "image-viewer";
     viewerImage.src = "";
 
-    document.body.style.overflow = "";
-    document.documentElement.style.overflow = "";
-
-    allowPageZoom(); // 🔥 возвращаем жесты
+    unfreezePage(); 
 
     if (backBtn) backBtn.style.display = "flex";
   }
