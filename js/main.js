@@ -130,6 +130,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (backBtn) {
     backBtn.addEventListener("click", () => {
+      if (viewer.classList.contains("active")) {
+        closeViewer();
+        return;
+      }
+
       if (history.length > 1) {
         history.back();
       } else {
@@ -156,7 +161,10 @@ document.addEventListener("DOMContentLoaded", () => {
   function openViewer(src, mode) {
     if (!viewer || !viewerImage) return;
 
-    viewer.className = `image-viewer active ${mode}`;
+    viewer.classList.add("active");
+    viewer.classList.remove("long", "wide");
+    viewer.classList.add(mode);
+
     viewerImage.src = src;
     freezePage();
 
@@ -166,7 +174,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function closeViewer() {
     if (!viewer || !viewerImage) return;
 
-    viewer.className = "image-viewer";
+    viewer.classList.remove("active", "long", "wide");
     viewerImage.src = "";
     unfreezePage();
 
@@ -174,7 +182,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (viewerClose) {
-    viewerClose.addEventListener("click", closeViewer);
+    viewerClose.addEventListener("click", (e) => {
+      e.stopPropagation();
+      closeViewer();
+    });
   }
 
   if (viewer) {
