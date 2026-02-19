@@ -157,6 +157,8 @@ body {
   visibility: hidden;
   z-index: 5000;
   transition: opacity 0.25s ease;
+  padding: 40px 20px;
+  overflow-y: auto;
 }
 
 .image-viewer.active {
@@ -166,19 +168,19 @@ body {
 }
 
 .image-viewer img {
-  max-width: 92vw;
-  max-height: 92vh;
-  transition: transform 0.25s ease;
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+  border-radius: 12px;
 }
 
 .image-viewer.long {
-  justify-content: flex-start;
-  padding-top: 32px;
+  align-items: flex-start;
 }
 
 .image-viewer.long img {
-  width: 72%;
-  max-width: 360px;
+  width: 100%;
+  max-width: 420px;
 }
 
 .back-simple,
@@ -243,3 +245,4 @@ body {
     padding: 0 16px;
   }
 }
+
