@@ -43,24 +43,16 @@ document.addEventListener("DOMContentLoaded", () => {
     showUnavailableMessage();
   } else {
     initMenu();
+    preloadAll();
   }
 
   function showUnavailableMessage() {
     if (!container) return;
-
     if (buttons) buttons.innerHTML = "";
-
-    container.className = "menu-images";
-    container.innerHTML = `
-      <div class="unavailable-message">
-        Ta wersja językowa nie jest jeszcze dostępna.
-      </div>
-    `;
+    container.innerHTML = `<div class="unavailable-message">Ta wersja językowa nie jest jeszcze dostępna.</div>`;
   }
 
   function initMenu() {
-    if (!buttons) return;
-
     buttons.innerHTML = "";
 
     menus[lang].labels.forEach((item, index) => {
@@ -72,8 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
 
       btn.addEventListener("click", () => {
-        document
-          .querySelectorAll("#menu-buttons button")
+        document.querySelectorAll("#menu-buttons button")
           .forEach(b => b.classList.remove("active"));
 
         btn.classList.add("active");
@@ -90,23 +81,34 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function renderMenu(images, categoryIndex) {
-    if (!container) return;
-
     container.innerHTML = "";
     container.className = `menu-images ${images.length > 1 ? "grid-2" : ""}`;
 
     images.forEach(src => {
-      const img = document.createElement("img");
+      const img = new Image();
       img.src = `assets/menu/${src}`;
-      img.loading = "lazy";
+      img.loading = "eager";
       img.alt = "PORTO menu";
 
-      img.addEventListener("click", () => {
+      img.onload = () => img.classList.add("loaded");
+
+      img.addEventListener("click", async () => {
         const mode = categoryIndex === 1 ? "long" : "wide";
+        await img.decode();
         openViewer(img.src, mode);
       });
 
       container.appendChild(img);
+    });
+  }
+
+  function preloadAll() {
+    const all = menus[lang].images.flat();
+    requestIdleCallback(() => {
+      all.forEach(src => {
+        const img = new Image();
+        img.src = `assets/menu/${src}`;
+      });
     });
   }
 
@@ -124,51 +126,34 @@ document.addEventListener("DOMContentLoaded", () => {
     scrollPosition = window.scrollY;
     document.body.style.position = "fixed";
     document.body.style.top = `-${scrollPosition}px`;
-    document.body.style.left = "0";
-    document.body.style.right = "0";
     document.body.style.width = "100%";
   }
 
   function unfreezePage() {
     document.body.style.position = "";
     document.body.style.top = "";
-    document.body.style.left = "";
-    document.body.style.right = "";
-    document.body.style.width = "";
     window.scrollTo(0, scrollPosition);
   }
 
   function openViewer(src, mode) {
-    if (!viewer || !viewerImage) return;
-
     viewer.className = `image-viewer active ${mode}`;
     viewerImage.src = src;
-
     freezePage();
-
     if (backBtn) backBtn.style.display = "none";
   }
 
   function closeViewer() {
-    if (!viewer || !viewerImage) return;
-
     viewer.className = "image-viewer";
     viewerImage.src = "";
-
-    unfreezePage(); 
-
+    unfreezePage();
     if (backBtn) backBtn.style.display = "flex";
   }
 
-  if (viewer) {
-    viewer.addEventListener("click", e => {
-      if (e.target === viewer) closeViewer();
-    });
-  }
+  viewer.addEventListener("click", e => {
+    if (e.target === viewer) closeViewer();
+  });
 
-  if (viewerClose) {
-    viewerClose.addEventListener("click", closeViewer);
-  }
+  viewerClose.addEventListener("click", closeViewer);
 
   document.addEventListener("keydown", e => {
     if (e.key === "Escape") closeViewer();
