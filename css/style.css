@@ -15,7 +15,6 @@
 html {
   width: 100%;
   background: var(--porto-blue-dark);
-  touch-action: manipulation;
 }
 
 body {
@@ -26,16 +25,9 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100svh;
-  overscroll-behavior: none;
 }
 
-button,
-a,
-img {
-  user-select: none;
-  -webkit-user-select: none;
-  -webkit-touch-callout: none;
-}
+/* ================= PAGE ================= */
 
 .page {
   flex: 1;
@@ -43,6 +35,8 @@ img {
   flex-direction: column;
   background: var(--porto-blue);
 }
+
+/* ================= LOGO ================= */
 
 .top-logo {
   display: flex;
@@ -54,6 +48,8 @@ img {
   height: 180px;
   max-width: 90%;
 }
+
+/* ================= HOME + MENU ================= */
 
 .home,
 .menu {
@@ -67,6 +63,8 @@ img {
   font-weight: 400;
   margin: 42px 0;
 }
+
+/* ================= BUTTONS ================= */
 
 .simple-buttons {
   width: 100%;
@@ -89,13 +87,11 @@ img {
   border: 2px solid var(--white);
   color: var(--white);
   cursor: pointer;
-  transition: background 0.2s ease,
-              color 0.2s ease,
-              transform 0.15s ease;
+  transition: 0.2s ease;
 }
 
-.simple-buttons a:active,
-.simple-buttons button:active {
+.simple-buttons button:active,
+.simple-buttons a:active {
   transform: scale(0.97);
 }
 
@@ -114,6 +110,8 @@ img {
   text-align: center;
 }
 
+/* ================= MENU GRID ================= */
+
 .menu-wrapper {
   width: 100%;
   margin-top: 26px;
@@ -125,24 +123,26 @@ img {
   display: grid;
   gap: 32px;
   width: 100%;
-  max-width: 900px;
+  max-width: 1100px;
   padding: 0 20px;
   justify-content: center;
 }
 
+/* ДЛИННОЕ МЕНЮ (2 страницы) */
 .menu-images.grid-2 {
-  grid-template-columns: repeat(2, 380px);
+  grid-template-columns: repeat(2, minmax(0, 480px));
 }
 
+/* ОБЫЧНОЕ МЕНЮ */
 .menu-images:not(.grid-2) {
-  grid-template-columns: 520px;
+  grid-template-columns: minmax(0, 520px);
 }
 
 .menu-images img {
   width: 100%;
   height: auto;
   border-radius: 14px;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.4);
   cursor: zoom-in;
   transition: transform 0.2s ease;
 }
@@ -151,10 +151,12 @@ img {
   transform: scale(0.98);
 }
 
+/* ================= VIEWER ================= */
+
 .image-viewer {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.94);
+  background: rgba(0, 0, 0, 0.96);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -164,7 +166,6 @@ img {
   transition: opacity 0.25s ease;
   z-index: 9999;
   padding: 40px 20px;
-  overflow-y: auto;
 }
 
 .image-viewer.active {
@@ -175,14 +176,12 @@ img {
 
 .image-viewer img {
   width: 100%;
-  max-width: 520px;
+  max-width: 560px;
   height: auto;
   border-radius: 14px;
 }
 
-.image-viewer.long img {
-  max-width: 420px;
-}
+/* ================= NAV BUTTONS ================= */
 
 .back-simple,
 .viewer-close {
@@ -193,11 +192,12 @@ img {
   align-items: center;
   justify-content: center;
   border: 2px solid var(--white);
-  background: rgba(0,0,0,0.3);
+  background: rgba(0, 0, 0, 0.35);
   color: var(--white);
-  font-size: 24px;
+  font-size: 22px;
   cursor: pointer;
   z-index: 10000;
+  backdrop-filter: blur(6px);
 }
 
 .back-simple {
@@ -210,43 +210,48 @@ img {
   right: 18px;
 }
 
+/* ================= FOOTER ================= */
+
 .bottom-bar {
-  padding: 28px 0 40px;
+  padding: 32px 0 48px;
   display: flex;
   justify-content: center;
+  background: var(--porto-blue-dark);
 }
 
 .bottom-socials {
   display: flex;
-  gap: 32px;
+  justify-content: center;
+  align-items: center;
+  gap: 36px;
 }
 
 .bottom-socials a {
   color: var(--white);
-  font-size: 22px;
-  opacity: 0.6;
-  transition: opacity 0.2s ease,
-              transform 0.2s ease;
+  font-size: 24px;
+  opacity: 0.7;
+  transition: 0.25s ease;
 }
 
 .bottom-socials a:hover {
   opacity: 1;
-  transform: translateY(-2px);
+  transform: translateY(-3px);
 }
 
-@media (max-width: 900px) {
-  .menu-images.grid-2 {
-    grid-template-columns: 1fr;
-    max-width: 520px;
-  }
+/* ================= RESPONSIVE ================= */
 
+@media (max-width: 900px) {
+
+  .menu-images.grid-2,
   .menu-images:not(.grid-2) {
     grid-template-columns: 1fr;
     max-width: 520px;
   }
+
 }
 
 @media (max-width: 480px) {
+
   .top-logo {
     margin: 60px 0 32px;
   }
@@ -262,4 +267,9 @@ img {
   .btn-note {
     font-size: 11px;
   }
+
+  .image-viewer img {
+    max-width: 95%;
+  }
+
 }
