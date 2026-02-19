@@ -35,26 +35,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const viewer = document.getElementById("imageViewer");
   const viewerClose = document.getElementById("viewerClose");
   const viewerImage = document.getElementById("viewerImage");
-  const backBtn = document.querySelector(".back-simple");
 
   const lang = menus[requestedLang] ? requestedLang : "pl";
+  let currentImages = [];
+  let currentIndex = 0;
 
-  if (!menus[requestedLang]) {
-    showUnavailableMessage();
-  } else {
-    initMenu();
-  }
-
-  function showUnavailableMessage() {
-    if (!container) return;
-    if (buttons) buttons.innerHTML = "";
-    container.className = "menu-images";
-    container.innerHTML = `<div>Ta wersja językowa nie jest jeszcze dostępna.</div>`;
-  }
+  initMenu();
 
   function initMenu() {
-    if (!buttons) return;
-
     buttons.innerHTML = "";
 
     menus[lang].labels.forEach((item, index) => {
@@ -70,91 +58,71 @@ document.addEventListener("DOMContentLoaded", () => {
           .forEach(b => b.classList.remove("active"));
 
         btn.classList.add("active");
-        renderMenu(menus[lang].images[index], index);
+        renderMenu(menus[lang].images[index]);
       });
 
       buttons.appendChild(btn);
     });
 
-    if (buttons.firstChild) {
-      buttons.firstChild.classList.add("active");
-      renderMenu(menus[lang].images[0], 0);
-    }
+    buttons.firstChild.classList.add("active");
+    renderMenu(menus[lang].images[0]);
   }
 
-  function renderMenu(images, categoryIndex) {
-    if (!container) return;
-
+  function renderMenu(images) {
     container.innerHTML = "";
     container.className = "menu-images";
+
     if (images.length === 2) {
       container.classList.add("grid-2");
     }
 
-    images.forEach(src => {
+    images.forEach((src, i) => {
       const img = document.createElement("img");
       img.src = `assets/menu/${src}`;
       img.alt = "PORTO menu";
       img.loading = "lazy";
 
       img.addEventListener("click", () => {
-        const mode = categoryIndex === 1 ? "long" : "";
-        openViewer(img.src, mode);
+        currentImages = images;
+        currentIndex = i;
+        openViewer();
       });
 
       container.appendChild(img);
     });
   }
 
-  function openViewer(src, mode) {
-    if (!viewer || !viewerImage) return;
-
+  function openViewer() {
     viewer.classList.add("active");
-    viewer.classList.remove("long");
-    if (mode) viewer.classList.add(mode);
-
-    viewerImage.src = src;
+    viewerImage.src = `assets/menu/${currentImages[currentIndex]}`;
     document.body.style.overflow = "hidden";
-
-    if (backBtn) backBtn.style.display = "none";
   }
 
   function closeViewer() {
-    if (!viewer || !viewerImage) return;
-
-    viewer.classList.remove("active", "long");
-    viewerImage.src = "";
+    viewer.classList.remove("active");
     document.body.style.overflow = "";
-
-    if (backBtn) backBtn.style.display = "flex";
   }
 
-  if (viewer) {
-    viewer.addEventListener("click", e => {
-      if (e.target === viewer) closeViewer();
-    });
-  }
+  viewerClose.addEventListener("click", closeViewer);
 
-  if (viewerClose) {
-    viewerClose.addEventListener("click", e => {
-      e.stopPropagation();
-      closeViewer();
-    });
-  }
-
-  if (backBtn) {
-    backBtn.addEventListener("click", () => {
-      if (viewer.classList.contains("active")) {
-        closeViewer();
-      } else if (history.length > 1) {
-        history.back();
-      } else {
-        window.location.href = "index.html";
-      }
-    });
-  }
+  viewer.addEventListener("click", e => {
+    if (e.target === viewer) closeViewer();
+  });
 
   document.addEventListener("keydown", e => {
+    if (!viewer.classList.contains("active")) return;
+
+    if (e.key === "ArrowRight") {
+      currentIndex = (currentIndex + 1) % currentImages.length;
+      openViewer();
+    }
+
+    if (e.key === "ArrowLeft") {
+      currentIndex =
+        (currentIndex - 1 + currentImages.length) % currentImages.length;
+      openViewer();
+    }
+
     if (e.key === "Escape") closeViewer();
   });
 
