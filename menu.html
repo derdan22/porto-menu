@@ -4,27 +4,36 @@
   <meta charset="UTF-8" />
   <title>PORTO – Menu</title>
 
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="description" content="PORTO Hel – aktualne menu restauracji. Zobacz dania główne, śniadania i napoje.">
 
-  <link rel="icon" href="assets/favicon.png" sizes="32x32">
-  <link rel="apple-touch-icon" href="assets/favicon.png">
+  <link rel="canonical" href="https://portohel.pl/menu.html">
+
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  
+  <meta property="og:title" content="PORTO Hel – Menu" />
+  <meta property="og:description" content="Zobacz aktualne menu restauracji PORTO Hel – dania główne, śniadania i napoje." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://portohel.pl/menu.html" />
+  <meta property="og:image" content="https://portohel.pl/assets/og-image.png" />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="css/style.css" />
 </head>
 
-<body class="fade-in">
+<body>
+
   <div class="page">
 
     <button class="back-simple" onclick="goBack()">←</button>
 
     <header class="top-logo">
-      <img src="assets/porto-logo.png" alt="PORTO Logo">
+      <img src="assets/porto-logo.png" alt="PORTO Hel logo">
     </header>
 
-    <main class="menu fade-up">
+    <main class="menu">
       <div id="menu-buttons" class="simple-buttons"></div>
 
       <div class="menu-wrapper">
@@ -34,19 +43,19 @@
 
   </div>
 
-<footer class="bottom-bar">
-  <div class="bottom-socials">
-    <a class="facebook" href="https://www.facebook.com/portohel/" target="_blank" rel="noopener noreferrer">
-      <i class="fa-brands fa-facebook-f"></i>
-    </a>
-    <a class="instagram" href="https://www.instagram.com/porto_hel" target="_blank" rel="noopener noreferrer">
-      <i class="fa-brands fa-instagram"></i>
-    </a>
-    <a class="tiktok" href="https://www.tiktok.com/@restauracjaporto" target="_blank" rel="noopener noreferrer">
-      <i class="fa-brands fa-tiktok"></i>
-    </a>
-  </div>
-</footer>
+  <footer class="bottom-bar">
+    <div class="bottom-socials">
+      <a class="facebook" href="https://www.facebook.com/portohel/" target="_blank" rel="noopener noreferrer">
+        <i class="fa-brands fa-facebook-f"></i>
+      </a>
+      <a class="instagram" href="https://www.instagram.com/porto_hel" target="_blank" rel="noopener noreferrer">
+        <i class="fa-brands fa-instagram"></i>
+      </a>
+      <a class="tiktok" href="https://www.tiktok.com/@restauracjaporto" target="_blank" rel="noopener noreferrer">
+        <i class="fa-brands fa-tiktok"></i>
+      </a>
+    </div>
+  </footer>
 
   <div class="image-viewer" id="imageViewer">
     <button class="viewer-close" id="viewerClose" aria-label="Close menu">✕</button>
