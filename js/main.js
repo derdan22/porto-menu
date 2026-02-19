@@ -35,14 +35,32 @@ document.addEventListener("DOMContentLoaded", () => {
   const viewer = document.getElementById("imageViewer");
   const viewerClose = document.getElementById("viewerClose");
   const viewerImage = document.getElementById("viewerImage");
+  const backBtn = document.querySelector(".back-simple");
 
   const lang = menus[requestedLang] ? requestedLang : "pl";
-  let currentImages = [];
-  let currentIndex = 0;
 
-  initMenu();
+  if (!menus[requestedLang]) {
+    showUnavailableMessage();
+  } else {
+    initMenu();
+  }
+
+  function showUnavailableMessage() {
+    if (!container) return;
+
+    if (buttons) buttons.innerHTML = "";
+
+    container.className = "menu-images";
+    container.innerHTML = `
+      <div class="unavailable-message">
+        Ta wersja językowa nie jest jeszcze dostępna.
+      </div>
+    `;
+  }
 
   function initMenu() {
+    if (!buttons) return;
+
     buttons.innerHTML = "";
 
     menus[lang].labels.forEach((item, index) => {
@@ -54,75 +72,105 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
 
       btn.addEventListener("click", () => {
-        document.querySelectorAll("#menu-buttons button")
+        document
+          .querySelectorAll("#menu-buttons button")
           .forEach(b => b.classList.remove("active"));
 
         btn.classList.add("active");
-        renderMenu(menus[lang].images[index]);
+        renderMenu(menus[lang].images[index], index);
       });
 
       buttons.appendChild(btn);
     });
 
-    buttons.firstChild.classList.add("active");
-    renderMenu(menus[lang].images[0]);
+    if (buttons.firstChild) {
+      buttons.firstChild.classList.add("active");
+      renderMenu(menus[lang].images[0], 0);
+    }
   }
 
-  function renderMenu(images) {
-    container.innerHTML = "";
-    container.className = "menu-images";
+  function renderMenu(images, categoryIndex) {
+    if (!container) return;
 
-    if (images.length === 2) {
-      container.classList.add("grid-2");
-    }
+    container.innerHTML = "";
+    container.className = `menu-images ${images.length > 1 ? "grid-2" : ""}`;
 
     images.forEach((src, i) => {
       const img = document.createElement("img");
       img.src = `assets/menu/${src}`;
-      img.alt = "PORTO menu";
       img.loading = "lazy";
+      img.alt = `PORTO menu ${categoryIndex}-${i}`;
 
       img.addEventListener("click", () => {
-        currentImages = images;
-        currentIndex = i;
-        openViewer();
+        const mode = categoryIndex === 1 ? "long" : "wide";
+        openViewer(img.src, mode);
       });
 
       container.appendChild(img);
     });
   }
 
-  function openViewer() {
-    viewer.classList.add("active");
-    viewerImage.src = `assets/menu/${currentImages[currentIndex]}`;
-    document.body.style.overflow = "hidden";
+  window.goBack = function () {
+    if (history.length > 1) {
+      history.back();
+    } else {
+      window.location.href = "index.html";
+    }
+  };
+
+  let scrollPosition = 0;
+
+  function freezePage() {
+    scrollPosition = window.scrollY;
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollPosition}px`;
+    document.body.style.left = "0";
+    document.body.style.right = "0";
+    document.body.style.width = "100%";
+  }
+
+  function unfreezePage() {
+    document.body.style.position = "";
+    document.body.style.top = "";
+    document.body.style.left = "";
+    document.body.style.right = "";
+    document.body.style.width = "";
+    window.scrollTo(0, scrollPosition);
+  }
+
+  function openViewer(src, mode) {
+    if (!viewer || !viewerImage) return;
+
+    viewer.className = `image-viewer active ${mode}`;
+    viewerImage.src = src;
+
+    freezePage();
+
+    if (backBtn) backBtn.style.display = "none";
   }
 
   function closeViewer() {
-    viewer.classList.remove("active");
-    document.body.style.overflow = "";
+    if (!viewer || !viewerImage) return;
+
+    viewer.className = "image-viewer";
+    viewerImage.src = "";
+
+    unfreezePage();
+
+    if (backBtn) backBtn.style.display = "flex";
   }
 
-  viewerClose.addEventListener("click", closeViewer);
+  if (viewer) {
+    viewer.addEventListener("click", e => {
+      if (e.target === viewer) closeViewer();
+    });
+  }
 
-  viewer.addEventListener("click", e => {
-    if (e.target === viewer) closeViewer();
-  });
+  if (viewerClose) {
+    viewerClose.addEventListener("click", closeViewer);
+  }
 
   document.addEventListener("keydown", e => {
-    if (!viewer.classList.contains("active")) return;
-
-    if (e.key === "ArrowRight") {
-      currentIndex = (currentIndex + 1) % currentImages.length;
-      openViewer();
-    }
-
-    if (e.key === "ArrowLeft") {
-      currentIndex =
-        (currentIndex - 1 + currentImages.length) % currentImages.length;
-      openViewer();
-    }
-
     if (e.key === "Escape") closeViewer();
   });
 
