@@ -15,7 +15,7 @@
 html {
   width: 100%;
   background: var(--porto-blue-dark);
-  touch-action: manipulation; 
+  touch-action: manipulation;
 }
 
 body {
@@ -26,7 +26,7 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100svh;
-  overscroll-behavior: none; 
+  overscroll-behavior: none;
 }
 
 button,
@@ -87,7 +87,6 @@ img {
   justify-content: center;
   gap: 2px;
   border: 2px solid var(--white);
-  background: transparent;
   color: var(--white);
   cursor: pointer;
   transition: background 0.2s ease,
@@ -118,26 +117,33 @@ img {
 .menu-wrapper {
   width: 100%;
   margin-top: 26px;
+  display: flex;
+  justify-content: center;
 }
 
 .menu-images {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 24px;
-  max-width: 520px;
-  margin: 0 auto;
-  padding: 0 16px;
+  gap: 32px;
+  width: 100%;
+  max-width: 900px;
+  padding: 0 20px;
+  justify-content: center;
 }
 
 .menu-images.grid-2 {
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, 380px);
+}
+
+.menu-images:not(.grid-2) {
+  grid-template-columns: 520px;
 }
 
 .menu-images img {
   width: 100%;
-  border-radius: 8px;
+  height: auto;
+  border-radius: 14px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
   cursor: zoom-in;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
   transition: transform 0.2s ease;
 }
 
@@ -148,17 +154,17 @@ img {
 .image-viewer {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.92);
+  background: rgba(0, 0, 0, 0.94);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.25s ease,
-              visibility 0.25s ease;
-  z-index: 999;
+  transition: opacity 0.25s ease;
+  z-index: 9999;
+  padding: 40px 20px;
+  overflow-y: auto;
 }
 
 .image-viewer.active {
@@ -168,26 +174,14 @@ img {
 }
 
 .image-viewer img {
-  max-width: 90vw;
-  max-height: 90vh;
-  transform: scale(0.96);
-  transition: transform 0.25s ease;
-}
-
-.image-viewer.active img {
-  transform: scale(1);
-}
-
-.image-viewer.long {
-  justify-content: flex-start;
-  padding-top: 32px;
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  border-radius: 14px;
 }
 
 .image-viewer.long img {
-  width: 72%;
-  max-width: 340px;
-  max-height: none;
-  margin-bottom: 56px;
+  max-width: 420px;
 }
 
 .back-simple,
@@ -199,17 +193,11 @@ img {
   align-items: center;
   justify-content: center;
   border: 2px solid var(--white);
-  background: transparent;
+  background: rgba(0,0,0,0.3);
   color: var(--white);
   font-size: 24px;
   cursor: pointer;
-  z-index: 1000;
-  transition: transform 0.15s ease;
-}
-
-.back-simple:active,
-.viewer-close:active {
-  transform: scale(0.92);
+  z-index: 10000;
 }
 
 .back-simple {
@@ -223,7 +211,6 @@ img {
 }
 
 .bottom-bar {
-  background: transparent;
   padding: 28px 0 40px;
   display: flex;
   justify-content: center;
@@ -247,6 +234,18 @@ img {
   transform: translateY(-2px);
 }
 
+@media (max-width: 900px) {
+  .menu-images.grid-2 {
+    grid-template-columns: 1fr;
+    max-width: 520px;
+  }
+
+  .menu-images:not(.grid-2) {
+    grid-template-columns: 1fr;
+    max-width: 520px;
+  }
+}
+
 @media (max-width: 480px) {
   .top-logo {
     margin: 60px 0 32px;
@@ -262,9 +261,5 @@ img {
 
   .btn-note {
     font-size: 11px;
-  }
-
-  .bottom-bar {
-    padding: 24px 0 32px;
   }
 }
