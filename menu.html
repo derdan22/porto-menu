@@ -6,7 +6,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-  <meta name="description" content="PORTO Hel – aktualne menu restauracji.">
+  <meta name="description" content="PORTO Hel – aktualne menu restauracji. Zobacz dania główne, śniadania i napoje.">
   <link rel="canonical" href="https://portohel.pl/menu.html">
 
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
@@ -14,9 +14,10 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 
   <meta property="og:title" content="PORTO Hel – Menu" />
-  <meta property="og:description" content="Zobacz aktualne menu restauracji PORTO Hel." />
+  <meta property="og:description" content="Zobacz aktualne menu restauracji PORTO Hel – dania główne, śniadania i napoje." />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://portohel.pl/assets/og-image.PNG" />
+  <meta property="og:url" content="https://portohel.pl/menu.html" />
+  <meta property="og:image" content="https://portohel.pl/assets/og-image.png" />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" />
@@ -42,8 +43,22 @@
 
   </div>
 
+  <footer class="bottom-bar">
+    <div class="bottom-socials">
+      <a class="facebook" href="https://www.facebook.com/portohel/" target="_blank" rel="noopener noreferrer">
+        <i class="fa-brands fa-facebook-f"></i>
+      </a>
+      <a class="instagram" href="https://www.instagram.com/porto_hel" target="_blank" rel="noopener noreferrer">
+        <i class="fa-brands fa-instagram"></i>
+      </a>
+      <a class="tiktok" href="https://www.tiktok.com/@restauracjaporto" target="_blank" rel="noopener noreferrer">
+        <i class="fa-brands fa-tiktok"></i>
+      </a>
+    </div>
+  </footer>
+
   <div class="image-viewer" id="imageViewer">
-    <button class="viewer-close" id="viewerClose">✕</button>
+    <button class="viewer-close" id="viewerClose" aria-label="Close menu">✕</button>
     <img id="viewerImage" alt="">
   </div>
 
