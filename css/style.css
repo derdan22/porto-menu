@@ -89,6 +89,7 @@ img {
   background: transparent;
   color: var(--white);
   cursor: pointer;
+  position: relative;
   transition: background 0.2s ease,
               color 0.2s ease,
               transform 0.15s ease;
@@ -99,9 +100,25 @@ img {
   transform: scale(0.97);
 }
 
-.simple-buttons .active {
+.simple-buttons button::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  width: 0%;
+  height: 2px;
+  background: var(--porto-blue);
+  transition: width 0.25s ease, left 0.25s ease;
+}
+
+.simple-buttons button.active {
   background: var(--white);
   color: var(--porto-blue);
+}
+
+.simple-buttons button.active::after {
+  width: 100%;
+  left: 0;
 }
 
 .btn-title {
@@ -126,6 +143,8 @@ img {
   max-width: 520px;
   margin: 0 auto;
   padding: 0 16px 16px;
+  opacity: 1;
+  transition: opacity 0.25s ease;
 }
 
 .menu-images.grid-2 {
@@ -149,18 +168,14 @@ img {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.92);
-
   display: flex;
   flex-direction: column;
   align-items: center;
-
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   transition: opacity 0.25s ease, visibility 0.25s ease;
-
   z-index: 999;
-
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
