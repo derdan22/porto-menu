@@ -26,7 +26,6 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100svh;
-  overscroll-behavior: none;
 }
 
 button,
@@ -150,16 +149,20 @@ img {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.92);
+
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.25s ease,
-              visibility 0.25s ease;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+
   z-index: 999;
+
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .image-viewer.active {
@@ -173,6 +176,8 @@ img {
   max-height: 90vh;
   transform: scale(0.96);
   transition: transform 0.25s ease;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 .image-viewer.active img {
@@ -181,14 +186,15 @@ img {
 
 .image-viewer.long {
   justify-content: flex-start;
-  padding-top: 32px;
+  padding: 80px 0 60px;
 }
 
 .image-viewer.long img {
   width: 72%;
   max-width: 340px;
+  height: auto;
   max-height: none;
-  margin-bottom: 56px;
+  margin-bottom: 40px;
 }
 
 .back-simple,
