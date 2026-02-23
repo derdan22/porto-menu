@@ -3,22 +3,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const requestedLang = params.get("lang");
 
-  const supportsWebP = (() => {
-    try {
-      return document.createElement("canvas")
-        .toDataURL("image/webp")
-        .indexOf("data:image/webp") === 0;
-    } catch {
-      return false;
-    }
-  })();
-
-  const getImagePath = (name) => {
-    const base = name.replace(/\.(jpg|jpeg|png)$/i, "");
-    const ext = supportsWebP ? "webp" : "jpg";
-    return `assets/menu/${base}.${ext}`;
-  };
-
   const menus = {
     pl: {
       labels: [
@@ -118,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       images.forEach(name => {
         const img = document.createElement("img");
-        img.src = getImagePath(name);
+        img.src = `/assets/menu/${name}.jpg`;
         img.alt = "PORTO menu";
 
         img.addEventListener("click", () => {
@@ -141,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     Object.values(menus[lang].images).forEach(group => {
       group.forEach(name => {
-        allImages.push(getImagePath(name));
+        allImages.push(`/assets/menu/${name}.jpg`);
       });
     });
 
