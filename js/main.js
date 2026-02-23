@@ -3,6 +3,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const requestedLang = params.get("lang");
 
+  const supportsWebP = (() => {
+    try {
+      return document.createElement("canvas")
+        .toDataURL("image/webp")
+        .indexOf("data:image/webp") === 0;
+    } catch {
+      return false;
+    }
+  })();
+
+  const getImagePath = (name) => {
+    const base = name.replace(/\.(jpg|jpeg|png)$/i, "");
+    const ext = supportsWebP ? "webp" : "jpg";
+    return `assets/menu/${base}.${ext}`;
+  };
+
   const menus = {
     pl: {
       labels: [
@@ -11,9 +27,9 @@ document.addEventListener("DOMContentLoaded", () => {
         { title: "Napoje", note: "" }
       ],
       images: [
-        ["main-pl.jpg"],
-        ["breakfast-pl-1.jpg", "breakfast-pl-2.jpg"],
-        ["drinks-pl.jpg"]
+        ["main-pl"],
+        ["breakfast-pl-1", "breakfast-pl-2"],
+        ["drinks-pl"]
       ]
     },
     en: {
@@ -23,9 +39,9 @@ document.addEventListener("DOMContentLoaded", () => {
         { title: "Drinks", note: "" }
       ],
       images: [
-        ["main-eng.jpg"],
-        ["breakfast-eng-1.jpg", "breakfast-eng-2.jpg"],
-        ["drinks-eng.jpg"]
+        ["main-eng"],
+        ["breakfast-eng-1", "breakfast-eng-2"],
+        ["drinks-eng"]
       ]
     }
   };
@@ -43,6 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
     showUnavailableMessage();
   } else {
     initMenu();
+    preloadAllImages();
   }
 
   function showUnavailableMessage() {
@@ -78,6 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         btn.classList.add("active");
         renderMenu(menus[lang].images[index], index);
+        window.scrollTo({ top: 0, behavior: "smooth" });
       });
 
       buttons.appendChild(btn);
@@ -92,21 +110,44 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderMenu(images, categoryIndex) {
     if (!container) return;
 
-    container.innerHTML = "";
-    container.className = `menu-images ${images.length > 1 ? "grid-2" : ""}`;
+    container.style.opacity = "0";
 
-    images.forEach(src => {
-      const img = document.createElement("img");
-      img.src = `assets/menu/${src}`;
-      img.loading = "lazy";
-      img.alt = "PORTO menu";
+    setTimeout(() => {
+      container.innerHTML = "";
+      container.className = `menu-images ${images.length > 1 ? "grid-2" : ""}`;
 
-      img.addEventListener("click", () => {
-        const mode = categoryIndex === 1 ? "long" : "wide";
-        openViewer(img.src, mode);
+      images.forEach(name => {
+        const img = document.createElement("img");
+        img.src = getImagePath(name);
+        img.alt = "PORTO menu";
+
+        img.addEventListener("click", () => {
+          const mode = categoryIndex === 1 ? "long" : "wide";
+          openViewer(img.src, mode);
+        });
+
+        container.appendChild(img);
       });
 
-      container.appendChild(img);
+      requestAnimationFrame(() => {
+        container.style.opacity = "1";
+      });
+
+    }, 80);
+  }
+
+  function preloadAllImages() {
+    const allImages = [];
+
+    Object.values(menus[lang].images).forEach(group => {
+      group.forEach(name => {
+        allImages.push(getImagePath(name));
+      });
+    });
+
+    allImages.forEach(src => {
+      const img = new Image();
+      img.src = src;
     });
   }
 
@@ -155,7 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
     viewer.className = "image-viewer";
     viewerImage.src = "";
 
-    unfreezePage(); 
+    unfreezePage();
 
     if (backBtn) backBtn.style.display = "flex";
   }
