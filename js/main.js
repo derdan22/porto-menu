@@ -15,30 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
         ["breakfast-pl-1", "breakfast-pl-2"],
         ["drinks-pl"]
       ]
-    },
-    en: {
-      labels: [
-        { title: "Main Menu", note: "from 11 until close" },
-        { title: "Breakfast", note: "10:00 – 12:00" },
-        { title: "Drinks", note: "" }
-      ],
-      images: [
-        ["main-eng"],
-        ["breakfast-eng-1", "breakfast-eng-2"],
-        ["drinks-eng"]
-      ]
-    },
-    de: {
-      labels: [
-        { title: "Hauptmenü", note: "ab 11 Uhr bis Küchenschluss" },
-        { title: "Frühstück", note: "10:00 – 12:00" },
-        { title: "Getränke", note: "" }
-      ],
-      images: [
-        ["main-de"],
-        ["breakfast-de-1", "breakfast-de-2"],
-        ["drinks-de"]
-      ]
     }
   };
 
@@ -47,30 +23,32 @@ document.addEventListener("DOMContentLoaded", () => {
   const container = document.getElementById("menu-container");
   const buttons = document.getElementById("menu-buttons");
 
-  const viewer = document.getElementById("imageViewer");
-  const viewerTrack = document.getElementById("viewerTrack");
-  const viewerDots = document.getElementById("viewerDots");
-  const viewerClose = document.getElementById("viewerClose");
+  const viewer = document.getElementById("viewer");
+  const track = document.getElementById("viewerTrack");
+  const dotsContainer = document.getElementById("viewerDots");
+  const closeBtn = document.getElementById("viewerClose");
 
-  let currentImages = [];
-  let currentIndex = 0;
+  let images = [];
+  let index = 0;
 
   let startX = 0;
-  let currentTranslate = 0;
+  let deltaX = 0;
   let isSwiping = false;
 
   let scale = 1;
+  let translateX = 0;
+  let translateY = 0;
+
   let lastTap = 0;
-  let startDistance = 0;
 
   initMenu();
 
   function initMenu() {
     buttons.innerHTML = "";
 
-    menus[lang].labels.forEach((item, index) => {
-      const btn = document.createElement("button");
+    menus[lang].labels.forEach((item, i) => {
 
+      const btn = document.createElement("button");
       btn.innerHTML = `
         <span class="btn-title">${item.title}</span>
         ${item.note ? `<span class="btn-note">${item.note}</span>` : ""}
@@ -81,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
           .forEach(b => b.classList.remove("active"));
 
         btn.classList.add("active");
-        renderMenu(menus[lang].images[index]);
+        renderMenu(menus[lang].images[i]);
       });
 
       buttons.appendChild(btn);
@@ -91,111 +69,156 @@ document.addEventListener("DOMContentLoaded", () => {
     renderMenu(menus[lang].images[0]);
   }
 
-  function renderMenu(images) {
-    container.innerHTML = "";
-    container.className = `menu-images ${images.length > 1 ? "grid-2" : ""}`;
+  function renderMenu(imgs) {
 
-    images.forEach((name, index) => {
+    container.innerHTML = "";
+    container.className = `menu-images ${imgs.length > 1 ? "grid-2" : ""}`;
+
+    imgs.forEach((name, i) => {
+
       const img = document.createElement("img");
       img.src = `/assets/menu/${name}.jpg`;
-      img.alt = "PORTO menu";
 
       img.addEventListener("click", () => {
-        openViewer(images, index);
+        openViewer(imgs, i);
       });
 
       container.appendChild(img);
     });
   }
 
-  function openViewer(images, startIndex) {
-    currentImages = images.map(name => `/assets/menu/${name}.jpg`);
-    currentIndex = startIndex;
+  function openViewer(imgs, startIndex) {
 
-    viewerTrack.innerHTML = "";
-    viewerDots.innerHTML = "";
+    images = imgs.map(n => `/assets/menu/${n}.jpg`);
+    index = startIndex;
 
-    currentImages.forEach((src, i) => {
+    track.innerHTML = "";
+    dotsContainer.innerHTML = "";
+
+    images.forEach((src, i) => {
+
+      const slide = document.createElement("div");
+      slide.className = "viewer-slide";
+
       const img = document.createElement("img");
       img.src = src;
-      img.classList.add("viewer-image");
-      viewerTrack.appendChild(img);
+      img.className = "viewer-img";
+
+      slide.appendChild(img);
+      track.appendChild(slide);
 
       const dot = document.createElement("span");
-      dot.classList.add("dot");
-      if (i === currentIndex) dot.classList.add("active");
-      viewerDots.appendChild(dot);
+      dot.className = "dot";
+      if (i === index) dot.classList.add("active");
+      dotsContainer.appendChild(dot);
     });
 
-    updateSliderPosition();
+    updateSlider();
     viewer.classList.add("active");
     document.body.style.overflow = "hidden";
   }
 
-  function updateSliderPosition() {
-    viewerTrack.style.transform = `translateX(-${currentIndex * 100}%)`;
-    viewerDots.querySelectorAll(".dot").forEach((d, i) => {
-      d.classList.toggle("active", i === currentIndex);
+  function updateSlider() {
+    track.style.transform = `translateX(-${index * 100}%)`;
+    dotsContainer.querySelectorAll(".dot").forEach((d, i) => {
+      d.classList.toggle("active", i === index);
     });
   }
 
   function closeViewer() {
     viewer.classList.remove("active");
     document.body.style.overflow = "";
-    scale = 1;
+    resetZoom();
   }
 
-  viewerClose.addEventListener("click", closeViewer);
+  closeBtn.addEventListener("click", closeViewer);
 
-  viewerTrack.addEventListener("touchstart", e => {
-
-    if (e.touches.length === 2) {
-      startDistance = getDistance(e.touches);
-      return;
-    }
-
-    const now = Date.now();
-    if (now - lastTap < 300) {
-      scale = scale === 1 ? 2 : 1;
-      e.target.style.transform = `scale(${scale})`;
-    }
-    lastTap = now;
+  track.addEventListener("touchstart", e => {
 
     if (scale > 1) return;
 
-    isSwiping = true;
     startX = e.touches[0].clientX;
+    isSwiping = true;
+
+    const now = Date.now();
+    if (now - lastTap < 250) {
+      toggleZoom(e.touches[0]);
+    }
+    lastTap = now;
   });
 
-  viewerTrack.addEventListener("touchmove", e => {
+  track.addEventListener("touchmove", e => {
+
+    if (!isSwiping || scale > 1) return;
+
+    deltaX = e.touches[0].clientX - startX;
+  });
+
+  track.addEventListener("touchend", () => {
+
+    if (!isSwiping || scale > 1) return;
+
+    if (deltaX < -60 && index < images.length - 1) index++;
+    if (deltaX > 60 && index > 0) index--;
+
+    updateSlider();
+    deltaX = 0;
+    isSwiping = false;
+  });
+
+  track.addEventListener("touchmove", e => {
 
     if (e.touches.length === 2) {
-      const newDistance = getDistance(e.touches);
-      scale = Math.min(Math.max(newDistance / startDistance, 1), 3);
-      e.target.style.transform = `scale(${scale})`;
-      return;
+
+      const img = getCurrentImage();
+      const dist = getDistance(e.touches);
+
+      if (!img.dataset.startDist) {
+        img.dataset.startDist = dist;
+      }
+
+      const scaleFactor = dist / img.dataset.startDist;
+      scale = Math.min(Math.max(scaleFactor, 1), 3);
+
+      applyTransform(img);
     }
-
-    if (!isSwiping || scale > 1) return;
-
-    const diff = e.touches[0].clientX - startX;
-    currentTranslate = diff;
   });
 
-  viewerTrack.addEventListener("touchend", () => {
+  track.addEventListener("touchend", () => {
+    const img = getCurrentImage();
+    if (img) delete img.dataset.startDist;
+  });
 
-    if (!isSwiping || scale > 1) return;
+  function toggleZoom(touch) {
 
-    if (currentTranslate < -50 && currentIndex < currentImages.length - 1) {
-      currentIndex++;
-    } else if (currentTranslate > 50 && currentIndex > 0) {
-      currentIndex--;
+    const img = getCurrentImage();
+
+    if (scale === 1) {
+      scale = 2;
+    } else {
+      resetZoom();
     }
 
-    updateSliderPosition();
-    isSwiping = false;
-    currentTranslate = 0;
-  });
+    applyTransform(img);
+  }
+
+  function resetZoom() {
+    scale = 1;
+    translateX = 0;
+    translateY = 0;
+
+    const img = getCurrentImage();
+    if (img) img.style.transform = "";
+  }
+
+  function applyTransform(img) {
+    img.style.transform =
+      `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+  }
+
+  function getCurrentImage() {
+    return track.children[index]?.querySelector("img");
+  }
 
   function getDistance(touches) {
     const dx = touches[0].clientX - touches[1].clientX;
