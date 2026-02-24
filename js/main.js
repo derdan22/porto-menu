@@ -16,7 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
         ["drinks-pl"]
       ]
     },
-
     en: {
       labels: [
         { title: "Main Menu", note: "from 11 until close" },
@@ -29,7 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
         ["drinks-eng"]
       ]
     },
-
     de: {
       labels: [
         { title: "Hauptmenü", note: "ab 11 Uhr bis Küchenschluss" },
@@ -118,17 +116,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function preloadAllImages() {
-    const allImages = [];
-
-    Object.values(menus[lang].images).forEach(group => {
-      group.forEach(name => {
-        allImages.push(`/assets/menu/${name}.jpg`);
-      });
-    });
-
-    allImages.forEach(src => {
+    Object.values(menus[lang].images).flat().forEach(name => {
       const img = new Image();
-      img.src = src;
+      img.src = `/assets/menu/${name}.jpg`;
     });
   }
 
@@ -161,24 +151,18 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function openViewer(src, mode) {
-    if (!viewer || !viewerImage) return;
-
     viewer.className = `image-viewer active ${mode}`;
     viewerImage.src = src;
-
+    resetZoom();
     freezePage();
-
     if (backBtn) backBtn.style.display = "none";
   }
 
   function closeViewer() {
-    if (!viewer || !viewerImage) return;
-
     viewer.className = "image-viewer";
     viewerImage.src = "";
-
+    resetZoom();
     unfreezePage();
-
     if (backBtn) backBtn.style.display = "flex";
   }
 
@@ -194,6 +178,105 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.addEventListener("keydown", e => {
     if (e.key === "Escape") closeViewer();
+  });
+
+  /* ===========================
+     ADVANCED DOUBLE TAP ZOOM
+     =========================== */
+
+  let scale = 1;
+  let posX = 0;
+  let posY = 0;
+  let startX = 0;
+  let startY = 0;
+  let isDragging = false;
+  let lastTap = 0;
+
+  function updateTransform() {
+    viewerImage.style.transform =
+      `translate(${posX}px, ${posY}px) scale(${scale})`;
+  }
+
+  function resetZoom() {
+    scale = 1;
+    posX = 0;
+    posY = 0;
+    updateTransform();
+  }
+
+  function clampPosition() {
+    const rect = viewerImage.getBoundingClientRect();
+    const maxX = (rect.width * (scale - 1)) / 2;
+    const maxY = (rect.height * (scale - 1)) / 2;
+
+    posX = Math.max(-maxX, Math.min(maxX, posX));
+    posY = Math.max(-maxY, Math.min(maxY, posY));
+  }
+
+  function handleDoubleTap(e) {
+    const now = Date.now();
+    if (now - lastTap < 300) {
+
+      if (scale === 1) {
+        scale = 2;
+      } else {
+        resetZoom();
+      }
+
+      updateTransform();
+    }
+    lastTap = now;
+  }
+
+  viewerImage.addEventListener("touchstart", (e) => {
+    handleDoubleTap(e);
+
+    if (scale > 1) {
+      isDragging = true;
+      startX = e.touches[0].clientX - posX;
+      startY = e.touches[0].clientY - posY;
+    }
+  });
+
+  viewerImage.addEventListener("touchmove", (e) => {
+    if (!isDragging) return;
+
+    posX = e.touches[0].clientX - startX;
+    posY = e.touches[0].clientY - startY;
+
+    clampPosition();
+    updateTransform();
+  });
+
+  viewerImage.addEventListener("touchend", () => {
+    isDragging = false;
+  });
+
+  viewerImage.addEventListener("dblclick", () => {
+    if (scale === 1) scale = 2;
+    else resetZoom();
+    updateTransform();
+  });
+
+  viewerImage.addEventListener("mousedown", (e) => {
+    if (scale <= 1) return;
+    isDragging = true;
+    startX = e.clientX - posX;
+    startY = e.clientY - posY;
+  });
+
+  window.addEventListener("mousemove", (e) => {
+    if (!isDragging) return;
+
+    posX = e.clientX - startX;
+    posY = e.clientY - startY;
+
+    clampPosition();
+    updateTransform();
+  });
+
+  window.addEventListener("mouseup", () => {
+    isDragging = false;
   });
 
 });
