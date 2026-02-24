@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ["drinks-pl"]
       ]
     },
+
     en: {
       labels: [
         { title: "Main Menu", note: "from 11 until close" },
@@ -28,6 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ["drinks-eng"]
       ]
     },
+
     de: {
       labels: [
         { title: "Hauptmenü", note: "ab 11 Uhr bis Küchenschluss" },
@@ -55,6 +57,8 @@ document.addEventListener("DOMContentLoaded", () => {
   preloadAllImages();
 
   function initMenu() {
+    if (!buttons) return;
+
     buttons.innerHTML = "";
 
     menus[lang].labels.forEach((item, index) => {
@@ -66,7 +70,8 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
 
       btn.addEventListener("click", () => {
-        document.querySelectorAll("#menu-buttons button")
+        document
+          .querySelectorAll("#menu-buttons button")
           .forEach(b => b.classList.remove("active"));
 
         btn.classList.add("active");
@@ -77,111 +82,115 @@ document.addEventListener("DOMContentLoaded", () => {
       buttons.appendChild(btn);
     });
 
-    buttons.firstChild.classList.add("active");
-    renderMenu(menus[lang].images[0], 0);
+    if (buttons.firstChild) {
+      buttons.firstChild.classList.add("active");
+      renderMenu(menus[lang].images[0], 0);
+    }
   }
 
   function renderMenu(images, categoryIndex) {
-    container.innerHTML = "";
-    container.className = `menu-images ${images.length > 1 ? "grid-2" : ""}`;
+    if (!container) return;
 
-    images.forEach(name => {
-      const img = document.createElement("img");
-      img.src = `/assets/menu/${name}.jpg`;
-      img.alt = "PORTO menu";
+    container.style.opacity = "0";
 
-      img.addEventListener("click", () => {
-        const mode = categoryIndex === 1 ? "long" : "wide";
-        openViewer(img.src, mode);
+    setTimeout(() => {
+      container.innerHTML = "";
+      container.className = `menu-images ${images.length > 1 ? "grid-2" : ""}`;
+
+      images.forEach(name => {
+        const img = document.createElement("img");
+        img.src = `/assets/menu/${name}.jpg`;
+        img.alt = "PORTO menu";
+
+        img.addEventListener("click", () => {
+          const mode = categoryIndex === 1 ? "long" : "wide";
+          openViewer(img.src, mode);
+        });
+
+        container.appendChild(img);
       });
 
-      container.appendChild(img);
-    });
+      requestAnimationFrame(() => {
+        container.style.opacity = "1";
+      });
+
+    }, 80);
   }
 
   function preloadAllImages() {
+    const allImages = [];
+
     Object.values(menus[lang].images).forEach(group => {
       group.forEach(name => {
-        const img = new Image();
-        img.src = `/assets/menu/${name}.jpg`;
+        allImages.push(`/assets/menu/${name}.jpg`);
       });
+    });
+
+    allImages.forEach(src => {
+      const img = new Image();
+      img.src = src;
     });
   }
 
   window.goBack = function () {
-    history.length > 1 ? history.back() : window.location.href = "index.html";
+    if (history.length > 1) {
+      history.back();
+    } else {
+      window.location.href = "index.html";
+    }
   };
 
   let scrollPosition = 0;
-  let scale = 1;
-  let lastTap = 0;
 
   function freezePage() {
     scrollPosition = window.scrollY;
     document.body.style.position = "fixed";
     document.body.style.top = `-${scrollPosition}px`;
+    document.body.style.left = "0";
+    document.body.style.right = "0";
     document.body.style.width = "100%";
   }
 
   function unfreezePage() {
     document.body.style.position = "";
     document.body.style.top = "";
+    document.body.style.left = "";
+    document.body.style.right = "";
+    document.body.style.width = "";
     window.scrollTo(0, scrollPosition);
   }
 
   function openViewer(src, mode) {
+    if (!viewer || !viewerImage) return;
+
     viewer.className = `image-viewer active ${mode}`;
     viewerImage.src = src;
 
-    scale = 1;
-    viewerImage.style.transform = "scale(1)";
-
     freezePage();
-    backBtn.style.display = "none";
+
+    if (backBtn) backBtn.style.display = "none";
   }
 
   function closeViewer() {
+    if (!viewer || !viewerImage) return;
+
     viewer.className = "image-viewer";
     viewerImage.src = "";
 
-    scale = 1;
-    viewerImage.style.transform = "scale(1)";
-
     unfreezePage();
-    backBtn.style.display = "flex";
+
+    if (backBtn) backBtn.style.display = "flex";
   }
 
-  /* ===== NORMAL GALLERY DOUBLE TAP ===== */
+  if (viewer) {
+    viewer.addEventListener("click", e => {
+      if (e.target === viewer) closeViewer();
+    });
+  }
 
-  viewerImage.addEventListener("click", (e) => {
-    const currentTime = new Date().getTime();
-    const tapLength = currentTime - lastTap;
-
-    if (tapLength < 300 && tapLength > 0) {
-
-      const rect = viewerImage.getBoundingClientRect();
-      const offsetX = e.clientX - rect.left;
-      const offsetY = e.clientY - rect.top;
-
-      if (scale === 1) {
-        scale = 2;
-        viewerImage.style.transformOrigin = `${offsetX}px ${offsetY}px`;
-        viewerImage.style.transform = "scale(2)";
-      } else {
-        scale = 1;
-        viewerImage.style.transformOrigin = "center center";
-        viewerImage.style.transform = "scale(1)";
-      }
-    }
-
-    lastTap = currentTime;
-  });
-
-  viewer.addEventListener("click", e => {
-    if (e.target === viewer) closeViewer();
-  });
-
-  viewerClose.addEventListener("click", closeViewer);
+  if (viewerClose) {
+    viewerClose.addEventListener("click", closeViewer);
+  }
 
   document.addEventListener("keydown", e => {
     if (e.key === "Escape") closeViewer();
