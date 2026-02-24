@@ -3,45 +3,42 @@
 <head>
   <meta charset="UTF-8" />
   <title>PORTO Hel – Menu</title>
-
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-
   <link rel="stylesheet" href="/css/style.css" />
 </head>
 
 <body>
 
-  <div class="page">
+<div class="page">
 
-    <button class="back-simple" onclick="goBack()">←</button>
+  <button class="back-simple" onclick="goBack()">←</button>
 
-    <header class="top-logo">
-      <img src="/assets/porto-logo.png" alt="PORTO Hel logo">
-    </header>
+  <header class="top-logo">
+    <img src="/assets/porto-logo.png" alt="PORTO Hel logo">
+  </header>
 
-    <main class="menu">
-      <div id="menu-buttons" class="simple-buttons"></div>
-
-      <div class="menu-wrapper">
-        <div id="menu-container" class="menu-images"></div>
-      </div>
-    </main>
-
-  </div>
-
-  <div class="image-viewer" id="imageViewer">
-
-    <button class="viewer-close" id="viewerClose">✕</button>
-
-    <div class="viewer-slider" id="viewerSlider">
-      <div class="viewer-track" id="viewerTrack"></div>
+  <main class="menu">
+    <div id="menu-buttons" class="simple-buttons"></div>
+    <div class="menu-wrapper">
+      <div id="menu-container" class="menu-images"></div>
     </div>
+  </main>
 
-    <div class="viewer-dots" id="viewerDots"></div>
+</div>
 
+<div class="image-viewer" id="viewer">
+
+  <button class="viewer-close" id="viewerClose">✕</button>
+
+  <div class="viewer-viewport">
+    <div class="viewer-track" id="viewerTrack"></div>
   </div>
 
-  <script src="/js/main.js"></script>
+  <div class="viewer-dots" id="viewerDots"></div>
+
+</div>
+
+<script src="/js/main.js"></script>
 
 </body>
 </html>
