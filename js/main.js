@@ -141,6 +141,8 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   let scrollPosition = 0;
+  let isZoomed = false;
+  let lastTap = 0;
 
   function freezePage() {
     scrollPosition = window.scrollY;
@@ -166,6 +168,9 @@ document.addEventListener("DOMContentLoaded", () => {
     viewer.className = `image-viewer active ${mode}`;
     viewerImage.src = src;
 
+    viewerImage.style.transform = "scale(1)";
+    isZoomed = false;
+
     freezePage();
 
     if (backBtn) backBtn.style.display = "none";
@@ -176,11 +181,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
     viewer.className = "image-viewer";
     viewerImage.src = "";
+    viewerImage.style.transform = "scale(1)";
+    isZoomed = false;
 
     unfreezePage();
 
     if (backBtn) backBtn.style.display = "flex";
   }
+
+  function toggleZoom() {
+    if (!viewerImage) return;
+
+    if (!isZoomed) {
+      viewerImage.style.transform = "scale(2)";
+      viewerImage.style.cursor = "zoom-out";
+      isZoomed = true;
+    } else {
+      viewerImage.style.transform = "scale(1)";
+      viewerImage.style.cursor = "zoom-in";
+      isZoomed = false;
+    }
+  }
+
+  // DOUBLE TAP внутри viewer
+  viewerImage.addEventListener("click", () => {
+    const currentTime = new Date().getTime();
+    const tapLength = currentTime - lastTap;
+
+    if (tapLength < 300 && tapLength > 0) {
+      toggleZoom();
+    }
+
+    lastTap = currentTime;
+  });
 
   if (viewer) {
     viewer.addEventListener("click", e => {
