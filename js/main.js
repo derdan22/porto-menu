@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ["drinks-pl"]
       ]
     },
+
     en: {
       labels: [
         { title: "Main Menu", note: "from 11 until close" },
@@ -26,6 +27,19 @@ document.addEventListener("DOMContentLoaded", () => {
         ["main-eng"],
         ["breakfast-eng-1", "breakfast-eng-2"],
         ["drinks-eng"]
+      ]
+    },
+
+    de: {
+      labels: [
+        { title: "Hauptmenü", note: "ab 11 Uhr bis Küchenschluss" },
+        { title: "Frühstück", note: "10:00 – 12:00" },
+        { title: "Getränke", note: "" }
+      ],
+      images: [
+        ["main-de"],
+        ["breakfast-de-1", "breakfast-de-2"],
+        ["drinks-de"]
       ]
     }
   };
@@ -39,25 +53,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const lang = menus[requestedLang] ? requestedLang : "pl";
 
-  if (!menus[requestedLang]) {
-    showUnavailableMessage();
-  } else {
-    initMenu();
-    preloadAllImages();
-  }
-
-  function showUnavailableMessage() {
-    if (!container) return;
-
-    if (buttons) buttons.innerHTML = "";
-
-    container.className = "menu-images";
-    container.innerHTML = `
-      <div class="unavailable-message">
-        Ta wersja językowa nie jest jeszcze dostępna.
-      </div>
-    `;
-  }
+  initMenu();
+  preloadAllImages();
 
   function initMenu() {
     if (!buttons) return;
