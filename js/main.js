@@ -15,215 +15,185 @@ document.addEventListener("DOMContentLoaded", () => {
         ["breakfast-pl-1", "breakfast-pl-2"],
         ["drinks-pl"]
       ]
+    },
+
+    en: {
+      labels: [
+        { title: "Main Menu", note: "from 11 until close" },
+        { title: "Breakfast", note: "10:00 – 12:00" },
+        { title: "Drinks", note: "" }
+      ],
+      images: [
+        ["main-eng"],
+        ["breakfast-eng-1", "breakfast-eng-2"],
+        ["drinks-eng"]
+      ]
+    },
+
+    de: {
+      labels: [
+        { title: "Hauptmenü", note: "ab 11 Uhr bis Küchenschluss" },
+        { title: "Frühstück", note: "10:00 – 12:00" },
+        { title: "Getränke", note: "" }
+      ],
+      images: [
+        ["main-de"],
+        ["breakfast-de-1", "breakfast-de-2"],
+        ["drinks-de"]
+      ]
     }
   };
 
-  const lang = menus[requestedLang] ? requestedLang : "pl";
-
   const container = document.getElementById("menu-container");
   const buttons = document.getElementById("menu-buttons");
+  const viewer = document.getElementById("imageViewer");
+  const viewerClose = document.getElementById("viewerClose");
+  const viewerImage = document.getElementById("viewerImage");
+  const backBtn = document.querySelector(".back-simple");
 
-  const viewer = document.getElementById("viewer");
-  const track = document.getElementById("viewerTrack");
-  const dotsContainer = document.getElementById("viewerDots");
-  const closeBtn = document.getElementById("viewerClose");
-
-  let images = [];
-  let index = 0;
-
-  let startX = 0;
-  let deltaX = 0;
-  let isSwiping = false;
-
-  let scale = 1;
-  let translateX = 0;
-  let translateY = 0;
-
-  let lastTap = 0;
+  const lang = menus[requestedLang] ? requestedLang : "pl";
 
   initMenu();
+  preloadAllImages();
 
   function initMenu() {
+    if (!buttons) return;
+
     buttons.innerHTML = "";
 
-    menus[lang].labels.forEach((item, i) => {
-
+    menus[lang].labels.forEach((item, index) => {
       const btn = document.createElement("button");
+
       btn.innerHTML = `
         <span class="btn-title">${item.title}</span>
         ${item.note ? `<span class="btn-note">${item.note}</span>` : ""}
       `;
 
       btn.addEventListener("click", () => {
-        document.querySelectorAll("#menu-buttons button")
+        document
+          .querySelectorAll("#menu-buttons button")
           .forEach(b => b.classList.remove("active"));
 
         btn.classList.add("active");
-        renderMenu(menus[lang].images[i]);
+        renderMenu(menus[lang].images[index], index);
+        window.scrollTo({ top: 0, behavior: "smooth" });
       });
 
       buttons.appendChild(btn);
     });
 
-    buttons.firstChild.classList.add("active");
-    renderMenu(menus[lang].images[0]);
+    if (buttons.firstChild) {
+      buttons.firstChild.classList.add("active");
+      renderMenu(menus[lang].images[0], 0);
+    }
   }
 
-  function renderMenu(imgs) {
+  function renderMenu(images, categoryIndex) {
+    if (!container) return;
 
-    container.innerHTML = "";
-    container.className = `menu-images ${imgs.length > 1 ? "grid-2" : ""}`;
+    container.style.opacity = "0";
 
-    imgs.forEach((name, i) => {
+    setTimeout(() => {
+      container.innerHTML = "";
+      container.className = `menu-images ${images.length > 1 ? "grid-2" : ""}`;
 
-      const img = document.createElement("img");
-      img.src = `/assets/menu/${name}.jpg`;
+      images.forEach(name => {
+        const img = document.createElement("img");
+        img.src = `/assets/menu/${name}.jpg`;
+        img.alt = "PORTO menu";
 
-      img.addEventListener("click", () => {
-        openViewer(imgs, i);
+        img.addEventListener("click", () => {
+          const mode = categoryIndex === 1 ? "long" : "wide";
+          openViewer(img.src, mode);
+        });
+
+        container.appendChild(img);
       });
 
-      container.appendChild(img);
-    });
+      requestAnimationFrame(() => {
+        container.style.opacity = "1";
+      });
+
+    }, 80);
   }
 
-  function openViewer(imgs, startIndex) {
+  function preloadAllImages() {
+    const allImages = [];
 
-    images = imgs.map(n => `/assets/menu/${n}.jpg`);
-    index = startIndex;
+    Object.values(menus[lang].images).forEach(group => {
+      group.forEach(name => {
+        allImages.push(`/assets/menu/${name}.jpg`);
+      });
+    });
 
-    track.innerHTML = "";
-    dotsContainer.innerHTML = "";
-
-    images.forEach((src, i) => {
-
-      const slide = document.createElement("div");
-      slide.className = "viewer-slide";
-
-      const img = document.createElement("img");
+    allImages.forEach(src => {
+      const img = new Image();
       img.src = src;
-      img.className = "viewer-img";
-
-      slide.appendChild(img);
-      track.appendChild(slide);
-
-      const dot = document.createElement("span");
-      dot.className = "dot";
-      if (i === index) dot.classList.add("active");
-      dotsContainer.appendChild(dot);
     });
-
-    updateSlider();
-    viewer.classList.add("active");
-    document.body.style.overflow = "hidden";
   }
 
-  function updateSlider() {
-    track.style.transform = `translateX(-${index * 100}%)`;
-    dotsContainer.querySelectorAll(".dot").forEach((d, i) => {
-      d.classList.toggle("active", i === index);
-    });
+  window.goBack = function () {
+    if (history.length > 1) {
+      history.back();
+    } else {
+      window.location.href = "index.html";
+    }
+  };
+
+  let scrollPosition = 0;
+
+  function freezePage() {
+    scrollPosition = window.scrollY;
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollPosition}px`;
+    document.body.style.left = "0";
+    document.body.style.right = "0";
+    document.body.style.width = "100%";
+  }
+
+  function unfreezePage() {
+    document.body.style.position = "";
+    document.body.style.top = "";
+    document.body.style.left = "";
+    document.body.style.right = "";
+    document.body.style.width = "";
+    window.scrollTo(0, scrollPosition);
+  }
+
+  function openViewer(src, mode) {
+    if (!viewer || !viewerImage) return;
+
+    viewer.className = `image-viewer active ${mode}`;
+    viewerImage.src = src;
+
+    freezePage();
+
+    if (backBtn) backBtn.style.display = "none";
   }
 
   function closeViewer() {
-    viewer.classList.remove("active");
-    document.body.style.overflow = "";
-    resetZoom();
+    if (!viewer || !viewerImage) return;
+
+    viewer.className = "image-viewer";
+    viewerImage.src = "";
+
+    unfreezePage();
+
+    if (backBtn) backBtn.style.display = "flex";
   }
 
-  closeBtn.addEventListener("click", closeViewer);
+  if (viewer) {
+    viewer.addEventListener("click", e => {
+      if (e.target === viewer) closeViewer();
+    });
+  }
 
-  track.addEventListener("touchstart", e => {
+  if (viewerClose) {
+    viewerClose.addEventListener("click", closeViewer);
+  }
 
-    if (scale > 1) return;
-
-    startX = e.touches[0].clientX;
-    isSwiping = true;
-
-    const now = Date.now();
-    if (now - lastTap < 250) {
-      toggleZoom(e.touches[0]);
-    }
-    lastTap = now;
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") closeViewer();
   });
-
-  track.addEventListener("touchmove", e => {
-
-    if (!isSwiping || scale > 1) return;
-
-    deltaX = e.touches[0].clientX - startX;
-  });
-
-  track.addEventListener("touchend", () => {
-
-    if (!isSwiping || scale > 1) return;
-
-    if (deltaX < -60 && index < images.length - 1) index++;
-    if (deltaX > 60 && index > 0) index--;
-
-    updateSlider();
-    deltaX = 0;
-    isSwiping = false;
-  });
-
-  track.addEventListener("touchmove", e => {
-
-    if (e.touches.length === 2) {
-
-      const img = getCurrentImage();
-      const dist = getDistance(e.touches);
-
-      if (!img.dataset.startDist) {
-        img.dataset.startDist = dist;
-      }
-
-      const scaleFactor = dist / img.dataset.startDist;
-      scale = Math.min(Math.max(scaleFactor, 1), 3);
-
-      applyTransform(img);
-    }
-  });
-
-  track.addEventListener("touchend", () => {
-    const img = getCurrentImage();
-    if (img) delete img.dataset.startDist;
-  });
-
-  function toggleZoom(touch) {
-
-    const img = getCurrentImage();
-
-    if (scale === 1) {
-      scale = 2;
-    } else {
-      resetZoom();
-    }
-
-    applyTransform(img);
-  }
-
-  function resetZoom() {
-    scale = 1;
-    translateX = 0;
-    translateY = 0;
-
-    const img = getCurrentImage();
-    if (img) img.style.transform = "";
-  }
-
-  function applyTransform(img) {
-    img.style.transform =
-      `translate(${translateX}px, ${translateY}px) scale(${scale})`;
-  }
-
-  function getCurrentImage() {
-    return track.children[index]?.querySelector("img");
-  }
-
-  function getDistance(touches) {
-    const dx = touches[0].clientX - touches[1].clientX;
-    const dy = touches[0].clientY - touches[1].clientY;
-    return Math.sqrt(dx * dx + dy * dy);
-  }
 
 });
