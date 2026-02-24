@@ -1,90 +1,199 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+  const params = new URLSearchParams(window.location.search);
+  const requestedLang = params.get("lang");
+
+  const menus = {
+    pl: {
+      labels: [
+        { title: "Menu Główne", note: "od 11 do zamknięcia" },
+        { title: "Śniadania", note: "10:00 – 12:00" },
+        { title: "Napoje", note: "" }
+      ],
+      images: [
+        ["main-pl"],
+        ["breakfast-pl-1", "breakfast-pl-2"],
+        ["drinks-pl"]
+      ]
+    },
+
+    en: {
+      labels: [
+        { title: "Main Menu", note: "from 11 until close" },
+        { title: "Breakfast", note: "10:00 – 12:00" },
+        { title: "Drinks", note: "" }
+      ],
+      images: [
+        ["main-eng"],
+        ["breakfast-eng-1", "breakfast-eng-2"],
+        ["drinks-eng"]
+      ]
+    },
+
+    de: {
+      labels: [
+        { title: "Hauptmenü", note: "ab 11 Uhr bis Küchenschluss" },
+        { title: "Frühstück", note: "10:00 – 12:00" },
+        { title: "Getränke", note: "" }
+      ],
+      images: [
+        ["main-de"],
+        ["breakfast-de-1", "breakfast-de-2"],
+        ["drinks-de"]
+      ]
+    }
+  };
+
+  const container = document.getElementById("menu-container");
+  const buttons = document.getElementById("menu-buttons");
   const viewer = document.getElementById("imageViewer");
-  const viewerImage = document.getElementById("viewerImage");
   const viewerClose = document.getElementById("viewerClose");
+  const viewerImage = document.getElementById("viewerImage");
+  const backBtn = document.querySelector(".back-simple");
 
-  let scale = 1;
-  let posX = 0;
-  let posY = 0;
-  let startX = 0;
-  let startY = 0;
-  let isDragging = false;
-  let lastTap = 0;
+  const lang = menus[requestedLang] ? requestedLang : "pl";
 
-  function updateTransform() {
-    viewerImage.style.transform =
-      `translate3d(${posX}px, ${posY}px, 0) scale(${scale})`;
+  initMenu();
+  preloadAllImages();
+
+  function initMenu() {
+    if (!buttons) return;
+
+    buttons.innerHTML = "";
+
+    menus[lang].labels.forEach((item, index) => {
+      const btn = document.createElement("button");
+
+      btn.innerHTML = `
+        <span class="btn-title">${item.title}</span>
+        ${item.note ? `<span class="btn-note">${item.note}</span>` : ""}
+      `;
+
+      btn.addEventListener("click", () => {
+        document
+          .querySelectorAll("#menu-buttons button")
+          .forEach(b => b.classList.remove("active"));
+
+        btn.classList.add("active");
+        renderMenu(menus[lang].images[index], index);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      buttons.appendChild(btn);
+    });
+
+    if (buttons.firstChild) {
+      buttons.firstChild.classList.add("active");
+      renderMenu(menus[lang].images[0], 0);
+    }
   }
 
-  function resetZoom() {
-    scale = 1;
-    posX = 0;
-    posY = 0;
-    updateTransform();
+  function renderMenu(images, categoryIndex) {
+    if (!container) return;
+
+    container.style.opacity = "0";
+
+    setTimeout(() => {
+      container.innerHTML = "";
+      container.className = `menu-images ${images.length > 1 ? "grid-2" : ""}`;
+
+      images.forEach(name => {
+        const img = document.createElement("img");
+        img.src = `/assets/menu/${name}.jpg`;
+        img.alt = "PORTO menu";
+
+        img.addEventListener("click", () => {
+          const mode = categoryIndex === 1 ? "long" : "wide";
+          openViewer(img.src, mode);
+        });
+
+        container.appendChild(img);
+      });
+
+      requestAnimationFrame(() => {
+        container.style.opacity = "1";
+      });
+
+    }, 80);
   }
 
-  function toggleZoom() {
-    if (scale === 1) {
-      scale = 2;
+  function preloadAllImages() {
+    const allImages = [];
+
+    Object.values(menus[lang].images).forEach(group => {
+      group.forEach(name => {
+        allImages.push(`/assets/menu/${name}.jpg`);
+      });
+    });
+
+    allImages.forEach(src => {
+      const img = new Image();
+      img.src = src;
+    });
+  }
+
+  window.goBack = function () {
+    if (history.length > 1) {
+      history.back();
     } else {
-      resetZoom();
-      return;
+      window.location.href = "index.html";
     }
-    updateTransform();
+  };
+
+  let scrollPosition = 0;
+
+  function freezePage() {
+    scrollPosition = window.scrollY;
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollPosition}px`;
+    document.body.style.left = "0";
+    document.body.style.right = "0";
+    document.body.style.width = "100%";
   }
 
-  function detectDoubleTap() {
-    const now = Date.now();
-    if (now - lastTap < 300) {
-      toggleZoom();
-    }
-    lastTap = now;
+  function unfreezePage() {
+    document.body.style.position = "";
+    document.body.style.top = "";
+    document.body.style.left = "";
+    document.body.style.right = "";
+    document.body.style.width = "";
+    window.scrollTo(0, scrollPosition);
   }
 
-  viewerImage.addEventListener("touchstart", (e) => {
-    detectDoubleTap();
+  function openViewer(src, mode) {
+    if (!viewer || !viewerImage) return;
 
-    if (scale > 1) {
-      isDragging = true;
-      startX = e.touches[0].clientX - posX;
-      startY = e.touches[0].clientY - posY;
-    }
+    viewer.className = `image-viewer active ${mode}`;
+    viewerImage.src = src;
+
+    freezePage();
+
+    if (backBtn) backBtn.style.display = "none";
+  }
+
+  function closeViewer() {
+    if (!viewer || !viewerImage) return;
+
+    viewer.className = "image-viewer";
+    viewerImage.src = "";
+
+    unfreezePage();
+
+    if (backBtn) backBtn.style.display = "flex";
+  }
+
+  if (viewer) {
+    viewer.addEventListener("click", e => {
+      if (e.target === viewer) closeViewer();
+    });
+  }
+
+  if (viewerClose) {
+    viewerClose.addEventListener("click", closeViewer);
+  }
+
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") closeViewer();
   });
-
-  viewerImage.addEventListener("touchmove", (e) => {
-    if (!isDragging) return;
-
-    posX = e.touches[0].clientX - startX;
-    posY = e.touches[0].clientY - startY;
-
-    updateTransform();
-  });
-
-  viewerImage.addEventListener("touchend", () => {
-    isDragging = false;
-  });
-
-  viewerImage.addEventListener("dblclick", toggleZoom);
-
-  viewerImage.addEventListener("mousedown", (e) => {
-    if (scale <= 1) return;
-    isDragging = true;
-    startX = e.clientX - posX;
-    startY = e.clientY - posY;
-  });
-
-  window.addEventListener("mousemove", (e) => {
-    if (!isDragging) return;
-    posX = e.clientX - startX;
-    posY = e.clientY - startY;
-    updateTransform();
-  });
-
-  window.addEventListener("mouseup", () => {
-    isDragging = false;
-  });
-
-  viewerClose.addEventListener("click", resetZoom);
 
 });
