@@ -3,42 +3,73 @@
 <head>
   <meta charset="UTF-8" />
   <title>PORTO Hel – Menu</title>
+
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="PORTO Hel – aktualne menu restauracji. Zobacz dania główne, śniadania i napoje.">
+  <link rel="canonical" href="https://portohel.pl/menu.html">
+
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+  <meta property="og:title" content="PORTO Hel – Menu" />
+  <meta property="og:description" content="Zobacz aktualne menu restauracji PORTO Hel – dania główne, śniadania i napoje." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://portohel.pl/menu.html" />
+  <meta property="og:image" content="https://portohel.pl/assets/og-image.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="/css/style.css" />
+
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    referrerpolicy="no-referrer" />
 </head>
 
 <body>
 
-<div class="page">
+  <div class="page">
 
-  <button class="back-simple" onclick="goBack()">←</button>
+    <button class="back-simple" onclick="goBack()">←</button>
 
-  <header class="top-logo">
-    <img src="/assets/porto-logo.png" alt="PORTO Hel logo">
-  </header>
+    <header class="top-logo">
+      <img src="/assets/porto-logo.png" alt="PORTO Hel logo">
+    </header>
 
-  <main class="menu">
-    <div id="menu-buttons" class="simple-buttons"></div>
-    <div class="menu-wrapper">
-      <div id="menu-container" class="menu-images"></div>
-    </div>
-  </main>
+    <main class="menu">
+      <div id="menu-buttons" class="simple-buttons"></div>
 
-</div>
+      <div class="menu-wrapper">
+        <div id="menu-container" class="menu-images"></div>
+      </div>
+    </main>
 
-<div class="image-viewer" id="viewer">
-
-  <button class="viewer-close" id="viewerClose">✕</button>
-
-  <div class="viewer-viewport">
-    <div class="viewer-track" id="viewerTrack"></div>
   </div>
 
-  <div class="viewer-dots" id="viewerDots"></div>
+  <footer class="bottom-bar">
+    <div class="bottom-socials">
+      <a href="https://www.facebook.com/portohel/?locale=pl_PL" target="_blank" rel="noopener noreferrer">
+        <i class="fa-brands fa-facebook-f"></i>
+      </a>
+      <a href="https://www.instagram.com/porto_hel" target="_blank" rel="noopener noreferrer">
+        <i class="fa-brands fa-instagram"></i>
+      </a>
+      <a href="https://www.tiktok.com/@restauracjaporto" target="_blank" rel="noopener noreferrer">
+        <i class="fa-brands fa-tiktok"></i>
+      </a>
+    </div>
+  </footer>
 
-</div>
+  <div class="image-viewer" id="imageViewer">
+    <button class="viewer-close" id="viewerClose" aria-label="Close menu">✕</button>
+    <img id="viewerImage" alt="">
+  </div>
 
-<script src="/js/main.js"></script>
+  <script src="/js/main.js?v=3"></script>
 
 </body>
 </html>
