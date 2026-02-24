@@ -16,7 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
         ["drinks-pl"]
       ]
     },
-
     en: {
       labels: [
         { title: "Main Menu", note: "from 11 until close" },
@@ -29,7 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
         ["drinks-eng"]
       ]
     },
-
     de: {
       labels: [
         { title: "Hauptmenü", note: "ab 11 Uhr bis Küchenschluss" },
@@ -44,21 +42,30 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  const container = document.getElementById("menu-container");
-  const buttons = document.getElementById("menu-buttons");
-  const viewer = document.getElementById("imageViewer");
-  const viewerClose = document.getElementById("viewerClose");
-  const viewerImage = document.getElementById("viewerImage");
-  const backBtn = document.querySelector(".back-simple");
-
   const lang = menus[requestedLang] ? requestedLang : "pl";
 
+  const container = document.getElementById("menu-container");
+  const buttons = document.getElementById("menu-buttons");
+
+  const viewer = document.getElementById("imageViewer");
+  const viewerTrack = document.getElementById("viewerTrack");
+  const viewerDots = document.getElementById("viewerDots");
+  const viewerClose = document.getElementById("viewerClose");
+
+  let currentImages = [];
+  let currentIndex = 0;
+
+  let startX = 0;
+  let currentTranslate = 0;
+  let isSwiping = false;
+
+  let scale = 1;
+  let lastTap = 0;
+  let startDistance = 0;
+
   initMenu();
-  preloadAllImages();
 
   function initMenu() {
-    if (!buttons) return;
-
     buttons.innerHTML = "";
 
     menus[lang].labels.forEach((item, index) => {
@@ -70,130 +77,130 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
 
       btn.addEventListener("click", () => {
-        document
-          .querySelectorAll("#menu-buttons button")
+        document.querySelectorAll("#menu-buttons button")
           .forEach(b => b.classList.remove("active"));
 
         btn.classList.add("active");
-        renderMenu(menus[lang].images[index], index);
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        renderMenu(menus[lang].images[index]);
       });
 
       buttons.appendChild(btn);
     });
 
-    if (buttons.firstChild) {
-      buttons.firstChild.classList.add("active");
-      renderMenu(menus[lang].images[0], 0);
-    }
+    buttons.firstChild.classList.add("active");
+    renderMenu(menus[lang].images[0]);
   }
 
-  function renderMenu(images, categoryIndex) {
-    if (!container) return;
+  function renderMenu(images) {
+    container.innerHTML = "";
+    container.className = `menu-images ${images.length > 1 ? "grid-2" : ""}`;
 
-    container.style.opacity = "0";
+    images.forEach((name, index) => {
+      const img = document.createElement("img");
+      img.src = `/assets/menu/${name}.jpg`;
+      img.alt = "PORTO menu";
 
-    setTimeout(() => {
-      container.innerHTML = "";
-      container.className = `menu-images ${images.length > 1 ? "grid-2" : ""}`;
-
-      images.forEach(name => {
-        const img = document.createElement("img");
-        img.src = `/assets/menu/${name}.jpg`;
-        img.alt = "PORTO menu";
-
-        img.addEventListener("click", () => {
-          const mode = categoryIndex === 1 ? "long" : "wide";
-          openViewer(img.src, mode);
-        });
-
-        container.appendChild(img);
+      img.addEventListener("click", () => {
+        openViewer(images, index);
       });
 
-      requestAnimationFrame(() => {
-        container.style.opacity = "1";
-      });
-
-    }, 80);
-  }
-
-  function preloadAllImages() {
-    const allImages = [];
-
-    Object.values(menus[lang].images).forEach(group => {
-      group.forEach(name => {
-        allImages.push(`/assets/menu/${name}.jpg`);
-      });
+      container.appendChild(img);
     });
+  }
 
-    allImages.forEach(src => {
-      const img = new Image();
+  function openViewer(images, startIndex) {
+    currentImages = images.map(name => `/assets/menu/${name}.jpg`);
+    currentIndex = startIndex;
+
+    viewerTrack.innerHTML = "";
+    viewerDots.innerHTML = "";
+
+    currentImages.forEach((src, i) => {
+      const img = document.createElement("img");
       img.src = src;
+      img.classList.add("viewer-image");
+      viewerTrack.appendChild(img);
+
+      const dot = document.createElement("span");
+      dot.classList.add("dot");
+      if (i === currentIndex) dot.classList.add("active");
+      viewerDots.appendChild(dot);
     });
+
+    updateSliderPosition();
+    viewer.classList.add("active");
+    document.body.style.overflow = "hidden";
   }
 
-  window.goBack = function () {
-    if (history.length > 1) {
-      history.back();
-    } else {
-      window.location.href = "index.html";
-    }
-  };
-
-  let scrollPosition = 0;
-
-  function freezePage() {
-    scrollPosition = window.scrollY;
-    document.body.style.position = "fixed";
-    document.body.style.top = `-${scrollPosition}px`;
-    document.body.style.left = "0";
-    document.body.style.right = "0";
-    document.body.style.width = "100%";
-  }
-
-  function unfreezePage() {
-    document.body.style.position = "";
-    document.body.style.top = "";
-    document.body.style.left = "";
-    document.body.style.right = "";
-    document.body.style.width = "";
-    window.scrollTo(0, scrollPosition);
-  }
-
-  function openViewer(src, mode) {
-    if (!viewer || !viewerImage) return;
-
-    viewer.className = `image-viewer active ${mode}`;
-    viewerImage.src = src;
-
-    freezePage();
-
-    if (backBtn) backBtn.style.display = "none";
+  function updateSliderPosition() {
+    viewerTrack.style.transform = `translateX(-${currentIndex * 100}%)`;
+    viewerDots.querySelectorAll(".dot").forEach((d, i) => {
+      d.classList.toggle("active", i === currentIndex);
+    });
   }
 
   function closeViewer() {
-    if (!viewer || !viewerImage) return;
-
-    viewer.className = "image-viewer";
-    viewerImage.src = "";
-
-    unfreezePage();
-
-    if (backBtn) backBtn.style.display = "flex";
+    viewer.classList.remove("active");
+    document.body.style.overflow = "";
+    scale = 1;
   }
 
-  if (viewer) {
-    viewer.addEventListener("click", e => {
-      if (e.target === viewer) closeViewer();
-    });
-  }
+  viewerClose.addEventListener("click", closeViewer);
 
-  if (viewerClose) {
-    viewerClose.addEventListener("click", closeViewer);
-  }
+  viewerTrack.addEventListener("touchstart", e => {
 
-  document.addEventListener("keydown", e => {
-    if (e.key === "Escape") closeViewer();
+    if (e.touches.length === 2) {
+      startDistance = getDistance(e.touches);
+      return;
+    }
+
+    const now = Date.now();
+    if (now - lastTap < 300) {
+      scale = scale === 1 ? 2 : 1;
+      e.target.style.transform = `scale(${scale})`;
+    }
+    lastTap = now;
+
+    if (scale > 1) return;
+
+    isSwiping = true;
+    startX = e.touches[0].clientX;
   });
+
+  viewerTrack.addEventListener("touchmove", e => {
+
+    if (e.touches.length === 2) {
+      const newDistance = getDistance(e.touches);
+      scale = Math.min(Math.max(newDistance / startDistance, 1), 3);
+      e.target.style.transform = `scale(${scale})`;
+      return;
+    }
+
+    if (!isSwiping || scale > 1) return;
+
+    const diff = e.touches[0].clientX - startX;
+    currentTranslate = diff;
+  });
+
+  viewerTrack.addEventListener("touchend", () => {
+
+    if (!isSwiping || scale > 1) return;
+
+    if (currentTranslate < -50 && currentIndex < currentImages.length - 1) {
+      currentIndex++;
+    } else if (currentTranslate > 50 && currentIndex > 0) {
+      currentIndex--;
+    }
+
+    updateSliderPosition();
+    isSwiping = false;
+    currentTranslate = 0;
+  });
+
+  function getDistance(touches) {
+    const dx = touches[0].clientX - touches[1].clientX;
+    const dy = touches[0].clientY - touches[1].clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
 
 });
