@@ -16,7 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
         ["drinks-pl"]
       ]
     },
-
     en: {
       labels: [
         { title: "Main Menu", note: "from 11 until close" },
@@ -29,7 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
         ["drinks-eng"]
       ]
     },
-
     de: {
       labels: [
         { title: "Hauptmenü", note: "ab 11 Uhr bis Küchenschluss" },
@@ -57,8 +55,6 @@ document.addEventListener("DOMContentLoaded", () => {
   preloadAllImages();
 
   function initMenu() {
-    if (!buttons) return;
-
     buttons.innerHTML = "";
 
     menus[lang].labels.forEach((item, index) => {
@@ -70,8 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
 
       btn.addEventListener("click", () => {
-        document
-          .querySelectorAll("#menu-buttons button")
+        document.querySelectorAll("#menu-buttons button")
           .forEach(b => b.classList.remove("active"));
 
         btn.classList.add("active");
@@ -82,148 +77,164 @@ document.addEventListener("DOMContentLoaded", () => {
       buttons.appendChild(btn);
     });
 
-    if (buttons.firstChild) {
-      buttons.firstChild.classList.add("active");
-      renderMenu(menus[lang].images[0], 0);
-    }
+    buttons.firstChild.classList.add("active");
+    renderMenu(menus[lang].images[0], 0);
   }
 
   function renderMenu(images, categoryIndex) {
-    if (!container) return;
+    container.innerHTML = "";
+    container.className = `menu-images ${images.length > 1 ? "grid-2" : ""}`;
 
-    container.style.opacity = "0";
+    images.forEach(name => {
+      const img = document.createElement("img");
+      img.src = `/assets/menu/${name}.jpg`;
+      img.alt = "PORTO menu";
 
-    setTimeout(() => {
-      container.innerHTML = "";
-      container.className = `menu-images ${images.length > 1 ? "grid-2" : ""}`;
-
-      images.forEach(name => {
-        const img = document.createElement("img");
-        img.src = `/assets/menu/${name}.jpg`;
-        img.alt = "PORTO menu";
-
-        img.addEventListener("click", () => {
-          const mode = categoryIndex === 1 ? "long" : "wide";
-          openViewer(img.src, mode);
-        });
-
-        container.appendChild(img);
+      img.addEventListener("click", () => {
+        const mode = categoryIndex === 1 ? "long" : "wide";
+        openViewer(img.src, mode);
       });
 
-      requestAnimationFrame(() => {
-        container.style.opacity = "1";
-      });
-
-    }, 80);
+      container.appendChild(img);
+    });
   }
 
   function preloadAllImages() {
-    const allImages = [];
-
     Object.values(menus[lang].images).forEach(group => {
       group.forEach(name => {
-        allImages.push(`/assets/menu/${name}.jpg`);
+        const img = new Image();
+        img.src = `/assets/menu/${name}.jpg`;
       });
-    });
-
-    allImages.forEach(src => {
-      const img = new Image();
-      img.src = src;
     });
   }
 
   window.goBack = function () {
-    if (history.length > 1) {
-      history.back();
-    } else {
-      window.location.href = "index.html";
-    }
+    history.length > 1 ? history.back() : window.location.href = "index.html";
   };
 
-  let scrollPosition = 0;
-  let isZoomed = false;
+  /* =========================
+        VIEWER ZOOM LOGIC
+  ========================== */
+
+  let scale = 1;
+  let startScale = 1;
   let lastTap = 0;
+  let posX = 0;
+  let posY = 0;
+  let startX = 0;
+  let startY = 0;
+  let isDragging = false;
+
+  function updateTransform() {
+    viewerImage.style.transform =
+      `translate(${posX}px, ${posY}px) scale(${scale})`;
+  }
+
+  function resetZoom() {
+    scale = 1;
+    posX = 0;
+    posY = 0;
+    updateTransform();
+  }
+
+  function openViewer(src, mode) {
+    viewer.className = `image-viewer active ${mode}`;
+    viewerImage.src = src;
+    resetZoom();
+    freezePage();
+    backBtn.style.display = "none";
+  }
+
+  function closeViewer() {
+    viewer.className = "image-viewer";
+    viewerImage.src = "";
+    resetZoom();
+    unfreezePage();
+    backBtn.style.display = "flex";
+  }
+
+  /* Double tap zoom */
+  viewerImage.addEventListener("touchend", (e) => {
+    const currentTime = new Date().getTime();
+    const tapLength = currentTime - lastTap;
+
+    if (tapLength < 300 && tapLength > 0) {
+      const rect = viewerImage.getBoundingClientRect();
+      const touch = e.changedTouches[0];
+
+      const offsetX = touch.clientX - rect.left;
+      const offsetY = touch.clientY - rect.top;
+
+      if (scale === 1) {
+        scale = 2;
+        posX = (rect.width / 2 - offsetX);
+        posY = (rect.height / 2 - offsetY);
+      } else {
+        resetZoom();
+      }
+
+      updateTransform();
+    }
+
+    lastTap = currentTime;
+  });
+
+  /* Drag */
+  viewerImage.addEventListener("touchstart", (e) => {
+    if (scale === 1) return;
+    isDragging = true;
+    startX = e.touches[0].clientX - posX;
+    startY = e.touches[0].clientY - posY;
+  });
+
+  viewerImage.addEventListener("touchmove", (e) => {
+    if (!isDragging) return;
+    posX = e.touches[0].clientX - startX;
+    posY = e.touches[0].clientY - startY;
+    updateTransform();
+  });
+
+  viewerImage.addEventListener("touchend", () => {
+    isDragging = false;
+  });
+
+  /* Pinch zoom */
+  viewerImage.addEventListener("touchmove", (e) => {
+    if (e.touches.length === 2) {
+      e.preventDefault();
+
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+
+      if (!startScale) startScale = distance;
+
+      scale = Math.min(Math.max(distance / startScale, 1), 4);
+      updateTransform();
+    }
+  }, { passive: false });
+
+  /* Freeze scroll */
+  let scrollPosition = 0;
 
   function freezePage() {
     scrollPosition = window.scrollY;
     document.body.style.position = "fixed";
     document.body.style.top = `-${scrollPosition}px`;
-    document.body.style.left = "0";
-    document.body.style.right = "0";
     document.body.style.width = "100%";
   }
 
   function unfreezePage() {
     document.body.style.position = "";
     document.body.style.top = "";
-    document.body.style.left = "";
-    document.body.style.right = "";
-    document.body.style.width = "";
     window.scrollTo(0, scrollPosition);
   }
 
-  function openViewer(src, mode) {
-    if (!viewer || !viewerImage) return;
-
-    viewer.className = `image-viewer active ${mode}`;
-    viewerImage.src = src;
-
-    viewerImage.style.transform = "scale(1)";
-    isZoomed = false;
-
-    freezePage();
-
-    if (backBtn) backBtn.style.display = "none";
-  }
-
-  function closeViewer() {
-    if (!viewer || !viewerImage) return;
-
-    viewer.className = "image-viewer";
-    viewerImage.src = "";
-    viewerImage.style.transform = "scale(1)";
-    isZoomed = false;
-
-    unfreezePage();
-
-    if (backBtn) backBtn.style.display = "flex";
-  }
-
-  function toggleZoom() {
-    if (!viewerImage) return;
-
-    if (!isZoomed) {
-      viewerImage.style.transform = "scale(2)";
-      viewerImage.style.cursor = "zoom-out";
-      isZoomed = true;
-    } else {
-      viewerImage.style.transform = "scale(1)";
-      viewerImage.style.cursor = "zoom-in";
-      isZoomed = false;
-    }
-  }
-
-  // DOUBLE TAP внутри viewer
-  viewerImage.addEventListener("click", () => {
-    const currentTime = new Date().getTime();
-    const tapLength = currentTime - lastTap;
-
-    if (tapLength < 300 && tapLength > 0) {
-      toggleZoom();
-    }
-
-    lastTap = currentTime;
+  viewer.addEventListener("click", e => {
+    if (e.target === viewer) closeViewer();
   });
 
-  if (viewer) {
-    viewer.addEventListener("click", e => {
-      if (e.target === viewer) closeViewer();
-    });
-  }
-
-  if (viewerClose) {
-    viewerClose.addEventListener("click", closeViewer);
-  }
+  viewerClose.addEventListener("click", closeViewer);
 
   document.addEventListener("keydown", e => {
     if (e.key === "Escape") closeViewer();
