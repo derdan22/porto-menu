@@ -28,19 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
         ["breakfast-eng-1", "breakfast-eng-2"],
         ["drinks-eng"]
       ]
-    },
-
-    de: {
-      labels: [
-        { title: "Hauptmenü", note: "ab 11 Uhr bis Küchenschluss" },
-        { title: "Frühstück", note: "10:00 – 12:00" },
-        { title: "Getränke", note: "" }
-      ],
-      images: [
-        ["main-de"],
-        ["breakfast-de-1", "breakfast-de-2"],
-        ["drinks-de"]
-      ]
     }
   };
 
