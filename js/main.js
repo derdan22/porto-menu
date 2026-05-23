@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const params = new URLSearchParams(window.location.search);
   const requestedLang = params.get("lang");
+  const menuAsset = (name) => `assets/menu/${name}.webp`;
 
   const menus = {
     pl: {
@@ -86,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       images.forEach(name => {
         const img = document.createElement("img");
-        img.src = `/assets/menu/${name}.jpg`;
+        img.src = menuAsset(name);
         img.alt = "PORTO menu";
 
         img.addEventListener("click", () => {
@@ -109,7 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     Object.values(menus[lang].images).forEach(group => {
       group.forEach(name => {
-        allImages.push(`/assets/menu/${name}.jpg`);
+        allImages.push(menuAsset(name));
       });
     });
 
